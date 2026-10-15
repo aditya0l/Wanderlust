@@ -18,7 +18,7 @@
 /* Editorial luxury: stone paper, charcoal ink, one bronze accent. Full-bleed photography, quiet type, slow motion. */
 :root{
   --stone:#F2EDE6; --paper:#FAF7F2; --sand:#E6DED2;
-  --ink:#26231F; --ink-2:#5F584F; --ink-3:#8B8378;
+  --ink:#26231F; --ink-2:#5F584F; --ink-3:#6B6358;
   --line:rgba(38,35,31,.14); --line-2:rgba(38,35,31,.08);
   --bronze:#8C6A43; --bronze-lt:#C9A979; --espresso:#1D1B18; --cream:#F2EDE6;
   --serif:"Newsreader","Iowan Old Style","Times New Roman",serif;
@@ -417,7 +417,7 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
       <div class="journey-km"><span class="label">Distance flown</span><b id="km">0 km</b></div>
     </div>
     <aside class="stopcard"><div class="stopcard-core">
-      <div class="stopcard-img"><img id="scImg" src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=75&auto=format&fit=crop" alt=""></div>
+      <div class="stopcard-img"><img id="scImg" src="https://images.unsplash.com/photo-1609670289875-590e8ec05c88?w=800&q=75&auto=format&fit=crop" alt=""></div>
       <div class="stopcard-body">
         <span class="label" id="scLeg">Stop 1 of 5 · Departure</span>
         <h3 id="scName">New Delhi</h3>
@@ -455,11 +455,11 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
       </ul>
     </div>
     <div class="svc-float" id="svcFloat" aria-hidden="true">
-      <img src="https://images.unsplash.com/photo-1601571574713-349e4e867fa6?w=600&q=75&auto=format&fit=crop" alt="">
-      <img src="https://images.unsplash.com/photo-1543797414-a0c3ad076f7c?w=600&q=75&auto=format&fit=crop" alt="">
-      <img src="https://images.unsplash.com/photo-1607160913575-9854cbecca02?w=600&q=75&auto=format&fit=crop" alt="">
-      <img src="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=600&q=75&auto=format&fit=crop" alt="">
-      <img src="https://images.unsplash.com/photo-1621114410742-f886ab91e6f4?w=600&q=75&auto=format&fit=crop" alt="">
+      <img src="https://images.unsplash.com/photo-1532188142562-df556b861e6a?w=700&h=875&q=80&auto=format&fit=crop" alt="">
+      <img src="https://images.unsplash.com/photo-1702341562779-d115413d244d?w=700&h=875&q=80&auto=format&fit=crop" alt="">
+      <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=700&h=875&q=80&auto=format&fit=crop" alt="">
+      <img src="https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?w=700&h=875&q=80&auto=format&fit=crop" alt="">
+      <img src="https://images.unsplash.com/photo-1595879171813-a83beb517451?w=700&h=875&q=80&auto=format&fit=crop" alt="">
     </div>
   </section>
 
@@ -523,8 +523,8 @@ gsap.defaults({ ease: "expo.out", duration: 1.4 });
 
 /* ---------- data ---------- */
 const TRIPS = [
-  { name:"Ladakh", sub:"Leh, Nubra and Pangong", nights:6, price:28000, img:"photo-1598563262148-0a9496712b44", tags:["india","mountains"], tag:"June to September", scape:"ladakh", say:"Julley", means:"hello, thank you and goodbye", taste:"Butter tea and thukpa in a Leh kitchen", take:"A pashmina from the Leh bazaar" },
-  { name:"Maldives", sub:"Baa Atoll, overwater villa", nights:4, price:72000, img:"photo-1595184979141-090792f6b578", tags:["intl","coast"], scape:"maldives", say:"Shukuriyaa", means:"thank you, in Dhivehi", taste:"Mas huni and roshi for breakfast", take:"A lacquered box from Thulhaadhoo" },
+  { name:"Ladakh", sub:"Leh, Nubra and Pangong", nights:6, price:28000, img:"photo-1695876670020-e2c2ac5a21ce", tags:["india","mountains"], tag:"June to September", scape:"ladakh", say:"Julley", means:"hello, thank you and goodbye", taste:"Butter tea and thukpa in a Leh kitchen", take:"A pashmina from the Leh bazaar" },
+  { name:"Maldives", sub:"Baa Atoll, overwater villa", nights:4, price:72000, img:"photo-1609601546193-f558f1ebb385", tags:["intl","coast"], scape:"maldives", say:"Shukuriyaa", means:"thank you, in Dhivehi", taste:"Mas huni and roshi for breakfast", take:"A lacquered box from Thulhaadhoo" },
   { name:"Jaipur", sub:"Amer, City Palace, Jal Mahal", nights:3, price:14000, img:"photo-1661924326425-c14a6426d989", tags:["india","heritage"], scape:"jaipur", say:"Khamma ghani", means:"the Rajasthani welcome", taste:"Pyaaz kachori, then dal baati churma", take:"Block-printed cotton from Sanganer" },
   { name:"Dubai", sub:"The city and the desert", nights:4, price:32500, img:"photo-1624664853693-cf6419dee3bb", tags:["intl"], tag:"Most booked", scape:"dubai", say:"Marhaba", means:"hello, in Arabic", taste:"Luqaimat with date syrup", take:"Saffron and dates from the Deira souk" },
   { name:"Kerala", sub:"Munnar, Alleppey, Kochi", nights:5, price:22000, img:"photo-1593693397690-362cb9666fc2", tags:["india","coast"], scape:"kerala", say:"Namaskaram", means:"the Malayalam greeting", taste:"Karimeen pollichathu and appam", take:"Cardamom and pepper from Munnar" },
@@ -686,11 +686,11 @@ const svg = $("map"), NS = "http://www.w3.org/2000/svg";
 const LON0 = 40, LON1 = 130, LAT0 = 42, LAT1 = -16, K = 20, W = (LON1 - LON0) * K, H = (LAT0 - LAT1) * K;
 const px = (lat, lon) => [(lon - LON0) * K, (LAT0 - lat) * K];
 const STOPS = [
-  { code:"DEL", name:"New Delhi", lat:28.6, lon:77.1, leg:"Departure", days:"Day 1", price:"Your journey begins", desc:"Home pick-up, lounge at Terminal 3, and the whole trip in one thread.", img:"photo-1524492412937-b28074a5d7da", off:[24,-22] },
-  { code:"DXB", name:"Dubai", lat:25.2, lon:55.3, leg:"The desert", days:"Days 1–4", price:"from " + inr(32500), desc:"A night in the dunes, then the city from the 148th floor.", img:"photo-1624664853693-cf6419dee3bb", off:[-40,-38] },
-  { code:"MLE", name:"Maldives", lat:4.2, lon:73.5, leg:"The lagoon", days:"Days 5–7", price:"from " + inr(72000), desc:"A seaplane to an overwater villa on Baa Atoll.", img:"photo-1595184979141-090792f6b578", off:[-150,10] },
-  { code:"SIN", name:"Singapore", lat:1.35, lon:103.8, leg:"The city", days:"Days 8–10", price:"from " + inr(48000), desc:"Hawker centres, Gardens by the Bay, a slow morning on Sentosa.", img:"photo-1525625293386-3f8f99389edd", off:[24,-26] },
-  { code:"DPS", name:"Bali", lat:-8.7, lon:115.2, leg:"The island", days:"Days 11–14", price:"from " + inr(45000), desc:"Rice terraces in Ubud, sunsets on the Uluwatu cliffs.", img:"photo-1537996194471-e657df975ab4", off:[24,36] },
+  { code:"DEL", name:"New Delhi", lat:28.6, lon:77.1, leg:"Departure", days:"Day 1", price:"Your journey begins", desc:"Home pick-up, lounge at Terminal 3, and the whole trip in one thread.", img:"photo-1609670289875-590e8ec05c88", off:[24,-22] },
+  { code:"DXB", name:"Dubai", lat:25.2, lon:55.3, leg:"The desert", days:"Days 1–4", price:"from " + inr(32500), desc:"A night in the dunes, then the city from the 148th floor.", img:"photo-1512453979798-5ea266f8880c", off:[-40,-38] },
+  { code:"MLE", name:"Maldives", lat:4.2, lon:73.5, leg:"The lagoon", days:"Days 5–7", price:"from " + inr(72000), desc:"A seaplane to an overwater villa on Baa Atoll.", img:"photo-1544550581-1bb7e9a211e6", off:[-150,10] },
+  { code:"SIN", name:"Singapore", lat:1.35, lon:103.8, leg:"The city", days:"Days 8–10", price:"from " + inr(48000), desc:"Hawker centres, Gardens by the Bay, a slow morning on Sentosa.", img:"photo-1542114740389-9b46fb1e5be7", off:[24,-26] },
+  { code:"DPS", name:"Bali", lat:-8.7, lon:115.2, leg:"The island", days:"Days 11–14", price:"from " + inr(45000), desc:"Rice terraces in Ubud, sunsets on the Uluwatu cliffs.", img:"photo-1555400038-63f5ba517a47", off:[24,36] },
 ];
 const P = STOPS.map(s => px(s.lat, s.lon));
 const C = [[560, 110], [420, 690], [880, 760], [1300, 830]];
