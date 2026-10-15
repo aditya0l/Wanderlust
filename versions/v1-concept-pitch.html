@@ -1,0 +1,410 @@
+<title>Wanderlust Gate Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;800;900&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: an airport terminal. Split-flap board hero → audit "delays" → boarding-pass features → gate-numbered roadmap */
+:root{
+  --bg:#EDF0F3; --surface:#FFFFFF; --ink:#13203A; --muted:#5A6577; --line:#D3D9E1;
+  --board:#121A2B; --board-tile:#1C2640; --flap:#F4F6FA;
+  --marigold:#E39B00; --marigold-ink:#7A4E00; --stamp:#0E7A6A; --red:#C2352B; --amber:#B9770E;
+  --display:"Big Shoulders Display","Oswald","Arial Narrow",sans-serif;
+  --body:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B111D; --surface:#141C2C; --ink:#E8ECF3; --muted:#9AA5B8; --line:#26314A;
+  --board:#060A12; --board-tile:#141D31; --flap:#F4F6FA;
+  --marigold:#F5B227; --marigold-ink:#F5B227; --stamp:#3CC3AE; --red:#F0675C; --amber:#F0B44C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B111D; --surface:#141C2C; --ink:#E8ECF3; --muted:#9AA5B8; --line:#26314A;
+  --board:#060A12; --board-tile:#141D31; --flap:#F4F6FA;
+  --marigold:#F5B227; --marigold-ink:#F5B227; --stamp:#3CC3AE; --red:#F0675C; --amber:#F0B44C; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:1120px;margin-inline:auto}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:.95;margin:0;text-wrap:balance}
+h2{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:900}
+h3{font-size:1.5rem;font-weight:800;letter-spacing:.01em}
+p{margin:0;max-width:65ch}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--mono)}
+section{padding-block:72px 0;display:grid;gap:28px}
+.sec-head{display:grid;gap:12px}
+.lede{color:var(--muted);font-size:1.075rem}
+:focus-visible{outline:3px solid var(--marigold);outline-offset:2px}
+
+/* top strip */
+.strip{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.strip b{color:var(--ink)}
+
+/* HERO */
+.hero{padding-block:48px 0;display:grid;gap:28px}
+.hero h1{font-size:clamp(3rem,10vw,7.4rem);font-weight:900;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:var(--marigold)}
+.hero-sub{display:flex;gap:24px;flex-wrap:wrap;justify-content:space-between;align-items:end}
+.board{background:var(--board);border-radius:14px;padding:clamp(14px,2.5vw,28px);color:var(--flap);display:grid;gap:18px;box-shadow:0 30px 60px -30px rgba(10,20,40,.55)}
+.board-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.board-title{font-family:var(--display);font-weight:800;font-size:1.6rem;letter-spacing:.06em;color:var(--marigold)}
+.clock{font-family:var(--mono);font-size:.85rem;color:#9AA5B8}
+.controls{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end}
+.moods{display:flex;flex-wrap:wrap;gap:8px}
+.moods button{font:600 .85rem var(--body);background:transparent;color:var(--flap);border:1px solid #33405E;border-radius:999px;padding:8px 14px;cursor:pointer;transition:background .15s,border-color .15s}
+.moods button:hover{border-color:var(--marigold)}
+.moods button[aria-pressed="true"]{background:var(--marigold);color:#1A1200;border-color:var(--marigold)}
+.budget{display:grid;gap:6px;min-width:220px}
+.budget label{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#9AA5B8}
+.budget output{font-family:var(--display);font-size:1.8rem;font-weight:800;color:var(--flap)}
+.budget input{accent-color:var(--marigold);width:100%}
+.rows-wrap{overflow-x:auto}
+table.flap{border-collapse:separate;border-spacing:0 6px;width:100%;min-width:640px}
+.flap th{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;color:#9AA5B8;text-align:left;font-weight:400;padding:0 8px}
+.flap td{padding:0 8px;vertical-align:middle}
+.cells{display:inline-flex;gap:3px}
+.cell{width:1.35em;height:1.75em;background:var(--board-tile);border-radius:3px;display:inline-grid;place-items:center;font-family:var(--mono);font-weight:600;font-size:clamp(.85rem,1.6vw,1.1rem);position:relative;overflow:hidden;color:var(--flap)}
+.cell::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:#060A12}
+.cell.flip{animation:flip .09s linear}
+@keyframes flip{0%{transform:scaleY(1)}50%{transform:scaleY(.1)}100%{transform:scaleY(1)}}
+.status{font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.08em;padding:4px 8px;border-radius:4px;white-space:nowrap}
+.st-board{background:var(--marigold);color:#1A1200}
+.st-open{background:#1E5B52;color:#C8F4EA}
+.st-wait{background:#33405E;color:#C9D2E3}
+.board-foot{font-family:var(--mono);font-size:.75rem;color:#9AA5B8;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.note-chip{display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;border:1px dashed var(--muted);color:var(--muted);padding:3px 8px;border-radius:4px}
+
+/* AUDIT */
+.audit{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:12px}
+.delay{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:start}
+.sev{font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.1em;padding:3px 7px;border-radius:4px;color:#fff;grid-row:span 2;align-self:start;margin-top:2px}
+.sev.crit{background:var(--red)}.sev.warn{background:var(--amber)}
+.delay h4{margin:0;font-size:1rem;font-weight:600}
+.delay p{color:var(--muted);font-size:.92rem}
+.delay code{font-family:var(--mono);font-size:.85em;background:var(--bg);padding:1px 5px;border-radius:3px;color:var(--ink)}
+
+/* BIG IDEA */
+.idea{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center}
+.idea blockquote{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(2.4rem,6vw,4.6rem);line-height:.92}
+.idea blockquote span{color:var(--stamp)}
+.taglines{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.taglines li{border-bottom:1px solid var(--line);padding-block:10px;display:flex;justify-content:space-between;gap:12px}
+.taglines li span:last-child{font-family:var(--mono);font-size:.75rem;color:var(--muted);white-space:nowrap}
+
+/* FEATURES: boarding passes */
+.passes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:18px}
+.pass{background:var(--surface);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:1fr 92px;overflow:hidden;min-width:0}
+.pass-main{padding:20px;display:grid;gap:10px;align-content:start;min-width:0}
+.pass-stub{border-left:2px dashed var(--line);padding:20px 10px;display:grid;justify-items:center;align-content:space-between;gap:8px;position:relative}
+.pass-stub::before,.pass-stub::after{content:"";position:absolute;left:-10px;width:18px;height:18px;border-radius:50%;background:var(--bg)}
+.pass-stub::before{top:-9px}.pass-stub::after{bottom:-9px}
+.gate{font-family:var(--display);font-size:2.4rem;font-weight:900;color:var(--marigold-ink);line-height:1}
+.stub-l{font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;text-align:center}
+.barcode{width:56px;height:46px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 8px,var(--ink) 8px 11px,transparent 11px 12px)}
+.pass p{color:var(--muted);font-size:.93rem}
+.pass .why{font-family:var(--mono);font-size:.75rem;color:var(--stamp);letter-spacing:.04em}
+
+/* visa demo */
+.demo{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;display:grid;grid-template-columns:1fr 1.2fr;gap:24px;align-items:center}
+.demo select{font:500 1rem var(--body);padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.stamp{justify-self:center;width:min(260px,100%);aspect-ratio:1;border:4px double var(--stamp);border-radius:50%;display:grid;place-items:center;text-align:center;color:var(--stamp);transform:rotate(-8deg);padding:28px;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.stamp.pop{transform:rotate(-8deg) scale(1.06)}
+.stamp b{font-family:var(--display);font-size:2rem;font-weight:900;display:block;line-height:1;text-transform:uppercase}
+.stamp small{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}
+
+/* IA flow */
+.flow{display:grid;gap:0;counter-reset:g}
+.flow li{list-style:none;display:grid;grid-template-columns:90px 1fr auto;gap:16px;align-items:baseline;padding-block:16px;border-top:1px solid var(--line)}
+.flow li:last-child{border-bottom:1px solid var(--line)}
+.flow .n{font-family:var(--display);font-weight:900;font-size:1.9rem;color:var(--marigold-ink)}
+.flow .t{font-weight:600}
+.flow .t span{display:block;font-weight:400;color:var(--muted);font-size:.93rem}
+.flow .k{font-family:var(--mono);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.flow ol{margin:0;padding:0}
+
+/* system */
+.system{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.swatch{border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.swatch div{height:88px}
+.swatch p{padding:10px 12px;font-family:var(--mono);font-size:.78rem}
+.typespec{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:8px}
+.typespec .d{font-family:var(--display);font-weight:900;font-size:3rem;line-height:.9;text-transform:uppercase}
+
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.leg{border-top:4px solid var(--ink);padding-top:14px;display:grid;gap:8px}
+.leg:nth-child(2){border-color:var(--marigold)}.leg:nth-child(3){border-color:var(--stamp)}
+.leg ul{margin:0;padding-left:18px;color:var(--muted);font-size:.93rem;display:grid;gap:4px}
+
+.close{background:var(--board);color:var(--flap);border-radius:14px;padding:clamp(22px,4vw,44px);display:grid;gap:14px;margin-top:72px}
+.close h2{color:var(--flap)}
+.close p{color:#B7C1D3}
+
+@media (max-width:760px){
+  .controls,.idea,.demo{grid-template-columns:1fr}
+  .flow li{grid-template-columns:56px 1fr}
+  .flow .k{grid-column:2}
+}
+@media (prefers-reduced-motion:reduce){.cell.flip{animation:none}.stamp{transition:none}}
+</style>
+
+<div class="wrap">
+  <div class="strip"><span>Revamp concept · <b>The Wanderlust Explorers</b></span><span>Prepared Oct 2026 · Draft 01</span></div>
+
+  <header class="hero">
+    <span class="eyebrow">Concept · "The Gate"</span>
+    <h1>Every trip starts <em>at the gate.</em></h1>
+    <div class="hero-sub">
+      <p class="lede">Today the homepage is a booking form buried under 40 offer cards. The new site opens like an airport departure board: pick a mood, set a budget, and the board flips to the trips that fit. Try it below.</p>
+      <span class="note-chip">Live prototype · sample fares</span>
+    </div>
+
+    <div class="board" aria-label="Interactive departure board">
+      <div class="board-top">
+        <span class="board-title">Departures · Find your escape</span>
+        <span class="clock" id="clock">IST --:--</span>
+      </div>
+      <div class="controls">
+        <div class="moods" role="group" aria-label="Choose a mood">
+          <button type="button" data-mood="all" aria-pressed="true">Surprise me</button>
+          <button type="button" data-mood="hills" aria-pressed="false">Mountains</button>
+          <button type="button" data-mood="beach" aria-pressed="false">Beaches</button>
+          <button type="button" data-mood="city" aria-pressed="false">City lights</button>
+          <button type="button" data-mood="heritage" aria-pressed="false">Forts &amp; heritage</button>
+          <button type="button" data-mood="abroad" aria-pressed="false">First trip abroad</button>
+        </div>
+        <div class="budget">
+          <label for="budget">Budget per person</label>
+          <output id="budgetOut" for="budget">₹50,000</output>
+          <input type="range" id="budget" min="5000" max="80000" step="2500" value="50000">
+        </div>
+      </div>
+      <div class="rows-wrap">
+        <table class="flap">
+          <thead><tr><th>Destination</th><th>Code</th><th>From ₹</th><th>Nights</th><th>Status</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="board-foot"><span>Packages from the current site: Manali, Jaipur, Delhi, Dubai, Singapore. Others are placeholders.</span><span id="count"></span></div>
+    </div>
+  </header>
+
+  <section id="audit">
+    <div class="sec-head">
+      <span class="eyebrow">Delays on the current site · found Oct 14, 2026</span>
+      <h2>What's costing bookings today</h2>
+      <p class="lede">A walk through thewanderlustexplorers.com turned up these issues. The red ones make the site look unfinished, and a traveller about to pay ₹48,000 notices that.</p>
+    </div>
+    <div class="audit">
+      <div class="delay"><span class="sev crit">CRIT</span><h4>Test coupon is live</h4><p>Offer cards show code <code>TEST00001KA</code> to every visitor.</p></div>
+      <div class="delay"><span class="sev crit">CRIT</span><h4>Dummy fares on top routes</h4><p>DEL→GOI shows <code>₹111,111</code>, BOM→BKK <code>₹444,444</code>. Unknown codes like <code>DED</code>, <code>YXX</code>, <code>CIR</code>.</p></div>
+      <div class="delay"><span class="sev crit">CRIT</span><h4>Placeholder copy in public</h4><p>"Monsoon Escape Offer" reads <code>Add your content</code>.</p></div>
+      <div class="delay"><span class="sev crit">CRIT</span><h4>Copy-pasted testimonials</h4><p>Two reviews by different people have the same text word for word, and two of three reviewers are labelled "Agent".</p></div>
+      <div class="delay"><span class="sev warn">WARN</span><h4>Offer overload</h4><p>About 40 offer cards, many repeated (Radisson ×4, "₹2000 OFF" ×5). Nobody scrolls past the third.</p></div>
+      <div class="delay"><span class="sev warn">WARN</span><h4>Generic white-label look</h4><p>Same layout as hundreds of OTA templates. Nothing says who you are or why to book with you over MakeMyTrip.</p></div>
+      <div class="delay"><span class="sev warn">WARN</span><h4>Stale blog and dates</h4><p>Last posts Apr 2025; "recent searches" stuck on 12-04-2025. Titles are truncated mid-word.</p></div>
+      <div class="delay"><span class="sev warn">WARN</span><h4>Small polish</h4><p>"Premimum Economy", "assitance", uneven currency formats, emoji in headline tickers.</p></div>
+    </div>
+  </section>
+
+  <section id="idea">
+    <div class="idea">
+      <div class="sec-head">
+        <span class="eyebrow">The big idea</span>
+        <blockquote>Not another booking engine. <span>Your travel crew.</span></blockquote>
+      </div>
+      <div class="sec-head">
+        <p class="lede">The big OTAs win on price and inventory. You can win on people: a real Indian team on the phone (7737930736), visas handled end to end, group trips planned for you. The site should sell that crew, then let the booking engine do the rest.</p>
+        <ul class="taglines" aria-label="Tagline options">
+          <li><span>Every trip starts at the gate.</span><span>Lead</span></li>
+          <li><span>Pack the bag. We'll do the rest.</span><span>Alt A</span></li>
+          <li><span>Real people. Real fares. Real trips.</span><span>Alt B</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="sec-head">
+      <span class="eyebrow">Six features · each one a boarding pass</span>
+      <h2>Ideas that make the site worth sharing</h2>
+    </div>
+    <div class="passes">
+      <article class="pass"><div class="pass-main"><span class="eyebrow">Search</span><h3>Mood board search</h3><p>Start from a feeling, not an airport code. "Mountains + ₹15k + long weekend" returns trips, not 300 flights.</p><span class="why">↳ Wins first-time travellers</span></div><div class="pass-stub"><span class="gate">A1</span><span class="barcode" aria-hidden="true"></span><span class="stub-l">Hero</span></div></article>
+      <article class="pass"><div class="pass-main"><span class="eyebrow">Itinerary</span><h3>Your trip as a boarding pass</h3><p>After booking, flights, hotel, cab and visa land in one shareable pass with a live countdown and a WhatsApp share button.</p><span class="why">↳ Free word of mouth every trip</span></div><div class="pass-stub"><span class="gate">A2</span><span class="barcode" aria-hidden="true"></span><span class="stub-l">Post-book</span></div></article>
+      <article class="pass"><div class="pass-main"><span class="eyebrow">Loyalty</span><h3>Passport stamps</h3><p>Every trip stamps a digital passport. Five stamps unlock a free visa fee or airport transfer. Profiles become a travel diary.</p><span class="why">↳ Repeat bookings</span></div><div class="pass-stub"><span class="gate">B1</span><span class="barcode" aria-hidden="true"></span><span class="stub-l">Account</span></div></article>
+      <article class="pass"><div class="pass-main"><span class="eyebrow">Visa</span><h3>Visa in 60 seconds</h3><p>Pick a country, see documents, days and fee instantly, then hand off to the team. Visa is already their top offer category.</p><span class="why">↳ Highest-margin service up front</span></div><div class="pass-stub"><span class="gate">B2</span><span class="barcode" aria-hidden="true"></span><span class="stub-l">Demo below</span></div></article>
+      <article class="pass"><div class="pass-main"><span class="eyebrow">Groups</span><h3>Squad planner</h3><p>Start a group trip, share a link, friends vote on dates and hotels, and the cost splits per head. Feeds the existing 9+ pax group fares.</p><span class="why">↳ One lead becomes 10 travellers</span></div><div class="pass-stub"><span class="gate">C1</span><span class="barcode" aria-hidden="true"></span><span class="stub-l">Groups</span></div></article>
+      <article class="pass"><div class="pass-main"><span class="eyebrow">Concierge</span><h3>Ask the crew</h3><p>A chat that answers like an agent ("Is Dubai hot in May?") and passes to a human on WhatsApp with the trip already filled in.</p><span class="why">↳ Turns browsing into calls</span></div><div class="pass-stub"><span class="gate">C2</span><span class="barcode" aria-hidden="true"></span><span class="stub-l">Global</span></div></article>
+    </div>
+
+    <div class="demo" id="visa">
+      <div class="sec-head">
+        <span class="eyebrow">Gate B2 · try the visa checker</span>
+        <h3>Where are you headed?</h3>
+        <label for="country" class="eyebrow">Indian passport holder going to</label>
+        <select id="country">
+          <option value="ae">United Arab Emirates</option>
+          <option value="sg">Singapore</option>
+          <option value="th">Thailand</option>
+          <option value="gb">United Kingdom</option>
+          <option value="np">Nepal</option>
+        </select>
+        <p class="lede" id="visaDocs"></p>
+        <span class="note-chip">Illustrative · rules must be verified before launch</span>
+      </div>
+      <div class="stamp" id="stamp"><div><small id="stTop">Visa status</small><b id="stMain">e-Visa</b><small id="stBot">3–5 working days</small></div></div>
+    </div>
+  </section>
+
+  <section id="flow">
+    <div class="sec-head">
+      <span class="eyebrow">New homepage, top to bottom</span>
+      <h2>Seven gates instead of forty cards</h2>
+    </div>
+    <ol class="flow">
+      <li><span class="n">G1</span><span class="t">Departure board hero<span>Mood + budget search, with classic flight/hotel/bus tabs one click away.</span></span><span class="k">Above fold</span></li>
+      <li><span class="n">G2</span><span class="t">Three deals, not forty<span>One flight, one hotel, one holiday offer, rotated weekly with real expiry dates.</span></span><span class="k">Offers</span></li>
+      <li><span class="n">G3</span><span class="t">Trips by feeling<span>Manali, Jaipur, Dubai, Singapore as big photo cards with nights and "from ₹" price.</span></span><span class="k">Packages</span></li>
+      <li><span class="n">G4</span><span class="t">Visa desk<span>The 60-second checker plus "We've processed X visas" counter.</span></span><span class="k">Services</span></li>
+      <li><span class="n">G5</span><span class="t">Meet the crew<span>Faces, names, phone line hours. The thing no big OTA can copy.</span></span><span class="k">Trust</span></li>
+      <li><span class="n">G6</span><span class="t">Real reviews<span>Google reviews pulled in live, with trip photos from travellers.</span></span><span class="k">Proof</span></li>
+      <li><span class="n">G7</span><span class="t">Travel notes<span>Short, current guides ("Dubai in 4 nights under ₹40k") that also bring search traffic.</span></span><span class="k">Content</span></li>
+    </ol>
+  </section>
+
+  <section id="system">
+    <div class="sec-head">
+      <span class="eyebrow">Visual system</span>
+      <h2>Terminal signage, Indian warmth</h2>
+      <p class="lede">Navy from airport signage, marigold from the board flaps and festival garlands, teal from passport stamps. Tall condensed headlines read like gate signs.</p>
+    </div>
+    <div class="system">
+      <div class="swatch"><div style="background:#13203A"></div><p>Gate Navy · #13203A</p></div>
+      <div class="swatch"><div style="background:#E39B00"></div><p>Marigold · #E39B00</p></div>
+      <div class="swatch"><div style="background:#0E7A6A"></div><p>Stamp Teal · #0E7A6A</p></div>
+      <div class="typespec"><span class="d">Gate 4B</span><span>Big Shoulders Display for signs, Instrument Sans for reading, Plex Mono for codes and fares.</span></div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="sec-head">
+      <span class="eyebrow">Flight plan</span>
+      <h2>Three legs, about ten weeks</h2>
+    </div>
+    <div class="road">
+      <div class="leg"><span class="eyebrow">Leg 1 · Weeks 1–2</span><h3>Clean the runway</h3><ul><li>Remove test codes, dummy fares, placeholder copy</li><li>Cut offers to 3, fix typos and dates</li><li>Real Google reviews</li></ul></div>
+      <div class="leg"><span class="eyebrow">Leg 2 · Weeks 3–7</span><h3>New terminal</h3><ul><li>Brand system and new homepage</li><li>Departure board search + visa checker</li><li>Mobile-first booking flow, Next.js front end on the existing engine</li></ul></div>
+      <div class="leg"><span class="eyebrow">Leg 3 · Weeks 8–10</span><h3>Lounge access</h3><ul><li>Boarding-pass itineraries and passport stamps</li><li>Squad planner for groups</li><li>WhatsApp concierge hand-off</li></ul></div>
+    </div>
+  </section>
+
+  <div class="close">
+    <span class="eyebrow" style="color:#9AA5B8">Final call</span>
+    <h2>Now boarding: the new Wanderlust Explorers.</h2>
+    <p>Leg 1 alone fixes the trust problems within two weeks. Legs 2 and 3 turn a template OTA into a brand people remember and share.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  const trips=[
+    {d:"MANALI",c:"KUU",p:7500,n:4,m:["hills"]},
+    {d:"JAIPUR",c:"JAI",p:14000,n:3,m:["heritage","city"]},
+    {d:"DELHI",c:"DEL",p:17000,n:3,m:["city","heritage"]},
+    {d:"GOA",c:"GOI",p:16500,n:4,m:["beach"]},
+    {d:"LEH",c:"IXL",p:28000,n:6,m:["hills"]},
+    {d:"UDAIPUR",c:"UDR",p:19500,n:3,m:["heritage"]},
+    {d:"ANDAMAN",c:"IXZ",p:36000,n:5,m:["beach"]},
+    {d:"KATHMANDU",c:"KTM",p:24000,n:4,m:["hills","abroad"]},
+    {d:"DUBAI",c:"DXB",p:32500,n:4,m:["city","abroad"]},
+    {d:"BANGKOK",c:"BKK",p:29000,n:4,m:["city","beach","abroad"]},
+    {d:"BALI",c:"DPS",p:45000,n:5,m:["beach","abroad"]},
+    {d:"SINGAPORE",c:"SIN",p:48000,n:4,m:["city","abroad"]},
+    {d:"SWISS ALPS",c:"ZRH",p:78000,n:7,m:["hills","abroad"]}
+  ];
+  const CH=" ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,";
+  const W={d:10,c:3,p:6,n:2};
+  const rowsEl=document.getElementById("rows");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let mood="all";
+  const ROWS=6;
+  // build fixed grid of cells
+  const grid=[];
+  for(let r=0;r<ROWS;r++){
+    const tr=document.createElement("tr");
+    const rec={};
+    ["d","c","p","n"].forEach(k=>{
+      const td=document.createElement("td");const box=document.createElement("span");box.className="cells";
+      rec[k]=[];for(let i=0;i<W[k];i++){const s=document.createElement("span");s.className="cell";s.textContent=" ";box.appendChild(s);rec[k].push(s)}
+      td.appendChild(box);tr.appendChild(td);
+    });
+    const td=document.createElement("td");const st=document.createElement("span");st.className="status";td.appendChild(st);tr.appendChild(td);rec.st=st;
+    rowsEl.appendChild(tr);grid.push(rec);
+  }
+  function setCells(cells,text,pad){
+    text=(pad==="r"?text.padStart(cells.length):text.padEnd(cells.length)).slice(0,cells.length);
+    cells.forEach((el,i)=>{
+      const target=text[i];
+      if(el.textContent===target)return;
+      if(reduce){el.textContent=target;return}
+      let idx=CH.indexOf(el.textContent);if(idx<0)idx=0;
+      const end=CH.indexOf(target)<0?0:CH.indexOf(target);
+      let steps=0;const max=4+Math.floor(Math.random()*6)+i;
+      const t=setInterval(()=>{
+        steps++;
+        if(steps>=max){el.textContent=target;clearInterval(t)}
+        else{idx=(idx+1)%CH.length;el.textContent=CH[idx]}
+        el.classList.remove("flip");void el.offsetWidth;el.classList.add("flip");
+      },45);
+    });
+  }
+  const fmt=n=>n.toLocaleString("en-IN");
+  function render(){
+    const b=+document.getElementById("budget").value;
+    let list=trips.filter(t=>(mood==="all"||t.m.includes(mood)));
+    const fit=list.filter(t=>t.p<=b).sort((a,b2)=>b2.p-a.p);
+    const over=list.filter(t=>t.p>b).sort((a,b2)=>a.p-b2.p);
+    const shown=fit.concat(over).slice(0,ROWS);
+    grid.forEach((g,i)=>{
+      const t=shown[i];
+      if(!t){setCells(g.d,"");setCells(g.c,"");setCells(g.p,"");setCells(g.n,"");g.st.textContent="";g.st.className="status";return}
+      setCells(g.d,t.d);setCells(g.c,t.c);setCells(g.p,fmt(t.p),"r");setCells(g.n,String(t.n),"r");
+      const ok=t.p<=b;
+      g.st.textContent= ok?(i===0?"NOW BOARDING":"ON TIME"):"SAVE "+fmt(Math.ceil((t.p-b)/1000)*1000)+" MORE";
+      g.st.className="status "+(ok?(i===0?"st-board":"st-open"):"st-wait");
+    });
+    document.getElementById("count").textContent=fit.length+" of "+list.length+" trips fit your budget";
+  }
+  document.querySelectorAll(".moods button").forEach(btn=>btn.addEventListener("click",()=>{
+    mood=btn.dataset.mood;
+    document.querySelectorAll(".moods button").forEach(x=>x.setAttribute("aria-pressed",x===btn?"true":"false"));
+    render();
+  }));
+  const bud=document.getElementById("budget"),out=document.getElementById("budgetOut");
+  bud.addEventListener("input",()=>{out.textContent="₹"+fmt(+bud.value);render()});
+  render();
+
+  function tick(){
+    try{document.getElementById("clock").textContent="IST "+new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",timeZone:"Asia/Kolkata",hour12:false})}catch(e){}
+  }
+  tick();setInterval(tick,15000);
+
+  const visa={
+    ae:["Pre-arranged e-Visa","e-Visa","3–5 working days","Passport (6+ months valid), photo, return ticket, hotel booking."],
+    sg:["Visa through agent","e-Visa","4–6 working days","Passport, photo, Form 14A, cover letter, bank statement."],
+    th:["Check current rules","Visa-free*","On arrival","Passport, return ticket, hotel booking, proof of funds. *Policy changes often."],
+    gb:["Standard visitor visa","Visitor visa","~15 working days","Passport, bank statements (6 months), ITR, employment letter, biometrics appointment."],
+    np:["No visa needed","Free entry","At border","Passport or Voter ID is enough for Indian citizens."]
+  };
+  const sel=document.getElementById("country"),stamp=document.getElementById("stamp");
+  function setVisa(){
+    const v=visa[sel.value];
+    document.getElementById("stTop").textContent=v[0];
+    document.getElementById("stMain").textContent=v[1];
+    document.getElementById("stBot").textContent=v[2];
+    document.getElementById("visaDocs").textContent="You'll need: "+v[3];
+    stamp.classList.add("pop");setTimeout(()=>stamp.classList.remove("pop"),220);
+  }
+  sel.addEventListener("change",setVisa);setVisa();
+})();
+</script>
