@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My account — The Wanderlust Explorers</title>
+<meta name="description" content="Your trips, wallet credits, visa applications and saved travellers.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F5F4F1">
+<link rel="icon" type="image/png" href="assets/logo-mark-ink.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Account area: same brand system as the site (logo ink, deep teal, aqua; Bodoni display, stencil figures, Hanken text).
+   Layout: quiet app shell — sidebar on desktop, bottom tab bar on phones. */
+:root{
+  --stone:#F5F4F1; --paper:#FCFBF9; --sand:#E7E6E2;
+  --ink:#221E20; --ink-2:#4F4A4C; --ink-3:#625C5F;
+  --line:rgba(34,30,32,.14); --line-2:rgba(34,30,32,.08);
+  --teal:#048A97; --teal-ink:#036C76; --aqua:#6AC8C6; --teal-wash:#E4F2F2; --espresso:#0F1A1C; --cream:#F4F1EC;
+  --warn:#9A5B00; --warn-wash:#FBF0DE; --ok:#1F7A4D; --ok-wash:#E3F2EA; --bad:#A3322A;
+  --serif:"Bodoni Moda","Didot","Bodoni 72","Times New Roman",serif;
+  --sans:"Hanken Grotesk","Avenir Next","Segoe UI",sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --gutter:clamp(18px,3.4vw,44px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--stone)}
+body{background:var(--stone);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100svh}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+::selection{background:var(--aqua);color:var(--ink)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+[hidden]{display:none!important}
+h1,h2,h3{font-family:var(--serif);font-weight:500;font-variation-settings:"opsz" 28;letter-spacing:-.02em;line-height:1.08;text-wrap:balance}
+h1{font-size:clamp(2rem,4vw,3rem)}
+h2{font-size:clamp(1.5rem,2.6vw,2rem)}
+h3{font-size:1.35rem}
+h1 em,h2 em{font-style:italic;color:var(--teal-ink)}
+.muted{color:var(--ink-2)}
+.small{font-size:.86rem}
+.label{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.num{font-family:var(--sans);font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums lining-nums}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;padding:0 20px;border-radius:999px;font-weight:600;font-size:.92rem;text-decoration:none;transition:background .4s var(--ease),transform .3s var(--ease),box-shadow .4s var(--ease);white-space:nowrap}
+.btn:active{transform:scale(.98)}
+.btn svg{width:16px;height:16px}
+.btn-primary{background:var(--teal-ink);color:#fff}
+.btn-primary:hover{background:var(--ink)}
+.btn-primary[disabled]{opacity:.55;cursor:progress}
+.btn-quiet{box-shadow:inset 0 0 0 1px var(--line);background:var(--paper)}
+.btn-quiet:hover{box-shadow:inset 0 0 0 1px var(--ink-3)}
+.btn-text{min-height:44px;padding:0 6px;color:var(--teal-ink);font-weight:600;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+
+/* demo strip */
+.demo{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:9px var(--gutter);background:var(--espresso);color:rgba(244,241,236,.86);font-size:.82rem;text-align:center}
+.demo b{color:var(--aqua);font-weight:600}
+.demo button{color:var(--aqua);text-decoration:underline;text-underline-offset:3px;min-height:32px}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:calc(10px + env(safe-area-inset-top,0px)) var(--gutter) 10px;background:rgba(245,244,241,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-2)}
+.top .logo img{height:46px;width:auto}
+.top-right{display:flex;align-items:center;gap:10px}
+.back{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;font-size:.88rem;font-weight:500;text-decoration:none;color:var(--ink-2);border-radius:999px}
+.back:hover{color:var(--ink)}
+.back svg{width:15px;height:15px}
+.avatar{width:44px;height:44px;border-radius:14px;background:var(--teal-wash);color:var(--teal-ink);display:grid;place-items:center;font-weight:700;font-size:.95rem}
+
+/* ---------------- sign in ---------------- */
+.signin{display:grid;grid-template-columns:1.05fr 1fr;min-height:calc(100svh - 110px)}
+.signin-art{position:relative;overflow:hidden;background:var(--espresso);color:var(--cream)}
+.signin-art img.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.signin-art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,22,.25),rgba(10,20,22,.15) 40%,rgba(10,20,22,.8))}
+.signin-art .copy{position:absolute;z-index:2;left:clamp(24px,4vw,56px);right:clamp(24px,4vw,56px);bottom:clamp(28px,5vw,64px);display:grid;gap:16px}
+.signin-art .copy img{width:110px;height:auto}
+.signin-art h2{font-size:clamp(1.8rem,3.4vw,2.8rem);color:var(--cream)}
+.signin-art h2 em{color:var(--aqua)}
+.signin-art ul{list-style:none;display:grid;gap:8px;color:rgba(244,241,236,.86);font-size:.95rem}
+.signin-art li{display:flex;gap:10px;align-items:center}
+.signin-art li svg{width:16px;height:16px;color:var(--aqua);flex:none}
+.signin-form{display:grid;grid-template-columns:minmax(0,1fr);align-content:center;justify-items:start;gap:26px;padding:clamp(32px,6vw,80px) var(--gutter);max-width:520px;width:100%;margin-inline:auto}
+.signin-form h1 em{font-style:italic}
+.field{display:grid;gap:8px;width:100%}
+.field label{font-size:.86rem;font-weight:600}
+.input{width:100%;min-height:52px;padding:0 16px;border-radius:14px;border:1px solid var(--line);background:var(--paper);font-size:1.02rem;transition:border-color .3s,box-shadow .3s}
+.input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px var(--teal-wash)}
+.phone{display:grid;grid-template-columns:auto 1fr;align-items:stretch}
+.phone span{display:grid;place-items:center;padding:0 14px;border:1px solid var(--line);border-right:0;border-radius:14px 0 0 14px;background:var(--sand);font-weight:600}
+.phone .input{border-radius:0 14px 14px 0}
+.error{color:var(--bad);font-size:.88rem;min-height:1.2em}
+.otp{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:100%}
+.otp input{width:100%;min-width:0;min-height:58px;text-align:center;font-family:var(--sans);font-weight:600;font-size:1.5rem;font-variant-numeric:tabular-nums;border-radius:12px;border:1px solid var(--line);background:var(--paper)}
+.otp input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px var(--teal-wash)}
+.or{display:flex;align-items:center;gap:14px;width:100%;color:var(--ink-3);font-size:.82rem}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.google{width:100%}
+.google svg{width:18px;height:18px}
+.fineprint{font-size:.8rem;color:var(--ink-3)}
+.wide{width:100%}
+@media (max-width:860px){.signin{grid-template-columns:1fr}.signin-art{min-height:260px}.signin-art ul{display:none}}
+
+/* ---------------- app shell ---------------- */
+.shell{display:grid;grid-template-columns:248px 1fr;gap:clamp(20px,3vw,48px);max-width:1280px;margin-inline:auto;padding:28px var(--gutter) 80px}
+.side{position:sticky;top:96px;align-self:start;display:grid;gap:4px}
+.side .who{display:flex;gap:12px;align-items:center;padding:6px 8px 20px;margin-bottom:8px;border-bottom:1px solid var(--line-2)}
+.side .who b{display:block;font-weight:600}
+.side .who span{font-size:.82rem;color:var(--ink-3)}
+.tab{display:flex;align-items:center;gap:12px;min-height:46px;padding:0 12px;border-radius:12px;font-weight:500;color:var(--ink-2);text-align:left;transition:background .3s,color .3s}
+.tab svg{width:19px;height:19px;flex:none}
+.tab:hover{background:var(--paper);color:var(--ink)}
+.tab[aria-current="page"]{background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
+.tab[aria-current="page"] svg{color:var(--teal)}
+.tab .badge{margin-left:auto;min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:var(--warn-wash);color:var(--warn);font-size:.72rem;font-weight:700;display:grid;place-items:center}
+.side .signout{margin-top:18px;color:var(--ink-3)}
+main.view{min-width:0;display:grid;gap:28px;align-content:start}
+.view-head{display:grid;gap:8px}
+.panel{background:var(--paper);border-radius:22px;box-shadow:inset 0 0 0 1px var(--line-2),0 18px 40px -32px rgba(34,30,32,.35)}
+.pad{padding:clamp(18px,2.4vw,28px)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+/* overview */
+.next{position:relative;overflow:hidden;border-radius:24px;min-height:300px;color:var(--cream);display:grid;align-content:end;background:var(--espresso)}
+.next img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.next::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,20,22,.82),rgba(10,20,22,.25) 70%),linear-gradient(0deg,rgba(10,20,22,.55),transparent 60%)}
+.next .inner{position:relative;z-index:2;padding:clamp(20px,3vw,34px);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end}
+.next h2{color:var(--cream);font-size:clamp(1.8rem,3.2vw,2.6rem)}
+.next .meta{color:rgba(244,241,236,.85);font-size:.95rem}
+.next .label{color:rgba(244,241,236,.7)}
+.count{text-align:right}
+.count .num{font-size:clamp(3rem,6vw,4.4rem);line-height:.9;color:var(--aqua)}
+.count span{display:block;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,236,.75)}
+.next .btn{background:var(--cream);color:var(--ink);margin-top:6px;justify-self:start}
+.stat{display:grid;gap:10px;align-content:start}
+.stat .num{font-size:2.2rem;line-height:1}
+.stat .btn-text{justify-self:start;margin-left:-6px}
+.note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;font-size:.88rem}
+.note svg{width:17px;height:17px;flex:none;margin-top:2px}
+.note.warn{background:var(--warn-wash);color:var(--warn)}
+.note.ok{background:var(--ok-wash);color:var(--ok)}
+.note.info{background:var(--teal-wash);color:var(--teal-ink)}
+
+/* trips */
+.seg{display:inline-flex;padding:4px;border-radius:999px;background:var(--sand)}
+.seg button{min-height:40px;padding:0 18px;border-radius:999px;font-weight:600;font-size:.9rem;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--paper);color:var(--ink);box-shadow:0 2px 8px -4px rgba(34,30,32,.3)}
+.trip{display:grid;grid-template-columns:260px 1fr;overflow:hidden}
+.trip-img{position:relative;min-height:220px;background:var(--sand)}
+.trip-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.trip-body{display:grid;gap:16px;padding:clamp(18px,2.4vw,26px);min-width:0}
+.pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:.78rem;font-weight:700}
+.pill.confirmed{background:var(--ok-wash);color:var(--ok)}
+.pill.payment-due{background:var(--warn-wash);color:var(--warn)}
+.pill.completed{background:var(--sand);color:var(--ink-2)}
+.facts{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:.9rem;color:var(--ink-2)}
+.facts b{color:var(--ink);font-weight:600}
+.items{list-style:none;display:grid;border-top:1px solid var(--line-2)}
+.items li{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-2);font-size:.93rem}
+.items svg{width:18px;height:18px;color:var(--teal)}
+.items .when{color:var(--ink-3);font-size:.84rem;white-space:nowrap}
+.progress{height:8px;border-radius:99px;background:var(--sand);overflow:hidden}
+.progress b{display:block;height:100%;background:var(--teal);border-radius:99px}
+.empty{text-align:center;padding:48px 20px;display:grid;gap:12px;justify-items:center}
+
+/* wallet */
+.wallet-top{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+.balance{background:var(--espresso);color:var(--cream);border-radius:24px;padding:clamp(22px,3vw,32px);display:grid;gap:14px;position:relative;overflow:hidden}
+.balance::before{content:"";position:absolute;right:-60px;top:-40px;width:240px;height:240px;background:url(assets/logo-mark-light.png) center/contain no-repeat;opacity:.09}
+.balance .label{color:rgba(244,241,236,.7)}
+.balance .num{font-size:clamp(3rem,7vw,4.6rem);line-height:.9;color:var(--cream)}
+.balance .num small{font-size:.5em;color:var(--aqua);margin-right:4px}
+.balance p{color:rgba(244,241,236,.8);font-size:.92rem;max-width:40ch}
+.refer{display:grid;gap:14px;align-content:start}
+.code{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 8px 8px 18px;border-radius:16px;border:1.5px dashed var(--teal);background:var(--teal-wash)}
+.code .num{font-size:1.45rem;letter-spacing:.06em;color:var(--teal-ink)}
+.earn{list-style:none;display:grid;gap:0}
+.earn li{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px 0;border-bottom:1px solid var(--line-2);font-size:.94rem}
+.earn li:last-child{border-bottom:0}
+.earn b{font-weight:600;color:var(--teal-ink);white-space:nowrap}
+.ledger{width:100%;border-collapse:collapse;font-size:.92rem}
+.ledger th{text-align:left;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding:0 0 10px}
+.ledger td{padding:14px 0;border-top:1px solid var(--line-2);vertical-align:top}
+.ledger td.amt{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ledger .plus{color:var(--ok)}
+.ledger .minus{color:var(--ink-2)}
+.ledger .exp{display:block;font-size:.8rem;color:var(--ink-3)}
+.ledger .exp.soon{color:var(--warn);font-weight:600}
+.rules{font-size:.84rem;color:var(--ink-3);max-width:70ch}
+
+/* visas */
+.visa{display:grid;gap:18px}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;counter-reset:s}
+.steps li{display:grid;gap:10px;font-size:.84rem;color:var(--ink-3)}
+.steps li::before{content:"";height:6px;border-radius:99px;background:var(--sand)}
+.steps li.done{color:var(--ink)}
+.steps li.done::before{background:var(--teal)}
+.steps li.now{color:var(--ink);font-weight:600}
+.steps li.now::before{background:linear-gradient(90deg,var(--teal) 50%,var(--sand) 50%)}
+
+/* profile */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form .full{grid-column:1/-1}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:52px}
+.switch input{appearance:none;width:52px;height:30px;border-radius:99px;background:var(--sand);position:relative;cursor:pointer;transition:background .3s;flex:none}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .35s var(--ease)}
+.switch input:checked{background:var(--teal)}
+.switch input:checked::after{transform:translateX(22px)}
+.people{list-style:none;display:grid}
+.people li{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line-2)}
+.people .avatar{width:44px;height:44px;font-size:.85rem}
+.people b{display:block;font-weight:600}
+.people span{font-size:.84rem;color:var(--ink-3)}
+.people .acts{display:flex;gap:2px}
+.sheet{border-radius:18px;background:var(--stone);padding:18px;display:grid;gap:16px;box-shadow:inset 0 0 0 1px var(--line)}
+
+/* toast */
+.toast{position:fixed;z-index:60;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);background:var(--espresso);color:var(--cream);padding:12px 18px;border-radius:14px;font-size:.92rem;box-shadow:0 18px 40px -18px rgba(10,20,22,.7);transition:transform .6s var(--ease);max-width:calc(100% - 32px)}
+.toast.show{transform:translate(-50%,0)}
+
+/* entrance */
+.enter > *{animation:rise .8s var(--ease) both}
+.enter > *:nth-child(2){animation-delay:.06s}.enter > *:nth-child(3){animation-delay:.12s}.enter > *:nth-child(4){animation-delay:.18s}.enter > *:nth-child(5){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.skeleton{height:120px;border-radius:22px;background:linear-gradient(90deg,var(--sand),var(--paper),var(--sand));background-size:200% 100%;animation:shimmer 1.4s linear infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+
+/* bottom tab bar on phones */
+.tabbar{display:none}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr;padding:20px var(--gutter) calc(110px + env(safe-area-inset-bottom,0px))}
+  .side{display:none}
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;z-index:40;left:0;right:0;bottom:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:rgba(252,251,249,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line-2)}
+  .tabbar .tab{flex-direction:column;justify-content:center;gap:3px;min-height:56px;padding:0;font-size:.72rem;font-weight:600;border-radius:12px;position:relative}
+  .tabbar .tab[aria-current="page"]{box-shadow:none;background:var(--teal-wash);color:var(--teal-ink)}
+  .tabbar .badge{position:absolute;top:4px;right:calc(50% - 22px);margin:0;min-width:18px;height:18px;font-size:.66rem;padding:0 5px}
+  .back span{display:none}
+  .grid-3{grid-template-columns:1fr}
+  .wallet-top{grid-template-columns:1fr}
+  .trip{grid-template-columns:1fr}
+  .trip-img{min-height:180px}
+  .next .inner{grid-template-columns:1fr}
+  .count{text-align:left}
+  .form{grid-template-columns:1fr}
+  .steps{grid-template-columns:repeat(2,1fr);row-gap:14px}
+  .ledger thead{display:none}
+  .ledger td:nth-child(1){display:none}
+  .top .logo img{height:38px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="demo" role="note"><span><b>Demo account.</b> Sample data stored in this browser only. Sign-in and the wallet go live once Firebase is connected.</span><button type="button" id="resetDemo">Reset demo data</button></div>
+
+<header class="top">
+  <a class="logo" href="index.html" aria-label="The Wanderlust Explorers, home"><img src="assets/logo-wordmark-ink.png" alt="" width="841" height="372"></a>
+  <div class="top-right">
+    <a class="back" href="index.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 8H3M7 4 3 8l4 4"/></svg><span>Back to journeys</span></a>
+    <span class="avatar" id="topAvatar" hidden aria-hidden="true"></span>
+  </div>
+</header>
+
+<!-- ============ SIGN IN ============ -->
+<section class="signin" id="signin" hidden aria-label="Sign in">
+  <div class="signin-art">
+    <img class="photo" src="https://images.unsplash.com/photo-1598563262148-0a9496712b44?w=1400&q=80&auto=format&fit=crop" alt="Pangong lake under the mountains of Ladakh">
+    <div class="copy">
+      <img src="assets/logo-mark-light.png" alt="" width="704" height="556">
+      <h2>Every trip, <em>in one place.</em></h2>
+      <ul>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m3 8.5 3 3 7-7"/></svg>Tickets, vouchers and invoices for every booking</li>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m3 8.5 3 3 7-7"/></svg>Wallet credits from cashback and referrals</li>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m3 8.5 3 3 7-7"/></svg>Live status of your visa applications</li>
+      </ul>
+    </div>
+  </div>
+  <div class="signin-form">
+    <div style="display:grid;gap:10px">
+      <h1>Welcome <em>back.</em></h1>
+      <p class="muted">Sign in with your mobile number. We'll text you a one-time code.</p>
+    </div>
+
+    <form id="phoneForm" class="wide" style="display:grid;gap:14px" novalidate>
+      <div class="field">
+        <label for="phone">Mobile number</label>
+        <div class="phone"><span>+91</span><input class="input" id="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="98100 24567" maxlength="12"></div>
+      </div>
+      <p class="error" id="phoneError" role="alert"></p>
+      <button class="btn btn-primary wide" type="submit" id="sendBtn">Send code</button>
+    </form>
+
+    <form id="otpForm" class="wide" style="display:grid;gap:14px" hidden novalidate>
+      <div class="field">
+        <label for="otp0">Enter the 6-digit code sent to <b id="sentTo"></b></label>
+        <div class="otp" id="otp">
+          <input id="otp0" inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1"><input inputmode="numeric" aria-label="Digit 2"><input inputmode="numeric" aria-label="Digit 3"><input inputmode="numeric" aria-label="Digit 4"><input inputmode="numeric" aria-label="Digit 5"><input inputmode="numeric" aria-label="Digit 6">
+        </div>
+      </div>
+      <p class="error" id="otpError" role="alert"></p>
+      <button class="btn btn-primary wide" type="submit" id="verifyBtn">Verify and sign in</button>
+      <div class="row small"><button type="button" class="btn-text" id="changeNumber">Change number</button><span class="muted" id="resend">Resend code in 30s</span></div>
+      <p class="fineprint">Demo mode: any 6 digits will sign you in.</p>
+    </form>
+
+    <div class="or">or</div>
+    <button class="btn btn-quiet google" type="button" id="googleBtn"><svg viewBox="0 0 18 18"><path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.7H9v3.3h4.8a4.1 4.1 0 0 1-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.5Z"/><path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.7H.9v2.3A9 9 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.9 10.8a5.4 5.4 0 0 1 0-3.5V5H.9a9 9 0 0 0 0 8.1l3-2.3Z"/><path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.4L15 2.4A9 9 0 0 0 .9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6Z"/></svg>Continue with Google</button>
+    <p class="fineprint">By signing in you agree to our Terms and Privacy policy. We never share your number.</p>
+  </div>
+</section>
+
+<!-- ============ ACCOUNT ============ -->
+<div class="shell" id="app" hidden>
+  <nav class="side" aria-label="Account">
+    <div class="who"><span class="avatar" id="sideAvatar"></span><div><b id="sideName"></b><span id="sidePhone"></span></div></div>
+    <button class="tab" data-view="overview"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1Z"/></svg>Overview</button>
+    <button class="tab" data-view="trips"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.5 12.5v-1.6L11 7V3.6a1 1 0 0 0-2 0V7l-6.5 3.9v1.6L9 10.5v3.8l-1.8 1.3V17L10 16l2.8 1v-1.4L11 14.3v-3.8Z"/></svg>My trips</button>
+    <button class="tab" data-view="wallet"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="5" width="15" height="11" rx="2.5"/><path d="M2.5 8h15M13.5 12h1"/></svg>Wallet</button>
+    <button class="tab" data-view="visas"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2.5" width="12" height="15" rx="2"/><circle cx="10" cy="9" r="2.6"/><path d="M7 14h6"/></svg>Visas<span class="badge" id="visaBadge" hidden></span></button>
+    <button class="tab" data-view="profile"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3.2"/><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6"/></svg>Profile &amp; travellers</button>
+    <button class="tab signout" id="signOutSide"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 4H5a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 5 16h3M12.5 13.5 16 10l-3.5-3.5M16 10H8"/></svg>Sign out</button>
+  </nav>
+  <main class="view" id="view" aria-live="polite"></main>
+</div>
+
+<nav class="tabbar" id="tabbar" aria-label="Account" hidden>
+  <button class="tab" data-view="overview"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1Z"/></svg>Home</button>
+  <button class="tab" data-view="trips"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.5 12.5v-1.6L11 7V3.6a1 1 0 0 0-2 0V7l-6.5 3.9v1.6L9 10.5v3.8l-1.8 1.3V17L10 16l2.8 1v-1.4L11 14.3v-3.8Z"/></svg>Trips</button>
+  <button class="tab" data-view="wallet"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="5" width="15" height="11" rx="2.5"/><path d="M2.5 8h15M13.5 12h1"/></svg>Wallet</button>
+  <button class="tab" data-view="visas"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2.5" width="12" height="15" rx="2"/><circle cx="10" cy="9" r="2.6"/><path d="M7 14h6"/></svg>Visas<span class="badge" id="visaBadgeM" hidden></span></button>
+  <button class="tab" data-view="profile"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3.2"/><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6"/></svg>Profile</button>
+</nav>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="account-data.js"></script>
+<script src="account.js"></script>
+</body>
+</html>

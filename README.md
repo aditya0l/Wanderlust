@@ -18,6 +18,9 @@ Then open http://localhost:5178.
 |---|---|
 | `index.html` | The current design: editorial luxury look, hero slideshow, scroll-driven plane journey across Asia, filterable journeys, services, reviews, contact |
 | `sound.js` | Generative soundscapes for each place (Ladakh, Maldives, Jaipur, Dubai, Kerala, Manali, Singapore, Golden Triangle, Bali, Swiss Alps), built with the Web Audio API |
+| `account.html`, `account.js` | Customer account: phone OTP / Google sign-in, overview, trips, wallet, visa status, profile and saved travellers |
+| `account-data.js` | The account data layer. Runs on sample data in the browser today; swap its functions for Firebase calls to go live |
+| `assets/` | Logo cut-outs (ink and light versions of the full logo, the W mark and the wordmark) and the original logo file |
 | `versions/` | Earlier rounds: v1 concept pitch, v2 "window seat" hero with 3D globe, v3 editorial without sound |
 
 Libraries load from CDNs: GSAP 3.12.5 (ScrollTrigger, Flip) and Lenis 1.1.13. Photos are from Unsplash.
@@ -28,3 +31,11 @@ Libraries load from CDNs: GSAP 3.12.5 (ScrollTrigger, Flip) and Lenis 1.1.13. Ph
 - Two of the four reviews are marked as samples. Connect real Google reviews.
 - The soundscapes are synthesized sketches. Swap in licensed field recordings for the live site.
 - When `sound.js` changes, bump the `?v=` number on its script tag in `index.html` so browsers fetch the new file.
+
+## Account area: going live with Firebase
+
+The account screens only talk to `AccountData` in `account-data.js`. To go live, replace each function body with Firebase calls (the planned Firestore layout is documented at the top of that file). The screens stay as they are.
+
+- **Plan:** Blaze, with a budget alert. Phone OTP and Cloud Functions are not available on the free Spark plan.
+- **Wallet:** one Firestore document per credit or debit, written only by server code (Cloud Functions or an admin panel). Customers get read access only. The balance is always computed from unexpired entries.
+- **Credits:** site-only, not withdrawable, not transferable, expiring after 12 months.
