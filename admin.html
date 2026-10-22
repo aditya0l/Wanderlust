@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin — The Wanderlust Explorers</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="assets/logo-mark-ink.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Admin: an operating surface. Same brand tokens as the site, denser layout, scannable tables. */
+:root{
+  --stone:#F5F4F1; --paper:#FFFFFF; --sand:#ECEBE7;
+  --ink:#221E20; --ink-2:#4F4A4C; --ink-3:#625C5F;
+  --line:rgba(34,30,32,.14); --line-2:rgba(34,30,32,.08);
+  --teal:#048A97; --teal-ink:#036C76; --aqua:#6AC8C6; --teal-wash:#E4F2F2; --espresso:#0F1A1C;
+  --warn:#9A5B00; --warn-wash:#FBF0DE; --ok:#1F7A4D; --ok-wash:#E3F2EA; --bad:#A3322A; --bad-wash:#F8E6E4;
+  --serif:"Bodoni Moda","Didot","Times New Roman",serif;
+  --sans:"Hanken Grotesk","Avenir Next","Segoe UI",sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--stone)}
+body{background:var(--stone);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;min-height:100svh}
+img{display:block;max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+a{color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:6px}
+::selection{background:var(--aqua);color:var(--ink)}
+h1,h2{font-family:var(--serif);font-weight:500;font-variation-settings:"opsz" 28;letter-spacing:-.02em;line-height:1.1}
+h1{font-size:1.9rem}
+h2{font-size:1.4rem}
+h3{font-size:1rem;font-weight:700}
+.muted{color:var(--ink-2)}
+.small{font-size:.84rem}
+.label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.num{font-variant-numeric:tabular-nums}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:10px;font-weight:600;font-size:.88rem;white-space:nowrap;text-decoration:none;transition:background .25s,box-shadow .25s,transform .2s}
+.btn:active{transform:scale(.98)}
+.btn svg{width:15px;height:15px}
+.btn-primary{background:var(--teal-ink);color:#fff}
+.btn-primary:hover{background:var(--ink)}
+.btn-quiet{background:var(--paper);box-shadow:inset 0 0 0 1px var(--line)}
+.btn-quiet:hover{box-shadow:inset 0 0 0 1px var(--ink-3)}
+.btn-danger{color:var(--bad);box-shadow:inset 0 0 0 1px rgba(163,50,42,.3);background:var(--paper)}
+.btn-danger.confirm{background:var(--bad);color:#fff}
+.icon-btn{width:36px;height:36px;border-radius:9px;display:inline-grid;place-items:center;color:var(--ink-2)}
+.icon-btn:hover{background:var(--sand);color:var(--ink)}
+.icon-btn:disabled{opacity:.3;cursor:default;background:none}
+.icon-btn svg{width:16px;height:16px}
+
+/* gate */
+.gate{min-height:100svh;display:grid;place-items:center;padding:24px;background:var(--espresso)}
+.gate form{width:min(400px,100%);background:var(--paper);border-radius:22px;padding:32px;display:grid;gap:16px}
+.gate img{width:150px;height:auto}
+.input,.select,.textarea{width:100%;min-height:42px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);transition:border-color .2s,box-shadow .2s}
+.textarea{padding:10px 12px;min-height:84px;resize:vertical}
+.input:focus,.select:focus,.textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-wash)}
+.input.price{max-width:130px;text-align:right;font-variant-numeric:tabular-nums}
+.err{color:var(--bad);font-size:.86rem;min-height:1.2em}
+
+/* shell */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:calc(10px + env(safe-area-inset-top,0px)) 20px 10px;background:rgba(245,244,241,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line-2)}
+.top-left{display:flex;align-items:center;gap:14px}
+.top-left img{height:36px;width:auto}
+.top-left .tag{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:var(--espresso);color:var(--aqua)}
+.top-right{display:flex;align-items:center;gap:8px}
+.status{font-size:.84rem;color:var(--ink-3);display:flex;align-items:center;gap:8px}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.status.dirty i{background:var(--warn)}
+.status.dirty{color:var(--warn);font-weight:600}
+.layout{display:grid;grid-template-columns:220px 1fr;gap:28px;max-width:1360px;margin-inline:auto;padding:24px 20px 80px}
+.side{position:sticky;top:78px;align-self:start;display:grid;gap:2px}
+.tab{display:flex;align-items:center;gap:10px;min-height:42px;padding:0 12px;border-radius:10px;font-weight:500;color:var(--ink-2);text-align:left}
+.tab svg{width:18px;height:18px;flex:none}
+.tab:hover{background:var(--paper);color:var(--ink)}
+.tab[aria-current="page"]{background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
+.tab[aria-current="page"] svg{color:var(--teal)}
+.tab .count{margin-left:auto;font-size:.74rem;font-weight:700;min-width:22px;height:22px;padding:0 7px;border-radius:99px;display:grid;place-items:center;background:var(--sand);color:var(--ink-2)}
+.tab .count.new{background:var(--warn-wash);color:var(--warn)}
+main{min-width:0;display:grid;gap:20px;align-content:start}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.head p{max-width:64ch}
+.card{background:var(--paper);border-radius:16px;box-shadow:inset 0 0 0 1px var(--line-2)}
+.pad{padding:20px}
+.note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;font-size:.88rem}
+.note svg{width:17px;height:17px;flex:none;margin-top:2px}
+.note.warn{background:var(--warn-wash);color:var(--warn)}
+.note.info{background:var(--teal-wash);color:var(--teal-ink)}
+
+/* tables */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:12px 14px;border-bottom:1px solid var(--line-2);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tr.hidden-row td{opacity:.55}
+.thumb{width:64px;height:48px;border-radius:8px;object-fit:cover;background:var(--sand)}
+.cell-main b{display:block;font-weight:600}
+.cell-main span{font-size:.82rem;color:var(--ink-3)}
+.acts{display:flex;gap:2px;justify-content:flex-end;align-items:center}
+.pill{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:99px;font-size:.74rem;font-weight:700;white-space:nowrap}
+.pill.ok{background:var(--ok-wash);color:var(--ok)}
+.pill.warn{background:var(--warn-wash);color:var(--warn)}
+.pill.mute{background:var(--sand);color:var(--ink-2)}
+.switch{appearance:none;width:40px;height:24px;border-radius:99px;background:var(--sand);position:relative;cursor:pointer;transition:background .25s;flex:none;vertical-align:middle}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .3s var(--ease)}
+.switch:checked{background:var(--teal)}
+.switch:checked::after{transform:translateX(16px)}
+
+/* editor drawer */
+.drawer{position:fixed;inset:0;z-index:40;display:grid;grid-template-columns:1fr min(620px,100%);background:rgba(15,26,28,.4);visibility:hidden;opacity:0;transition:opacity .3s,visibility 0s .3s}
+.drawer.open{visibility:visible;opacity:1;transition:opacity .3s}
+.drawer-panel{grid-column:2;background:var(--stone);height:100svh;overflow:auto;display:grid;grid-template-rows:auto 1fr auto;transform:translateX(30px);transition:transform .45s var(--ease)}
+.drawer.open .drawer-panel{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(16px + env(safe-area-inset-top,0px)) 22px 16px;background:var(--paper);border-bottom:1px solid var(--line-2);position:sticky;top:0;z-index:2}
+.drawer-body{padding:22px;display:grid;gap:18px;align-content:start}
+.drawer-foot{display:flex;justify-content:space-between;gap:10px;padding:14px 22px calc(14px + env(safe-area-inset-bottom,0px));background:var(--paper);border-top:1px solid var(--line-2);position:sticky;bottom:0}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fields .full{grid-column:1/-1}
+.field{display:grid;gap:6px}
+.field label{font-size:.82rem;font-weight:600}
+.field .hint{font-size:.78rem;color:var(--ink-3)}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 12px;border-radius:99px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);font-size:.86rem;font-weight:500;cursor:pointer}
+.checks input{accent-color:var(--teal)}
+.preview{display:grid;grid-template-columns:160px 1fr;gap:14px;align-items:start}
+.preview img{width:160px;height:110px;border-radius:12px;object-fit:cover;background:var(--sand)}
+.section-title{padding-top:6px;border-top:1px solid var(--line-2)}
+
+/* sounds */
+.sound-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.sound{display:grid;gap:12px}
+.sound .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 6px 0 14px;border-radius:99px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);font-size:.88rem}
+.chip button{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:var(--ink-3)}
+.chip button:hover{background:var(--sand);color:var(--bad)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{padding:16px}
+.stat b{display:block;font-size:1.7rem;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.empty{padding:40px 20px;text-align:center;color:var(--ink-2)}
+
+.toast{position:fixed;z-index:60;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,150%);background:var(--espresso);color:#F4F1EC;padding:11px 16px;border-radius:12px;font-size:.9rem;box-shadow:0 16px 36px -16px rgba(10,20,22,.7);transition:transform .5s var(--ease);max-width:calc(100% - 32px)}
+.toast.show{transform:translate(-50%,0)}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;padding:16px 14px 90px}
+  .side{position:static;display:flex;overflow-x:auto;gap:4px;margin:0 -14px;padding:0 14px 4px;scrollbar-width:none}
+  .side::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto}
+  .tab .count{margin-left:6px}
+  .status span{display:none}
+  .top-right .btn span{display:none}
+  .fields{grid-template-columns:1fr}
+  .sound-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .drawer{grid-template-columns:1fr}
+  .drawer-panel{grid-column:1}
+  .preview{grid-template-columns:1fr}
+  .preview img{width:100%;height:180px}
+  .hide-sm{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- passcode gate (replaced by Firebase Auth with an admin role later) -->
+<div class="gate" id="gate">
+  <form id="gateForm" novalidate>
+    <img src="assets/logo-full-ink.png" alt="The Wanderlust Explorers" width="841" height="952">
+    <h1>Site admin</h1>
+    <p class="muted small">Manage packages, prices, photos, music and enquiries.</p>
+    <div class="field"><label for="pass">Passcode</label><input class="input" id="pass" type="password" autocomplete="current-password"></div>
+    <p class="err" id="gateErr" role="alert"></p>
+    <button class="btn btn-primary" type="submit">Open admin</button>
+    <p class="small muted">Demo passcode: <b>wanderlust</b>. Real admin accounts arrive with Firebase.</p>
+  </form>
+</div>
+
+<div id="admin" hidden>
+  <header class="top">
+    <div class="top-left"><img src="assets/logo-wordmark-ink.png" alt="The Wanderlust Explorers" width="841" height="372"><span class="tag">Admin</span></div>
+    <div class="top-right">
+      <span class="status" id="status"><i></i><span id="statusText">All changes saved</span></span>
+      <a class="btn btn-quiet" href="index.html" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9"/></svg><span>View site</span></a>
+      <button class="btn btn-primary" id="saveBtn" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m3 8.5 3 3 7-7"/></svg><span>Save changes</span></button>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="side" aria-label="Admin sections">
+      <button class="tab" data-tab="packages"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="14" height="11" rx="2"/><path d="M7 5V3.5h6V5"/></svg>Packages<span class="count" id="cPackages"></span></button>
+      <button class="tab" data-tab="slides"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="4" width="15" height="12" rx="2"/><path d="m2.5 13 4-4 4 4 2-2 5 5"/></svg>Hero slides<span class="count" id="cSlides"></span></button>
+      <button class="tab" data-tab="sounds"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 15.5V5l9-2v10"/><circle cx="5.5" cy="15.5" r="2.5"/><circle cx="14.5" cy="13" r="2.5"/></svg>Music<span class="count" id="cSounds"></span></button>
+      <button class="tab" data-tab="partners"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.5 12.5v-1.6L11 7V3.6a1 1 0 0 0-2 0V7l-6.5 3.9v1.6L9 10.5v3.8l-1.8 1.3V17L10 16l2.8 1v-1.4L11 14.3v-3.8Z"/></svg>Partners<span class="count" id="cPartners"></span></button>
+      <button class="tab" data-tab="search"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg>Popular searches</button>
+      <button class="tab" data-tab="enquiries"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h11A1.5 1.5 0 0 1 17 5.5v7a1.5 1.5 0 0 1-1.5 1.5H8l-4 3v-3h.5A1.5 1.5 0 0 1 3 12.5Z"/></svg>Enquiries<span class="count" id="cEnquiries"></span></button>
+      <button class="tab" data-tab="publish"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13V3M6 7l4-4 4 4M3.5 13v3.5h13V13"/></svg>Publish</button>
+    </nav>
+    <main id="main" aria-live="polite"></main>
+  </div>
+</div>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <div class="drawer-panel" id="drawerPanel"></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="data/site.js?v=1"></script>
+<script src="site-data.js?v=1"></script>
+<script src="sound.js?v=5"></script>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -169,28 +169,61 @@
       return n; } },
   };
 
+  /* `key` is a sound id from SITE.sounds (ladakh, rajasthan, dubai, …). If that sound has a
+     recording, play it; otherwise play its generated sketch. Older sketch ids still work. */
+  const cfgFor = key => (window.SITE && window.SITE.sounds && window.SITE.sounds[key]) || null;
+  let playToken = 0;
   function play(key) {
     init();
     if (key === currentKey) return;
     stop();
-    const scape = SCAPES[key]; if (!scape) return;
+    const cfg = cfgFor(key), token = ++playToken;
+    currentKey = key;
+    if (cfg && cfg.file) { playFile(key, cfg, token); return; }
+    playSketch(key, cfg ? cfg.sketch : key, null);   // no recording yet: caption describes the sketch, not the song
+  }
+  function playSketch(key, sketchKey, title) {
+    const scape = SCAPES[sketchKey]; if (!scape) { currentKey = null; return; }
     const g = ctx.createGain(); g.gain.setValueAtTime(0, now()); g.gain.linearRampToValueAtTime(scape.level || 1, now() + .7);
     const bd = ctx.createGain(), bw = ctx.createGain(); bd.connect(g); bw.connect(wet); g.connect(dry);
     bw.gain.setValueAtTime(0, now()); bw.gain.linearRampToValueAtTime(scape.level || 1, now() + .7);
     const bus = { dry: bd, wet: bw }, T = [];
     const nodes = scape.build(bus, T) || [];
     current = { g, nodes, T, bw }; currentKey = key;
-    listeners.forEach(fn => fn(key, scape.title));
+    listeners.forEach(fn => fn(key, title || scape.title));
+  }
+  function fadeAudio(a, to, ms, done) {
+    const from = a.volume, t0 = performance.now();
+    const step = () => { const k = Math.min(1, (performance.now() - t0) / ms); try { a.volume = from + (to - from) * k; } catch (e) {} if (k < 1) requestAnimationFrame(step); else if (done) done(); };
+    requestAnimationFrame(step);
+  }
+  async function playFile(key, cfg, token) {
+    let url = "";
+    try { url = window.SiteData ? await window.SiteData.audioURL(cfg.file) : cfg.file; } catch (e) {}
+    if (token !== playToken) return;            // another sound was chosen meanwhile
+    const fallback = () => { if (token === playToken && !current) playSketch(key, cfg.sketch, null); };
+    if (!url) { fallback(); return; }
+    const a = new Audio(url); a.loop = true; a.preload = "auto"; a.volume = 0;
+    a.addEventListener("error", fallback, { once: true });
+    current = { audio: a }; currentKey = key;
+    listeners.forEach(fn => fn(key, cfg.title));
+    try { await a.play(); fadeAudio(a, .85, 800); }
+    catch (e) { if (current && current.audio === a) { current = null; } fallback(); }
   }
   function stop() {
-    if (!current) return;
-    const c = current, t = now();
-    c.T.forEach(clearTimeout); c.T.length = 0;
-    c.g.gain.cancelScheduledValues(t); c.g.gain.setValueAtTime(c.g.gain.value, t); c.g.gain.linearRampToValueAtTime(0, t + 1.6);
-    c.bw.gain.setTargetAtTime(0, t, .5);
-    setTimeout(() => { c.nodes.forEach(n => { try { n.stop(); } catch (e) {} }); c.g.disconnect(); c.bw.disconnect(); }, 5000);
+    playToken++;
+    if (!current) { if (currentKey) { currentKey = null; listeners.forEach(fn => fn(null, "")); } return; }
+    const c = current;
+    if (c.audio) { fadeAudio(c.audio, 0, 900, () => { c.audio.pause(); c.audio.src = ""; }); }
+    else {
+      const t = now();
+      c.T.forEach(clearTimeout); c.T.length = 0;
+      c.g.gain.cancelScheduledValues(t); c.g.gain.setValueAtTime(c.g.gain.value, t); c.g.gain.linearRampToValueAtTime(0, t + 1.6);
+      c.bw.gain.setTargetAtTime(0, t, .5);
+      setTimeout(() => { c.nodes.forEach(n => { try { n.stop(); } catch (e) {} }); c.g.disconnect(); c.bw.disconnect(); }, 5000);
+    }
     current = null; currentKey = null;
     listeners.forEach(fn => fn(null, ""));
   }
-  window.Soundscape = { play, stop, get key() { return currentKey; }, title: k => SCAPES[k]?.title || "", onChange: fn => listeners.add(fn) };
+  window.Soundscape = { play, stop, get key() { return currentKey; }, title: k => (cfgFor(k) && cfgFor(k).title) || SCAPES[k]?.title || "", onChange: fn => listeners.add(fn) };
 })();

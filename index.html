@@ -317,6 +317,102 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
 @media (max-width:760px){.foot-top{grid-template-columns:1fr 1fr}.foot-top > div:first-child{grid-column:1/-1}}
 
 
+
+/* ---------- search ---------- */
+.search-btn svg{width:16px;height:16px}
+.ss{position:fixed;inset:0;z-index:70;background:rgba(15,26,28,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:grid;align-items:start;justify-items:center;padding:calc(env(safe-area-inset-top,0px) + 70px) 16px 24px;visibility:hidden;opacity:0;transition:opacity .4s var(--ease),visibility 0s .4s}
+.ss.open{visibility:visible;opacity:1;transition:opacity .4s var(--ease)}
+.ss-card{width:min(760px,100%);max-height:calc(100svh - 110px);display:grid;grid-template-rows:auto 1fr;background:var(--paper);border-radius:26px;box-shadow:0 40px 90px -30px rgba(10,20,22,.6);overflow:hidden;transform:translateY(-14px);transition:transform .6s var(--ease)}
+.ss.open .ss-card{transform:none}
+.ss-bar{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:12px 12px 12px 22px;border-bottom:1px solid var(--line-2)}
+.ss-bar svg{width:20px;height:20px;color:var(--teal-ink)}
+.ss-bar input{border:0;outline:none;background:none;font:500 1.15rem var(--sans);color:var(--ink);min-height:48px;width:100%;min-width:0}
+.ss-bar input::placeholder{color:var(--ink-3)}
+.ss-close{min-height:44px;padding:0 16px;border-radius:999px;font-weight:600;font-size:.88rem;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.ss-body{overflow:auto;padding:18px 22px 24px;display:grid;gap:22px;align-content:start;overscroll-behavior:contain}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip-btn{min-height:40px;padding:0 16px;border-radius:999px;background:var(--stone);box-shadow:inset 0 0 0 1px var(--line-2);font-size:.9rem;font-weight:500;color:var(--ink);transition:background .3s,box-shadow .3s}
+.chip-btn:hover,.chip-btn:focus-visible{background:var(--paper);box-shadow:inset 0 0 0 1px var(--teal)}
+.ss-group{display:grid;gap:4px}
+.ss-row{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:10px;margin:0 -10px;border-radius:16px;transition:background .3s}
+.ss-row:hover,.ss-row.active{background:var(--stone)}
+.ss-row img{width:64px;height:64px;border-radius:12px;object-fit:cover;background:var(--sand)}
+.ss-row b{display:block;font-weight:600;font-size:1rem}
+.ss-row span{font-size:.84rem;color:var(--ink-3)}
+.ss-row .acts{display:flex;align-items:center;gap:6px}
+.ss-row .price{font-weight:700;font-size:.95rem;color:var(--ink);margin-right:6px;white-space:nowrap}
+.mini-btn{min-height:40px;padding:0 14px;border-radius:999px;font-size:.84rem;font-weight:600;white-space:nowrap}
+.mini-btn.primary{background:var(--teal-ink);color:#fff}
+.mini-btn.ghost{box-shadow:inset 0 0 0 1px var(--line);color:var(--ink)}
+.ss-empty{display:grid;gap:10px;justify-items:start;padding:8px 0}
+.ss-all{justify-self:start}
+mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding:0 1px}
+@media (max-width:640px){.ss{padding:0;align-items:stretch}.ss-card{border-radius:0;max-height:none;height:100svh;width:100%}.ss-bar{padding-top:calc(10px + env(safe-area-inset-top,0px))}.ss-row{grid-template-columns:56px 1fr}.ss-row img{width:56px;height:56px}.ss-row .acts{grid-column:2;justify-content:flex-start}}
+
+/* ---------- query bar above journeys ---------- */
+.qbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:-30px 0 34px;padding:12px 16px;border-radius:14px;background:#E4F2F2;color:var(--teal-ink);font-size:.92rem}
+.qbar button{min-height:40px;padding:0 14px;border-radius:999px;font-weight:600;color:var(--teal-ink);box-shadow:inset 0 0 0 1px rgba(3,108,118,.3)}
+
+/* ---------- journey card actions ---------- */
+.trip-meta .route{grid-column:1/-1;font-size:.84rem;color:var(--teal-ink);font-weight:600;letter-spacing:.01em}
+.trip-actions{grid-column:1/-1;display:flex;gap:10px;align-items:center;margin-top:12px}
+.enq-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 6px 0 18px;border-radius:999px;background:var(--teal-ink);color:#fff;font-weight:600;font-size:.88rem;transition:background .4s var(--ease),transform .3s var(--ease)}
+.enq-btn i{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);transition:transform .5s var(--ease)}
+.enq-btn:hover{background:var(--ink)}
+.enq-btn:hover i{transform:translate(2px,-1px)}
+.enq-btn:active{transform:scale(.98)}
+.enq-btn svg,.call-btn svg{width:14px;height:14px}
+.call-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);font-weight:600;font-size:.88rem;color:var(--ink);text-decoration:none}
+.call-btn:hover{box-shadow:inset 0 0 0 1px var(--ink-3)}
+
+/* ---------- enquiry sheet ---------- */
+.enq{position:fixed;inset:0;z-index:75;display:grid;place-items:center;padding:16px;background:rgba(15,26,28,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);visibility:hidden;opacity:0;transition:opacity .4s var(--ease),visibility 0s .4s}
+.enq.open{visibility:visible;opacity:1;transition:opacity .4s var(--ease)}
+.enq-card{position:relative;width:min(520px,100%);max-height:calc(100svh - 32px);overflow:auto;background:var(--paper);border-radius:26px;padding:clamp(22px,4vw,34px);display:grid;gap:16px;box-shadow:0 40px 90px -30px rgba(10,20,22,.6);transform:translateY(16px) scale(.98);transition:transform .6s var(--ease)}
+.enq.open .enq-card{transform:none}
+.enq-x{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2)}
+.enq-x:hover{background:var(--stone)}
+.enq-x svg{width:16px;height:16px}
+.enq-card h3{font-size:clamp(1.8rem,4vw,2.3rem);padding-right:40px}
+.enq-sub{color:var(--ink-2);font-size:.95rem;margin-top:-8px}
+.enq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.enq-grid .full{grid-column:1/-1}
+.enq-field{display:grid;gap:6px}
+.enq-field label{font-size:.84rem;font-weight:600}
+.enq-field input,.enq-field select,.enq-field textarea{width:100%;min-height:50px;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:var(--stone);font:500 1rem var(--sans);color:var(--ink);transition:border-color .3s,box-shadow .3s}
+.enq-field textarea{min-height:84px;padding:12px 14px;resize:vertical}
+.enq-field input:focus,.enq-field select:focus,.enq-field textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px #E4F2F2}
+.enq-phone{display:grid;grid-template-columns:auto 1fr}
+.enq-phone span{display:grid;place-items:center;padding:0 12px;border:1px solid var(--line);border-right:0;border-radius:14px 0 0 14px;background:var(--sand);font-weight:600}
+.enq-phone input{border-radius:0 14px 14px 0}
+.enq-err{color:#A3322A;font-size:.88rem;min-height:1.2em}
+.enq-actions{display:grid;grid-template-columns:1fr auto;gap:10px}
+.enq-actions .enq-btn{justify-content:space-between;min-height:52px}
+.enq-actions .call-btn{min-height:52px}
+.enq-note{font-size:.82rem;color:var(--ink-3)}
+.enq-done{display:grid;gap:12px;justify-items:start}
+.enq-done svg{width:42px;height:42px;color:var(--teal)}
+@media (max-width:640px){.enq{place-items:end stretch;padding:0}.enq-card{border-radius:24px 24px 0 0;width:100%;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(40px)}.enq-grid{grid-template-columns:1fr}.enq-actions{grid-template-columns:1fr}}
+
+/* ---------- partners ---------- */
+.partners{padding-block:clamp(90px,12vw,150px);overflow:hidden;border-bottom:1px solid var(--line)}
+.partners-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:30px;margin-bottom:clamp(40px,5vw,64px)}
+.partners-head p{max-width:40ch;color:var(--ink-2)}
+.partners-facts{display:flex;gap:clamp(24px,4vw,56px);flex-wrap:wrap}
+.partners-facts b{display:block;font-family:var(--sans);font-weight:600;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.partners-facts span{font-size:.86rem;color:var(--ink-3)}
+.logo-rail{position:relative;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.logo-track{display:flex;width:max-content;animation:rail 48s linear infinite}
+.logo-rail:hover .logo-track{animation-play-state:paused}
+@keyframes rail{to{transform:translateX(-50%)}}
+.logo{flex:0 0 auto;display:grid;place-items:center;align-content:center;gap:10px;width:clamp(150px,16vw,190px);height:112px;margin-right:16px;border-radius:18px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2)}
+.logo img{height:34px;width:auto;max-width:70%;object-fit:contain;transition:transform .5s var(--ease)}
+.logo .nm{font-size:.82rem;font-weight:600;color:var(--ink-2);letter-spacing:.01em;text-align:center;padding:0 8px}
+.logo:hover img{transform:scale(1.08)}
+.logo .word{font-family:var(--serif);font-weight:500;font-size:1.15rem;letter-spacing:.02em;color:var(--ink-2)}
+@media (max-width:760px){.partners-head{grid-template-columns:1fr}.logo{height:100px;width:150px}}
+
+@media (max-width:520px){.search-label{display:none}.search-btn{padding-right:12px}}
 /* ================= mobile ================= */
 .mbar{display:none}
 .svc-thumb{display:none}
@@ -424,7 +520,7 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
 
 <!-- NAV -->
 <header class="nav" id="nav">
-  <div><div class="island"><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span class="burger"><span></span><span></span></span><span id="menuLabel">Menu</span></button><button class="sound-btn" id="soundBtn" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="soundLabel">Sound</span></button></div></div>
+  <div><div class="island"><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span class="burger"><span></span><span></span></span><span id="menuLabel">Menu</span></button><button class="sound-btn" id="soundBtn" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="soundLabel">Sound</span></button><button class="sound-btn search-btn" id="searchBtn" aria-haspopup="dialog" aria-controls="ss"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg><span class="search-label">Search</span></button></div></div>
   <a class="brand" href="#top" aria-label="The Wanderlust Explorers, home"><img class="on-dark" src="assets/logo-wordmark-light.png" alt="" width="841" height="372"><img class="on-paper" src="assets/logo-wordmark-ink.png" alt="" width="841" height="372"></a>
   <div class="nav-right"><div class="island"><span class="nav-phone">+91 77379 30736</span><a class="acct-link" href="account.html" aria-label="My account"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3.2"/><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6"/></svg></a><a class="btn btn-light" href="#final">Plan a journey <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></i></a></div></div>
 </header>
@@ -436,6 +532,7 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
     <li><a href="#services"><span class="mask"><span><small>03</small>Visas &amp; flights</span></span></a></li>
     <li><a href="#voices"><span class="mask"><span><small>04</small>Travellers</span></span></a></li>
     <li><a href="#final"><span class="mask"><span><small>05</small><em>Contact</em></span></span></a></li>
+    <li><a href="#collections" id="menuSearch"><span class="mask"><span><small>00</small>Search</span></span></a></li>
     <li><a href="account.html" data-external><span class="mask"><span><small>06</small>My account</span></span></a></li>
   </ol>
   <div class="menu-side">
@@ -447,12 +544,7 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
 <main id="top">
   <!-- HERO -->
   <section class="hero" id="hero" aria-label="Introduction">
-    <div class="slides" id="slides">
-      <figure class="slide is-active" data-scape="ladakh" data-name="Pangong Tso, Ladakh" data-coord="33.76° N · 78.67° E"><img src="https://images.unsplash.com/photo-1598563262148-0a9496712b44?q=80&auto=format&fit=crop&w=1600" srcset="https://images.unsplash.com/photo-1598563262148-0a9496712b44?q=80&auto=format&fit=crop&w=900 900w, https://images.unsplash.com/photo-1598563262148-0a9496712b44?q=80&auto=format&fit=crop&w=1600 1600w, https://images.unsplash.com/photo-1598563262148-0a9496712b44?q=80&auto=format&fit=crop&w=2400 2400w" sizes="100vw" alt="Pangong lake under the mountains of Ladakh"></figure>
-      <figure class="slide" data-scape="maldives" data-name="Baa Atoll, Maldives" data-coord="5.12° N · 73.05° E"><img src="https://images.unsplash.com/photo-1595184979141-090792f6b578?q=80&auto=format&fit=crop&w=1600" srcset="https://images.unsplash.com/photo-1595184979141-090792f6b578?q=80&auto=format&fit=crop&w=900 900w, https://images.unsplash.com/photo-1595184979141-090792f6b578?q=80&auto=format&fit=crop&w=1600 1600w, https://images.unsplash.com/photo-1595184979141-090792f6b578?q=80&auto=format&fit=crop&w=2400 2400w" sizes="100vw" alt="Overwater villas in a turquoise Maldives lagoon"></figure>
-      <figure class="slide" data-scape="dubai" data-name="The Arabian dunes" data-coord="24.83° N · 55.73° E"><img src="https://images.unsplash.com/photo-1520440718111-45fe694b330a?q=80&auto=format&fit=crop&w=1600" srcset="https://images.unsplash.com/photo-1520440718111-45fe694b330a?q=80&auto=format&fit=crop&w=900 900w, https://images.unsplash.com/photo-1520440718111-45fe694b330a?q=80&auto=format&fit=crop&w=1600 1600w, https://images.unsplash.com/photo-1520440718111-45fe694b330a?q=80&auto=format&fit=crop&w=2400 2400w" sizes="100vw" alt="Wind-shaped dunes in soft light"></figure>
-      <figure class="slide" data-scape="jaipur" data-name="Jal Mahal, Jaipur" data-coord="26.95° N · 75.85° E"><img src="https://images.unsplash.com/photo-1635929620316-d34cecc5639b?q=80&auto=format&fit=crop&w=1600" srcset="https://images.unsplash.com/photo-1635929620316-d34cecc5639b?q=80&auto=format&fit=crop&w=900 900w, https://images.unsplash.com/photo-1635929620316-d34cecc5639b?q=80&auto=format&fit=crop&w=1600 1600w, https://images.unsplash.com/photo-1635929620316-d34cecc5639b?q=80&auto=format&fit=crop&w=2400 2400w" sizes="100vw" alt="Jal Mahal palace on Man Sagar lake"></figure>
-    </div>
+    <div class="slides" id="slides"></div>
     <div class="hero-inner">
       <div class="hero-copy">
         <span class="label hero-in" style="color:rgba(242,237,230,.72)">Journeys from Delhi</span>
@@ -463,11 +555,11 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
         </div>
       </div>
       <div class="slide-meta hero-in" aria-live="polite">
-        <span class="slide-count"><span id="slideNum">01</span> / 04</span>
+        <span class="slide-count"><span id="slideNum">01</span> / <span id="slideTotal">04</span></span>
         <span class="slide-name" id="slideName">Pangong Tso, Ladakh</span>
         <span class="slide-coord" id="slideCoord">33.76° N · 78.67° E</span>
         <span class="hearing" id="hearing"><span class="eq is-playing" aria-hidden="true" style="display:inline-flex"><i></i><i></i><i></i><i></i></span><span id="hearingText"></span></span>
-        <div class="slide-bars" id="slideBars"><button aria-label="Show slide 1"><b></b></button><button aria-label="Show slide 2"><b></b></button><button aria-label="Show slide 3"><b></b></button><button aria-label="Show slide 4"><b></b></button></div>
+        <div class="slide-bars" id="slideBars"></div>
       </div>
     </div>
   </section>
@@ -544,7 +636,8 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
       <p>Each journey includes return flights from Delhi, hand-picked hotels, transfers and a person to call. Prices are per person, twin sharing.</p>
     </div>
     <div class="filters" role="group" aria-label="Filter journeys" id="filters"></div>
-    <p class="sound-note">Tap <b>Hear</b> on any journey for a short sound sketch of the place. Best with headphones.</p>
+    <div class="qbar" id="qbar" hidden><span id="qbarText"></span><button type="button" id="qbarClear">Show all journeys</button></div>
+    <p class="sound-note">Tap <b>Hear</b> on any journey to hear music from that place. Best with headphones.</p>
     <div class="grid" id="grid"></div>
   </section>
 
@@ -571,6 +664,16 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
       <img src="https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?w=700&h=875&q=80&auto=format&fit=crop" alt="">
       <img src="https://images.unsplash.com/photo-1595879171813-a83beb517451?w=700&h=875&q=80&auto=format&fit=crop" alt="">
     </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section class="partners" id="partners" aria-label="Partners">
+    <div class="wrap partners-head">
+      <div style="display:grid;gap:20px"><span class="label">Partners worldwide</span><h2><span class="mask"><span>Booked with the</span></span><span class="mask"><span><em>world's best.</em></span></span></h2></div>
+      <div style="display:grid;gap:22px;justify-items:start"><p>The airlines and hotel groups we book every day, for flights from Delhi to six continents.</p>
+        <div class="partners-facts"><div><b>100+</b><span>Radisson hotels in India</span></div><div><b>60+</b><span>partner cities</span></div><div><b>24 hrs</b><span>travel support</span></div></div></div>
+    </div>
+    <div class="logo-rail"><div class="logo-track" id="logoTrack"></div></div>
   </section>
 
   <!-- VOICES -->
@@ -604,6 +707,17 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
   </section>
 </main>
 
+<div class="ss" id="ss" role="dialog" aria-modal="true" aria-label="Search destinations and packages">
+  <div class="ss-card">
+    <div class="ss-bar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg><input id="ssInput" type="search" enterkeyhint="search" placeholder="Search Ladakh, honeymoon, under ₹20,000…" autocomplete="off" aria-controls="ssBody"><button type="button" class="ss-close" id="ssClose">Close</button></div>
+    <div class="ss-body" id="ssBody"></div>
+  </div>
+</div>
+
+<div class="enq" id="enq" role="dialog" aria-modal="true" aria-labelledby="enqTitle">
+  <div class="enq-card" id="enqCard"></div>
+</div>
+
 <nav class="mbar" id="mbar" aria-label="Contact">
   <a class="call" href="tel:+917737930736"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 2h2.6l1.2 3-1.6 1.1a8 8 0 0 0 4.2 4.2L11 8.7l3 1.2v2.6c0 .8-.7 1.5-1.5 1.5C6.6 14 2 9.4 2 3.5 2 2.7 2.7 2 3.5 2Z"/></svg>Call</a>
   <a class="wa" href="https://wa.me/917737930736" target="_blank" rel="noopener">Plan on WhatsApp<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></a>
@@ -625,11 +739,14 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="sound.js?v=4"></script>
+<script src="data/site.js?v=1"></script>
+<script src="site-data.js?v=1"></script>
+<script src="sound.js?v=5"></script>
 <script>
 (() => {
 gsap.registerPlugin(ScrollTrigger, Flip);
 const $ = id => document.getElementById(id);
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
 const U = (id, w = 1200) => `https://images.unsplash.com/${id}?w=${w}&q=78&auto=format&fit=crop`;
@@ -637,19 +754,8 @@ const inr = n => "₹" + n.toLocaleString("en-IN");
 gsap.defaults({ ease: "expo.out", duration: 1.4 });
 
 /* ---------- data ---------- */
-const TRIPS = [
-  { name:"Ladakh", sub:"Leh, Nubra and Pangong", nights:6, price:28000, img:"photo-1695876670020-e2c2ac5a21ce", tags:["india","mountains"], tag:"June to September", scape:"ladakh", say:"Julley", means:"hello, thank you and goodbye", taste:"Butter tea and thukpa in a Leh kitchen", take:"A pashmina from the Leh bazaar" },
-  { name:"Maldives", sub:"Baa Atoll, overwater villa", nights:4, price:72000, img:"photo-1609601546193-f558f1ebb385", tags:["intl","coast"], scape:"maldives", say:"Shukuriyaa", means:"thank you, in Dhivehi", taste:"Mas huni and roshi for breakfast", take:"A lacquered box from Thulhaadhoo" },
-  { name:"Jaipur", sub:"Amer, City Palace, Jal Mahal", nights:3, price:14000, img:"photo-1661924326425-c14a6426d989", tags:["india","heritage"], scape:"jaipur", say:"Khamma ghani", means:"the Rajasthani welcome", taste:"Pyaaz kachori, then dal baati churma", take:"Block-printed cotton from Sanganer" },
-  { name:"Dubai", sub:"The city and the desert", nights:4, price:32500, img:"photo-1624664853693-cf6419dee3bb", tags:["intl"], tag:"Most booked", scape:"dubai", say:"Marhaba", means:"hello, in Arabic", taste:"Luqaimat with date syrup", take:"Saffron and dates from the Deira souk" },
-  { name:"Kerala", sub:"Munnar, Alleppey, Kochi", nights:5, price:22000, img:"photo-1593693397690-362cb9666fc2", tags:["india","coast"], scape:"kerala", say:"Namaskaram", means:"the Malayalam greeting", taste:"Karimeen pollichathu and appam", take:"Cardamom and pepper from Munnar" },
-  { name:"Manali", sub:"Old Manali, Solang, Sethan", nights:4, price:7500, img:"photo-1621114410742-f886ab91e6f4", tags:["india","mountains"], scape:"manali", say:"Ram Ram", means:"how the hills say hello", taste:"Siddu with ghee, and Himachali trout", take:"A Kullu shawl in a geometric weave" },
-  { name:"Singapore", sub:"Marina Bay and Sentosa", nights:4, price:48000, img:"photo-1525625293386-3f8f99389edd", tags:["intl"], scape:"singapore", say:"Makan already?", means:"have you eaten? the real Singapore hello", taste:"Chicken rice at a hawker centre", take:"Kaya jam and Kopi powder" },
-  { name:"The Golden Triangle", sub:"Delhi, Agra, Jaipur", nights:5, price:17000, img:"photo-1524492412937-b28074a5d7da", tags:["india","heritage"], scape:"golden", say:"Namaste", means:"the hello that needs no translation", taste:"Chole bhature in Chandni Chowk, petha in Agra", take:"Marble inlay work from Agra" },
-  { name:"Bali", sub:"Ubud and Uluwatu", nights:5, price:45000, img:"photo-1537996194471-e657df975ab4", tags:["intl","coast"], scape:"bali", say:"Om Swastiastu", means:"the Balinese Hindu greeting", taste:"Nasi campur from a warung", take:"A batik sarong from Ubud market" },
-  { name:"Swiss Alps", sub:"Lauterbrunnen and Zermatt by rail", nights:7, price:145000, img:"photo-1530122037265-a5f1f91d3b99", tags:["intl","mountains"], scape:"swiss", say:"Grüezi", means:"hello, in Swiss German", taste:"Fondue and rösti after a day on the rails", take:"A hand-carved cowbell" },
-];
-const FILTERS = [["all","All"],["india","India"],["intl","Abroad"],["mountains","Mountains"],["coast","Coast"],["heritage","Heritage"]];
+const TRIPS = window.SITE.packages.filter(p => p.visible !== false).map(p => ({ ...p, scape: p.sound, tag: p.badge }));
+const FILTERS = [["all","All"],["india","India"],["intl","Abroad"],["mountains","Mountains"],["coast","Coast"],["heritage","Heritage"],["romantic","Romantic"],["visa-easy","Easy visa"]].filter(([k]) => k === "all" || TRIPS.some(t => t.tags.includes(k)));
 const VOICES = [
   { q:"Smooth booking for my New York flight. A fair price, and the confirmation arrived in minutes.", n:"Neha Jha", t:"Delhi to New York" },
   { q:"We got a proper discount on Goa, and when our first hotel was full they moved us somewhere better.", n:"Pooja Kumari", t:"Goa, 4 nights" },
@@ -704,6 +810,13 @@ menuBtn.addEventListener("click", () => toggleMenu(!menuOpen));
 addEventListener("keydown", e => { if (e.key === "Escape" && menuOpen) toggleMenu(false); });
 
 /* ---------- hero slideshow: slow clip wipe ---------- */
+{
+  const S = window.SITE.slides, img = SiteData.img;
+  $("slides").innerHTML = S.map((x, i) => { const ss = SiteData.srcset(x.img, [900, 1600, 2400]); return `<figure class="slide${i ? "" : " is-active"}" data-scape="${esc(x.sound)}" data-name="${esc(x.name)}" data-coord="${esc(x.coord)}"><img src="${img(x.img, 1600)}"${ss ? ` srcset="${ss}" sizes="100vw"` : ""} alt="${esc(x.alt || x.name)}"></figure>`; }).join("");
+  $("slideBars").innerHTML = S.map((x, i) => `<button aria-label="Show slide ${i + 1}"><b></b></button>`).join("");
+  $("slideTotal").textContent = String(S.length).padStart(2, "0");
+  $("slideName").textContent = S[0].name; $("slideCoord").textContent = S[0].coord;
+}
 const slides = [...document.querySelectorAll(".slide")];
 const bars = [...document.querySelectorAll("#slideBars b")];
 let cur = 0, barTween;
@@ -776,7 +889,7 @@ document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click
     gsap.fromTo(els, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 1, stagger: .03 });
   }});
 }));
-$("search").addEventListener("submit", e => { e.preventDefault(); goTo("#collections"); });
+$("search").addEventListener("submit", e => { e.preventDefault(); openSearch($("f2").value); });
 
 /* ---------- reveals ---------- */
 document.querySelectorAll("main .mask > span").forEach(el => {
@@ -877,18 +990,20 @@ gsap.ticker.add(() => { if (journeyLive) drawJourney(); });
 /* ---------- collections ---------- */
 const grid = $("grid");
 grid.innerHTML = TRIPS.map(t => `
-  <article class="trip" data-tags="${t.tags.join(" ")}">
-    <div class="frame" data-scape="${t.scape}">${t.tag ? `<span class="trip-tag">${t.tag}</span>` : ""}<button type="button" class="listen" data-scape="${t.scape}" aria-pressed="false" aria-label="Hear ${t.name}"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Hear ${t.name.replace("The ", "")}</button><img loading="lazy" src="${U(t.img, 1200)}" srcset="${U(t.img, 700)} 700w, ${U(t.img, 1200)} 1200w, ${U(t.img, 1800)} 1800w" sizes="(max-width:600px) 92vw, (max-width:900px) 46vw, 50vw" alt="${t.name}: ${t.sub}"></div>
+  <article class="trip" id="trip-${esc(t.id)}" data-id="${esc(t.id)}" data-tags="${t.tags.join(" ")}">
+    <div class="frame" data-scape="${t.scape}">${t.tag ? `<span class="trip-tag">${t.tag}</span>` : ""}<button type="button" class="listen" data-scape="${t.scape}" aria-pressed="false" aria-label="Hear ${t.name}"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Hear ${t.name.replace("The ", "")}</button><img loading="lazy" src="${SiteData.img(t.img, 1200)}"${SiteData.srcset(t.img) ? ` srcset="${SiteData.srcset(t.img)}" sizes="(max-width:600px) 92vw, (max-width:900px) 46vw, 50vw"` : ""} alt="${esc(t.name)}: ${esc(t.sub)}"></div>
     <div class="trip-meta">
       <span class="label">${t.tags.includes("india") ? "India" : "Abroad"} · ${t.nights} nights</span>
       <h3>${t.name}</h3>
       <span class="price">from<b>${inr(t.price)}</b></span>
-      <span class="sub">${t.sub}</span>
+      <span class="sub">${esc(t.sub)}</span>
+      ${t.route ? `<span class="route">${esc(t.route)}</span>` : ""}
       <dl class="local">
         <dt>Say</dt><dd><em>${t.say}</em>${t.means}</dd>
         <dt>Taste</dt><dd>${t.taste}</dd>
         <dt>Bring home</dt><dd>${t.take}</dd>
       </dl>
+      <div class="trip-actions"><button type="button" class="enq-btn" data-enquire="${esc(t.id)}">Enquire now <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button><a class="call-btn" href="tel:${window.SITE.contact.phone.replace(/\s/g, "")}"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 2h2.6l1.2 3-1.6 1.1a8 8 0 0 0 4.2 4.2L11 8.7l3 1.2v2.6c0 .8-.7 1.5-1.5 1.5C6.6 14 2 9.4 2 3.5 2 2.7 2.7 2 3.5 2Z"/></svg>Call</a></div>
     </div>
   </article>`).join("");
 const trips = [...grid.children];
@@ -899,17 +1014,166 @@ trips.forEach(t => {
 });
 const fBox = $("filters");
 fBox.innerHTML = FILTERS.map(([k, l], i) => `<button type="button" data-f="${k}" aria-pressed="${i === 0}">${l}<sup>${k === "all" ? TRIPS.length : TRIPS.filter(t => t.tags.includes(k)).length}</sup></button>`).join("");
-fBox.addEventListener("click", e => {
-  const b = e.target.closest("button"); if (!b) return;
-  fBox.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
-  const f = b.dataset.f, state = Flip.getState(trips);
-  grid.classList.toggle("filtered", f !== "all");
-  trips.forEach(t => t.classList.toggle("is-hidden", !(f === "all" || t.dataset.tags.split(" ").includes(f))));
+function filterGrid(show, filtered) {
+  const state = Flip.getState(trips);
+  grid.classList.toggle("filtered", filtered);
+  trips.forEach(t => t.classList.toggle("is-hidden", !show(t)));
   Flip.from(state, { duration: 1.2, ease: "expo.inOut", absolute: true, stagger: .03,
     onEnter: els => gsap.fromTo(els, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1.2 }),
     onLeave: els => gsap.to(els, { opacity: 0, duration: .4, ease: "power2.in" }),
     onComplete: () => ScrollTrigger.refresh() });
+}
+const qbar = $("qbar");
+function clearQuery() { qbar.hidden = true; }
+fBox.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  fBox.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  const f = b.dataset.f; clearQuery();
+  filterGrid(t => f === "all" || t.dataset.tags.split(" ").includes(f), f !== "all");
 });
+function showResultsInGrid(ids, q) {
+  fBox.querySelectorAll("button").forEach((x, i) => x.setAttribute("aria-pressed", i === 0));
+  filterGrid(t => ids.includes(t.dataset.id), true);
+  qbar.hidden = false;
+  $("qbarText").textContent = `Showing ${ids.length} ${ids.length === 1 ? "journey" : "journeys"} for "${q}"`;
+}
+$("qbarClear").addEventListener("click", () => { clearQuery(); filterGrid(() => true, false); });
+
+
+/* ---------- partners ---------- */
+{
+  const P = window.SITE.partners || [];
+  const one = P.map(p => `<div class="logo">${p.logo ? `<img src="${esc(p.logo)}" alt="" loading="lazy"><span class="nm">${esc(p.name)}</span>` : `<span class="word">${esc(p.name)}</span>`}</div>`).join("");
+  $("logoTrack").innerHTML = one + `<div style="display:contents" aria-hidden="true">${one}</div>`;
+}
+
+/* ---------- search: destinations and packages ---------- */
+const SYN = { india: "india domestic", intl: "international abroad overseas", mountains: "mountains hills hill station snow trek himalaya", coast: "beach coast island sea", heritage: "heritage history forts palaces culture", romantic: "honeymoon couple couples romantic", "visa-easy": "visa free easy visa on arrival visa-free" };
+const STOP = new Set("a an and the for with to in of trip trips tour tours package packages holiday holidays kids family parents friends group my our".split(" "));
+const INDEX = TRIPS.map(t => ({ t, text: [t.name, t.region, t.sub, t.route, t.tags.map(k => SYN[k] || k).join(" ")].join(" ").toLowerCase() }));
+function parseQuery(q) {
+  let max = null; const m = q.toLowerCase().replace(/,/g, "").match(/(?:under|below|less than|within|upto|up to)\s*₹?\s*(\d+(?:\.\d+)?)\s*(k|l|lac|lakh|lakhs)?/);
+  if (m) { max = parseFloat(m[1]) * (m[2] === "k" ? 1e3 : m[2] ? 1e5 : 1); }
+  const words = q.toLowerCase().replace(/(?:under|below|less than|within|upto|up to)\s*₹?\s*[\d.,]+\s*(k|l|lac|lakh|lakhs)?/g, " ").split(/[^a-zऀ-ॿ-]+/).filter(w => w.length > 1 && !STOP.has(w));
+  return { words, max };
+}
+function search(q) {
+  const { words, max } = parseQuery(q);
+  return INDEX.map(({ t, text }) => {
+    if (max && t.price > max) return null;
+    if (!words.length) return max ? { t, score: 1 } : null;
+    let score = 0; words.forEach(w => { if (t.name.toLowerCase().includes(w)) score += 5; else if (text.includes(w)) score += 2; else if (w.length > 3 && text.includes(w.slice(0, -1))) score += 1; });
+    const hits = words.filter(w => text.includes(w) || (w.length > 3 && text.includes(w.slice(0, -1)))).length;
+    return hits === words.length ? { t, score } : null;
+  }).filter(Boolean).sort((a, b) => b.score - a.score || a.t.price - b.t.price).map(r => r.t);
+}
+const ss = $("ss"), ssInput = $("ssInput"), ssBody = $("ssBody");
+let ssReturn = null, ssActive = -1;
+const hl = (txt, words) => { let h = esc(txt); words.forEach(w => { if (w.length > 1) h = h.replace(new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "ig"), "<mark>$1</mark>"); }); return h; };
+function renderSearch() {
+  const q = ssInput.value.trim(); ssActive = -1;
+  const popular = `<div><span class="label">Popular searches</span><div class="chips">${(window.SITE.popular || []).map(p => `<button type="button" class="chip-btn" data-q="${esc(p)}">${esc(p)}</button>`).join("")}</div></div>`;
+  if (!q) {
+    const dest = TRIPS.slice(0, 6);
+    ssBody.innerHTML = popular + `<div class="ss-group"><span class="label" style="margin-bottom:6px">Trending journeys</span>${dest.map(t => row(t, [])).join("")}</div>`;
+    return;
+  }
+  const res = search(q), words = parseQuery(q).words;
+  ssBody.innerHTML = res.length
+    ? `<div class="ss-group"><span class="label" style="margin-bottom:6px">${res.length} ${res.length === 1 ? "journey" : "journeys"}</span>${res.map(t => row(t, words)).join("")}</div>
+       ${res.length > 1 ? `<button type="button" class="mini-btn ghost ss-all" data-all="${esc(q)}">Show all ${res.length} on the page</button>` : ""}`
+    : `<div class="ss-empty"><b style="font-size:1.05rem">No journeys match "${esc(q)}" yet.</b><span style="color:var(--ink-2)">We plan custom trips too. Tell us where you want to go and we'll send a plan.</span>
+       <button type="button" class="mini-btn primary" data-enquire="custom" data-query="${esc(q)}">Ask our team</button></div>${popular}`;
+}
+function row(t, words) {
+  return `<div class="ss-row" data-view="${esc(t.id)}" role="option" tabindex="-1">
+    <img src="${SiteData.img(t.img, 200)}" alt="" loading="lazy">
+    <div><b>${hl(t.name, words)}</b><span>${hl(t.region || t.sub, words)} · ${t.nights} nights</span></div>
+    <div class="acts"><span class="price">${inr(t.price)}</span><button type="button" class="mini-btn ghost" data-view="${esc(t.id)}">View</button><button type="button" class="mini-btn primary" data-enquire="${esc(t.id)}">Enquire</button></div>
+  </div>`;
+}
+function openSearch(q = "") {
+  ssReturn = document.activeElement; ssInput.value = q; renderSearch();
+  ss.classList.add("open"); lenis?.stop(); document.body.style.overflow = "hidden";
+  setTimeout(() => ssInput.focus(), 60);
+}
+function closeSearch() { ss.classList.remove("open"); lenis?.start(); document.body.style.overflow = ""; ssReturn?.focus?.(); }
+function viewTrip(id) {
+  closeSearch();
+  const el = $("trip-" + id); if (!el) return;
+  if (el.classList.contains("is-hidden")) { clearQuery(); fBox.querySelector("button").click(); }
+  setTimeout(() => { lenis ? lenis.scrollTo(el, { offset: -90, duration: 1.6 }) : el.scrollIntoView({ behavior: "smooth", block: "center" }); gsap.fromTo(el.querySelector(".frame"), { boxShadow: "0 0 0 0 rgba(4,138,151,0)" }, { boxShadow: "0 0 0 6px rgba(4,138,151,.45)", duration: .5, yoyo: true, repeat: 3, delay: 1.2 }); }, 120);
+}
+$("searchBtn").addEventListener("click", () => openSearch());
+$("menuSearch").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); toggleMenu(false); setTimeout(() => openSearch(), 350); });
+$("ssClose").addEventListener("click", closeSearch);
+ss.addEventListener("click", e => {
+  if (e.target === ss) return closeSearch();
+  const chip = e.target.closest("[data-q]"); if (chip) { ssInput.value = chip.dataset.q; renderSearch(); ssInput.focus(); return; }
+  const all = e.target.closest("[data-all]"); if (all) { const ids = search(all.dataset.all).map(t => t.id); closeSearch(); showResultsInGrid(ids, all.dataset.all); goTo("#collections"); return; }
+  const enq = e.target.closest("[data-enquire]"); if (enq) { closeSearch(); openEnquiry(enq.dataset.enquire, enq.dataset.query); return; }
+  const v = e.target.closest("[data-view]"); if (v) viewTrip(v.dataset.view);
+});
+let ssT; ssInput.addEventListener("input", () => { clearTimeout(ssT); ssT = setTimeout(renderSearch, 90); });
+ssInput.addEventListener("keydown", e => {
+  const rows = [...ssBody.querySelectorAll(".ss-row")];
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (!rows.length) return; ssActive = (ssActive + (e.key === "ArrowDown" ? 1 : -1) + rows.length) % rows.length; rows.forEach((r, i) => r.classList.toggle("active", i === ssActive)); rows[ssActive].scrollIntoView({ block: "nearest" }); }
+  if (e.key === "Enter") { e.preventDefault(); if (ssActive >= 0 && rows[ssActive]) viewTrip(rows[ssActive].dataset.view); else { const q = ssInput.value.trim(), ids = search(q).map(t => t.id); if (q && ids.length) { closeSearch(); showResultsInGrid(ids, q); goTo("#collections"); } } }
+});
+$("f2").addEventListener("focus", () => { if (document.querySelector('.tabs button[aria-selected="true"]').dataset.tab === "holiday") { $("f2").blur(); openSearch(""); } });
+addEventListener("keydown", e => {
+  if (e.key === "Escape") { if ($("enq").classList.contains("open")) closeEnquiry(); else if (ss.classList.contains("open")) closeSearch(); }
+  if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || (e.key === "/" && !/input|textarea|select/i.test(document.activeElement.tagName))) { e.preventDefault(); openSearch(); }
+});
+
+/* ---------- enquiry ---------- */
+const enq = $("enq"), enqCard = $("enqCard");
+let enqReturn = null;
+const ICON_X = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m4 4 8 8M12 4l-8 8"/></svg>';
+function months() { const out = [], d = new Date(); d.setDate(1); for (let i = 0; i < 12; i++) { out.push(d.toLocaleDateString("en-IN", { month: "long", year: "numeric" })); d.setMonth(d.getMonth() + 1); } return out; }
+function openEnquiry(id, query) {
+  const t = TRIPS.find(x => x.id === id);
+  const title = t ? t.name : "A custom trip", sub = t ? `${t.nights} nights · from ${inr(t.price)} per person` : (query ? `"${query}"` : "Tell us where and when");
+  enqReturn = document.activeElement;
+  enqCard.innerHTML = `
+    <button type="button" class="enq-x" id="enqClose" aria-label="Close">${ICON_X}</button>
+    <span class="label">Enquire</span><h3 id="enqTitle">${esc(title)}</h3><p class="enq-sub">${esc(sub)}</p>
+    <form id="enqForm" novalidate style="display:grid;gap:14px">
+      <div class="enq-grid">
+        <div class="enq-field full"><label for="eName">Your name</label><input id="eName" autocomplete="name" placeholder="Full name"></div>
+        <div class="enq-field full"><label for="ePhone">Mobile number</label><div class="enq-phone"><span>+91</span><input id="ePhone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="98100 24567" maxlength="12"></div></div>
+        <div class="enq-field"><label for="eMonth">When</label><select id="eMonth"><option value="">Choose a month</option>${months().map(m => `<option>${m}</option>`).join("")}<option>Not decided yet</option></select></div>
+        <div class="enq-field"><label for="ePax">Travellers</label><select id="ePax">${[1,2,3,4,5,6,7,8].map(n => `<option ${n === 2 ? "selected" : ""}>${n}</option>`).join("")}<option>9 or more (group fare)</option></select></div>
+        <div class="enq-field full"><label for="eMsg">Anything we should know? <span style="font-weight:400;color:var(--ink-3)">Optional</span></label><textarea id="eMsg" placeholder="Honeymoon, travelling with parents, budget…">${query ? esc(query) : ""}</textarea></div>
+      </div>
+      <p class="enq-err" id="eErr" role="alert"></p>
+      <div class="enq-actions"><button type="submit" class="enq-btn">Send on WhatsApp <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button><a class="call-btn" href="tel:${window.SITE.contact.phone.replace(/\s/g, "")}"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 2h2.6l1.2 3-1.6 1.1a8 8 0 0 0 4.2 4.2L11 8.7l3 1.2v2.6c0 .8-.7 1.5-1.5 1.5C6.6 14 2 9.4 2 3.5 2 2.7 2.7 2 3.5 2Z"/></svg>Call ${esc(window.SITE.contact.phone)}</a></div>
+      <p class="enq-note">We reply on WhatsApp during working hours, usually within the hour.</p>
+    </form>`;
+  enq.classList.add("open"); lenis?.stop(); document.body.style.overflow = "hidden";
+  $("enqClose").onclick = closeEnquiry;
+  $("ePhone").addEventListener("input", e => e.target.value = e.target.value.replace(/[^\d ]/g, ""));
+  setTimeout(() => $("eName").focus(), 80);
+  $("enqForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const name = $("eName").value.trim(), phone = $("ePhone").value.replace(/\s/g, "");
+    if (name.length < 2) { $("eErr").textContent = "Add your name so we know who to reply to."; $("eName").focus(); return; }
+    if (!/^[6-9]\d{9}$/.test(phone)) { $("eErr").textContent = "Enter a 10-digit mobile number, for example 98100 24567."; $("ePhone").focus(); return; }
+    const data = { trip: title, tripId: t ? t.id : "custom", name, phone: "+91 " + phone, month: $("eMonth").value || "Not decided", travellers: $("ePax").value, message: $("eMsg").value.trim() };
+    SiteData.addEnquiry(data);
+    const text = `Hi, I'd like to enquire about ${title}.\nName: ${name}\nPhone: ${data.phone}\nWhen: ${data.month}\nTravellers: ${data.travellers}${data.message ? `\nNote: ${data.message}` : ""}`;
+    const link = `https://wa.me/${window.SITE.contact.whatsapp}?text=${encodeURIComponent(text)}`;
+    window.open(link, "_blank", "noopener");
+    enqCard.innerHTML = `<button type="button" class="enq-x" id="enqClose" aria-label="Close">${ICON_X}</button>
+      <div class="enq-done"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><circle cx="20" cy="20" r="17"/><path d="m12.5 20.5 5 5 10-11"/></svg>
+      <h3>Thanks, ${esc(name.split(" ")[0])}.</h3><p class="enq-sub" style="margin:0">WhatsApp has opened with your enquiry for ${esc(title)}. Press send there and our team will reply with a plan and real prices.</p>
+      <a class="call-btn" href="${link}" target="_blank" rel="noopener">WhatsApp didn't open? Tap here</a></div>`;
+    $("enqClose").onclick = closeEnquiry;
+  });
+}
+function closeEnquiry() { enq.classList.remove("open"); lenis?.start(); document.body.style.overflow = ""; enqReturn?.focus?.(); }
+enq.addEventListener("click", e => { if (e.target === enq) closeEnquiry(); });
+document.addEventListener("click", e => { const b = e.target.closest(".trip [data-enquire]"); if (b) openEnquiry(b.dataset.enquire); });
 
 /* ---------- services: image follows the cursor ---------- */
 if (fine) {
