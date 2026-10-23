@@ -51,3 +51,10 @@ Open `admin.html` (demo passcode `wanderlust`). Changes are saved in that browse
 ## Search and enquiries
 
 The search (top bar, the hero search box, or press `/`) matches package names, destinations, routes and trip types, understands budgets like "under ₹20,000" or "under 2 lac", and suggests popular searches. Every package has Enquire now (opens a short form, then WhatsApp with the details filled in) and Call. Enquiries are listed in the admin panel.
+
+## Signature motion
+
+- **The contrail:** the plane from the logo takes off from the "W" on the loading screen, then flies down the whole page as you scroll, banking into turns with a fading teal contrail. It hands over to the map's plane in the Asia loop section and lands into the footer logo. It runs on a screen-sized layer, so it stays light on phones.
+- **Flying through clouds:** hero slides change inside a cloud bank generated on a canvas in the browser (no extra download).
+- **Chase-camera map:** the Asia loop map is tilted in 3D with the plane's shadow on the ground.
+- Visitors with "reduce motion" switched on get calm, instant transitions instead.

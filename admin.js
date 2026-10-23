@@ -211,21 +211,23 @@
   /* =================== partners =================== */
   function vPartners(m) {
     m.innerHTML = `
-      <div class="head"><div style="display:grid;gap:6px"><h1>Partners</h1><p class="muted">Airlines, hotel groups and tourism boards shown in the scrolling strip. Only list partners you actually book or work with.</p></div>
+      <div class="head"><div style="display:grid;gap:6px"><h1>Partners</h1><p class="muted">Two rails on the homepage: airlines (shown with their logo) and hotels (set in elegant type). Only list partners you actually book or work with.</p></div>
         <button class="btn btn-primary" id="addPartner">${I.plus} Add partner</button></div>
-      <div class="card table-wrap"><table><thead><tr><th>Logo</th><th>Name</th><th>Logo link</th><th></th></tr></thead><tbody>
+      <div class="card table-wrap"><table><thead><tr><th>Logo</th><th>Name</th><th>Type</th><th>Logo link</th><th></th></tr></thead><tbody>
         ${site.partners.map((p, i) => `<tr>
           <td style="width:110px">${p.logo ? `<img src="${esc(p.logo)}" alt="" style="max-height:30px;max-width:90px;object-fit:contain">` : `<span class="small muted">Name only</span>`}</td>
           <td><input class="input" value="${esc(p.name)}" data-pn="${i}" aria-label="Partner name"></td>
-          <td><input class="input" value="${esc(p.logo)}" data-pl="${i}" placeholder="https://…/logo.svg" aria-label="Logo link"></td>
+          <td><select class="select" data-ptype="${i}" aria-label="Partner type"><option value="airline" ${(p.type || (p.logo ? "airline" : "hotel")) === "airline" ? "selected" : ""}>Airline</option><option value="hotel" ${(p.type || (p.logo ? "airline" : "hotel")) === "hotel" ? "selected" : ""}>Hotel</option></select></td>
+          <td><input class="input" value="${esc(p.logo)}" data-pl="${i}" placeholder="${(p.type || (p.logo ? "airline" : "hotel")) === "hotel" ? "Not needed for hotels" : "https://…/logo.svg"}" aria-label="Logo link"></td>
           <td><div class="acts"><button class="icon-btn" data-up="${i}" ${i ? "" : "disabled"} aria-label="Move up">${I.up}</button><button class="icon-btn" data-down="${i}" ${i < site.partners.length - 1 ? "" : "disabled"} aria-label="Move down">${I.down}</button><button class="icon-btn" data-del="${i}" aria-label="Remove">${I.trash}</button></div></td></tr>`).join("")}
       </tbody></table></div>`;
     m.querySelectorAll("[data-pn]").forEach(el => el.addEventListener("input", () => { site.partners[+el.dataset.pn].name = el.value; markDirty(); }));
+    m.querySelectorAll("[data-ptype]").forEach(el => el.addEventListener("change", () => { site.partners[+el.dataset.ptype].type = el.value; markDirty(); vPartners(m); }));
     m.querySelectorAll("[data-pl]").forEach(el => el.addEventListener("change", () => { site.partners[+el.dataset.pl].logo = el.value.trim(); markDirty(); vPartners(m); }));
     m.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => { move(site.partners, +b.dataset.up, -1); markDirty(); vPartners(m); }));
     m.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => { move(site.partners, +b.dataset.down, 1); markDirty(); vPartners(m); }));
     m.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => { site.partners.splice(+b.dataset.del, 1); markDirty(); vPartners(m); }));
-    $("addPartner").addEventListener("click", () => { site.partners.push({ name: "New partner", logo: "" }); markDirty(); vPartners(m); });
+    $("addPartner").addEventListener("click", () => { site.partners.push({ name: "New partner", logo: "", type: "hotel" }); markDirty(); vPartners(m); });
   }
 
   /* =================== popular searches =================== */
