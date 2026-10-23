@@ -5,6 +5,7 @@
   const WA = "917737930736";
   const U = (id, w = 900) => /^https?:/.test(id || "") ? id : `https://images.unsplash.com/${id || "photo-1598563262148-0a9496712b44"}?w=${w}&q=78&auto=format&fit=crop`;
   const inr = n => "₹" + Number(n).toLocaleString("en-IN");
+  const cr = n => `${Number(n || 0).toLocaleString("en-IN")} credit${Number(n) === 1 ? "" : "s"}`;   // the wallet holds credits, not rupees
   const fmt = d => new Date(d + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
   const fmtShort = d => new Date(d + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short" });
   const daysTo = d => Math.ceil((new Date(d + "T00:00:00") - new Date().setHours(0, 0, 0, 0)) / 864e5);
@@ -83,8 +84,8 @@
           <button class="btn" data-go="trips">View itinerary ${ICON.arrow}</button></div>
           <div class="count"><span class="num">${daysTo(next.start)}</span><span>days to go</span></div></div></article>` : ""}
       <div class="grid-3">
-        <div class="panel pad stat"><span class="label">Wallet balance</span><span class="num">${inr(w.balance)}</span>
-          ${soon ? `<span class="small" style="color:var(--warn);font-weight:600">${inr(soon)} expires in ${Math.min(...w.expiringSoon.map(e => daysTo(e.expires)))} days</span>` : `<span class="small muted">Use up to ${w.rules.maxPerBookingPercent}% on any booking</span>`}
+        <div class="panel pad stat"><span class="label">Wallet credits</span><span class="num">${w.balance.toLocaleString("en-IN")}</span>
+          ${soon ? `<span class="small" style="color:var(--warn);font-weight:600">${cr(soon)} expire in ${Math.min(...w.expiringSoon.map(e => daysTo(e.expires)))} days</span>` : `<span class="small muted">Use up to ${w.rules.maxPerBookingPercent}% on any booking</span>`}
           <a href="#wallet" class="btn-text" data-go="wallet">Open wallet</a></div>
         <div class="panel pad stat"><span class="label">Visa applications</span><span class="num">${visas.length}</span>
           ${attention.length ? `<span class="small" style="color:var(--warn);font-weight:600">${attention.length} needs your attention</span>` : `<span class="small muted">All on track</span>`}
@@ -94,8 +95,8 @@
           <a class="btn-text" href="${wa(`Hi, I'd like to pay the balance for booking ${due.id} (${due.title}).`)}" target="_blank" rel="noopener">Pay on WhatsApp</a>`
           : `<span class="label">Trips taken</span><span class="num">${trips.filter(t => daysTo(t.end) < 0).length}</span><a href="#trips" class="btn-text" data-go="trips">See past trips</a>`}</div>
       </div>
-      <div class="panel pad row"><div style="display:grid;gap:6px;max-width:52ch"><h3>Give ₹500, get ₹500</h3><p class="muted small">Share your code <b style="color:var(--teal-ink)">${esc(w.referralCode)}</b>. When a friend books their first trip, you both get ₹500 in your wallets.</p></div>
-        <a class="btn btn-primary" href="https://wa.me/?text=${encodeURIComponent(`Plan your next trip with The Wanderlust Explorers. Use my code ${w.referralCode} and we both get ₹500 off: https://thewanderlustexplorers.com`)}" target="_blank" rel="noopener">${ICON.wa} Share on WhatsApp</a></div>`;
+      <div class="panel pad row"><div style="display:grid;gap:6px;max-width:52ch"><h3>Give 500 credits, get 500</h3><p class="muted small">Share your code <b style="color:var(--teal-ink)">${esc(w.referralCode)}</b>. When a friend books their first trip, you both get 500 credits in your wallets.</p></div>
+        <a class="btn btn-primary" href="https://wa.me/?text=${encodeURIComponent(`Plan your next trip with The Wanderlust Explorers. Use my code ${w.referralCode} and we both get 500 travel credits: https://thewanderlustexplorers.com`)}" target="_blank" rel="noopener">${ICON.wa} Share on WhatsApp</a></div>`;
   }
 
   /* =================== trips =================== */
@@ -135,21 +136,21 @@
     v.innerHTML = `
       <div class="view-head"><h1>Your <em>wallet</em></h1><p class="muted">Credits you can spend on any journey, flight, hotel or visa with us.</p></div>
       <div class="wallet-top">
-        <div class="balance"><span class="label">Available credits</span><span class="num"><small>₹</small>${w.balance.toLocaleString("en-IN")}</span>
+        <div class="balance"><span class="label">Available credits</span><span class="num">${w.balance.toLocaleString("en-IN")}</span>
           <p>Use up to ${w.rules.maxPerBookingPercent}% of any booking. Mention your wallet when you book and we'll apply it to your invoice.</p></div>
-        <div class="panel pad refer"><span class="label">Refer a friend</span><h3>Give ₹500, get ₹500</h3>
+        <div class="panel pad refer"><span class="label">Refer a friend</span><h3>Give 500 credits, get 500</h3>
           <div class="code"><span class="num">${esc(w.referralCode)}</span><button type="button" class="btn btn-quiet" id="copyCode">${ICON.copy} Copy</button></div>
           <p class="small muted">Credited to both wallets when your friend's first trip is confirmed.</p></div>
       </div>
-      ${soonTotal ? `<div class="note warn">${ICON.alert}<span><b>${inr(soonTotal)} expires on ${fmt(w.expiringSoon[0].expires)}.</b> Use it on your next booking before then.</span></div>` : ""}
+      ${soonTotal ? `<div class="note warn">${ICON.alert}<span><b>${cr(soonTotal)} expire on ${fmt(w.expiringSoon[0].expires)}.</b> Use it on your next booking before then.</span></div>` : ""}
       <div class="panel pad"><div class="row" style="margin-bottom:14px"><h3>History</h3><span class="small muted">${w.entries.length} entries</span></div>
         <table class="ledger"><thead><tr><th>Date</th><th>Details</th><th style="text-align:right">Amount</th></tr></thead><tbody>
-        ${w.entries.map(e => { const d = e.expires ? daysTo(e.expires) : null; return `<tr><td>${fmt(e.date)}</td><td>${esc(e.source)}${e.kind === "credit" && e.expires ? `<span class="exp ${d <= 30 ? "soon" : ""}">${d < 0 ? "Expired" : `Expires ${fmt(e.expires)}`}</span>` : `<span class="exp">${fmt(e.date)}</span>`}</td><td class="amt ${e.kind === "credit" ? "plus" : "minus"}">${e.kind === "credit" ? "+" : "−"}${inr(e.amount)}</td></tr>`; }).join("")}
+        ${w.entries.map(e => { const d = e.expires ? daysTo(e.expires) : null; return `<tr><td>${fmt(e.date)}</td><td>${esc(e.source)}${e.kind === "credit" && e.expires ? `<span class="exp ${d <= 30 ? "soon" : ""}">${d < 0 ? "Expired" : `Expires ${fmt(e.expires)}`}</span>` : `<span class="exp">${fmt(e.date)}</span>`}</td><td class="amt ${e.kind === "credit" ? "plus" : "minus"}">${e.kind === "credit" ? "+" : "−"}${cr(e.amount)}</td></tr>`; }).join("")}
         </tbody></table></div>
       <div class="panel pad"><h3 style="margin-bottom:6px">Ways to earn</h3><ul class="earn">
         <li><span>Cashback on every holiday package</span><b>2% back</b></li>
-        <li><span>A friend books with your code</span><b>₹500 each</b></li>
-        <li><span>Signing up</span><b>₹250</b></li>
+        <li><span>A friend books with your code</span><b>500 credits each</b></li>
+        <li><span>Signing up</span><b>250 credits</b></li>
         <li><span>Refunds for cancellations, if you choose wallet credit</span><b>Instant</b></li></ul></div>
       <p class="rules">Credits can only be used on bookings with The Wanderlust Explorers. They cannot be withdrawn as cash or transferred, and each credit expires ${w.rules.expiryMonths} months after it is added. Cashback rates shown are examples until confirmed.</p>`;
     $("copyCode").addEventListener("click", async () => { try { await navigator.clipboard.writeText(w.referralCode); toast("Code copied."); } catch (e) { toast("Your code is " + w.referralCode); } });

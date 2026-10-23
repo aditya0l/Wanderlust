@@ -5,6 +5,7 @@ SiteData.ready.then(() => {
   const $ = id => document.getElementById(id);
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const inr = n => "₹" + Number(n || 0).toLocaleString("en-IN");
+  const cr = n => `${Number(n || 0).toLocaleString("en-IN")} credit${Number(n) === 1 ? "" : "s"}`;
   const clone = o => JSON.parse(JSON.stringify(o));
   const slug = s => String(s).toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
   const TAGS = [["india", "India"], ["intl", "Abroad"], ["mountains", "Mountains"], ["coast", "Coast"], ["heritage", "Heritage"], ["romantic", "Romantic"], ["visa-easy", "Easy visa"]];
@@ -149,6 +150,9 @@ SiteData.ready.then(() => {
           <div class="field full"><label for="fRoute">Route</label><input class="input" id="fRoute" value="${esc(p.route)}" placeholder="2N Leh · 2N Nubra · 2N Pangong"><span class="hint">Shown on the card under the highlights.</span></div>
           <div class="field"><label for="fNights">Nights</label><input class="input" id="fNights" type="number" min="1" value="${p.nights}"></div>
           <div class="field"><label for="fPrice">Price from (₹ per person)</label><input class="input" id="fPrice" type="number" min="0" step="500" value="${p.price}"></div>
+          <div class="field"><label for="fCont">Filter (place)</label><select class="select" id="fCont">${["India", "Asia", "Middle East", "Europe", "Africa", "Americas", "Oceania"].map(c => `<option ${(p.continent || (p.tags.includes("india") ? "India" : "Asia")) === c ? "selected" : ""}>${c}</option>`).join("")}</select><span class="hint">Which filter chip it appears under on the homepage.</span></div>
+          <div class="field"><label for="fCountry">Country</label><input class="input" id="fCountry" value="${esc(p.country)}" placeholder="Indonesia"><span class="hint">Shown on the card, for example "Indonesia · 6 nights".</span></div>
+          <div class="field"><label for="fBooked">Travellers booked</label><input class="input" id="fBooked" type="number" min="0" step="10" value="${esc(p.booked || "")}" placeholder="From your records"><span class="hint">Optional. From 10 up, the card says "Booked by 340+ travellers". Use your real numbers.</span></div>
           <div class="field"><label for="fBadge">Badge</label><input class="input" id="fBadge" value="${esc(p.badge)}" placeholder="Most booked, New…"><span class="hint">Optional. Shown on the photo.</span></div>
           <div class="field"><label for="fSound">Music</label><select class="select" id="fSound">${soundOpts}</select></div>
           <div class="field full"><label>Filters it appears under</label><div class="checks">${TAGS.map(([k, l]) => `<label><input type="checkbox" value="${k}" ${p.tags.includes(k) ? "checked" : ""}>${l}</label>`).join("")}</div></div>
@@ -171,7 +175,7 @@ SiteData.ready.then(() => {
         if (!(nights >= 1)) return err("Nights must be 1 or more.", "fNights");
         if (!(price > 0)) return err("Add a starting price in rupees.", "fPrice");
         if (!p.img) return err("Add a photo: paste an Unsplash id or link, or upload one.", "fImg");
-        Object.assign(p, { name, price, nights, region: $("fRegion").value.trim(), sub: $("fSub").value.trim(), route: $("fRoute").value.trim(), badge: $("fBadge").value.trim(), sound: $("fSound").value, say: $("fSay").value.trim(), means: $("fMeans").value.trim(), taste: $("fTaste").value.trim(), take: $("fTake").value.trim(), tags: [...document.querySelectorAll("#pkgForm .checks input:checked")].map(c => c.value) });
+        Object.assign(p, { name, price, nights, region: $("fRegion").value.trim(), sub: $("fSub").value.trim(), route: $("fRoute").value.trim(), badge: $("fBadge").value.trim(), sound: $("fSound").value, say: $("fSay").value.trim(), means: $("fMeans").value.trim(), taste: $("fTaste").value.trim(), take: $("fTake").value.trim(), continent: $("fCont").value, country: $("fCountry").value.trim(), booked: Math.max(0, Math.round(+$("fBooked").value || 0)), tags: [...document.querySelectorAll("#pkgForm .checks input:checked")].map(c => c.value) });
         if (!p.tags.length) return err("Pick at least one filter, for example India or Abroad.");
         if (isNew) { let id = slug(name); while (site.packages.some(x => x.id === id)) id += "-2"; p.id = id; site.packages.push(p); } else site.packages[i] = p;
         markDirty(); closeDrawer(); vPackages($("main")); toast(isNew ? "Package added. Save to publish it in this browser." : "Package updated.");
@@ -326,13 +330,17 @@ SiteData.ready.then(() => {
     m.innerHTML = `
       <div class="head"><div style="display:grid;gap:6px"><h1>Publish</h1><p class="muted">${when}</p></div></div>
       <div class="card pad" style="display:grid;gap:10px"><h3>1. Save changes</h3><p class="muted">Saves your edits in this browser so you can check them on the site here first. Visitors don't see them yet.</p><button class="btn btn-quiet" id="pSave" style="justify-self:start">Save changes</button></div>
-      <div class="card pad" style="display:grid;gap:10px"><h3>2. Publish to the live site</h3><p class="muted">Everyone sees the new content on their next visit. Music uploaded in this browser isn't published; put music files in <b>assets/audio/</b> and use the link field.</p><button class="btn btn-primary" id="pPublish" style="justify-self:start">Publish now</button></div>
+      <div class="card pad" style="display:grid;gap:10px"><h3>2. Publish to the live site</h3><p class="muted">Everyone sees the new content on their next visit. Publishing also recounts the real enquiries per journey from the last 30 days; a journey with 3 or more shows it on its card. Music uploaded in this browser isn't published; put music files in <b>assets/audio/</b> and use the link field.</p><button class="btn btn-primary" id="pPublish" style="justify-self:start">Publish now</button></div>
       <div class="card pad" style="display:grid;gap:10px"><h3>Backup</h3><p class="muted">Downloads <b>site.js</b> with all your content. Replacing <b>data/site.js</b> in the code with it updates the built-in copy the site falls back to.</p><button class="btn btn-quiet" id="pDownload" style="justify-self:start">${I.down2} Download site.js</button></div>
       <div class="card pad" style="display:grid;gap:10px"><h3>Discard changes</h3><p class="muted">Throws away everything saved in this browser and goes back to the published content.</p><button class="btn btn-danger" id="pReset" style="justify-self:start">${I.trash} Discard and reload published content</button></div>`;
     $("pSave").onclick = save;
     $("pPublish").onclick = async e => {
       const b = e.currentTarget; b.disabled = true; b.textContent = "Publishing…";
-      try { await SiteData.publish(site); dirty = false; $("status").classList.remove("dirty"); $("statusText").textContent = "Published"; toast("Published. Visitors see it on their next visit."); vPublish(m); }
+      try {
+        const since = new Date(Date.now() - 30 * 864e5).toISOString(), tally = {};
+        (await loadEnquiries()).filter(x => x.at >= since && x.tripId && x.tripId !== "custom").forEach(x => tally[x.tripId] = (tally[x.tripId] || 0) + 1);
+        site.stats = { enquiries30: tally, countedAt: new Date().toISOString() };
+        await SiteData.publish(site); dirty = false; $("status").classList.remove("dirty"); $("statusText").textContent = "Published"; toast("Published. Visitors see it on their next visit."); vPublish(m); }
       catch (err) { toast(err.code === "permission-denied" ? "This account can't publish. Check it's listed in the admin collection in Firestore." : err.message); b.disabled = false; b.textContent = "Publish now"; }
     };
     $("pDownload").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([SiteData.publishedFile(site)], { type: "text/javascript" })); a.download = "site.js"; a.click(); toast("site.js downloaded."); };
@@ -377,11 +385,11 @@ SiteData.ready.then(() => {
         <p class="small muted">${esc(u.email)}${u.phone ? " · " + esc(u.phone) : ""}${u.city ? " · " + esc(u.city) : ""}${u.referralCode ? " · Referral code " + esc(u.referralCode) : ""}</p>
 
         <section class="card pad" style="display:grid;gap:12px">
-          <div class="row"><h3>Wallet</h3><b class="num" style="font-size:1.3rem">${inr(bal)}</b></div>
-          ${w.length ? `<table><tbody>${w.map(e => `<tr><td class="cell-main"><b>${esc(e.source)}</b><span>${esc(fmtDate(e.date))}${e.expires ? " · expires " + esc(fmtDate(e.expires)) : ""}</span></td><td class="num" style="white-space:nowrap;color:${e.kind === "debit" ? "var(--bad)" : "var(--teal-ink)"}">${e.kind === "debit" ? "−" : "+"}${inr(e.amount)}</td><td>${del("wallet", e.id)}</td></tr>`).join("")}</tbody></table>` : `<p class="small muted">No wallet entries yet.</p>`}
+          <div class="row"><h3>Wallet</h3><b class="num" style="font-size:1.3rem">${cr(bal)}</b></div>
+          ${w.length ? `<table><tbody>${w.map(e => `<tr><td class="cell-main"><b>${esc(e.source)}</b><span>${esc(fmtDate(e.date))}${e.expires ? " · expires " + esc(fmtDate(e.expires)) : ""}</span></td><td class="num" style="white-space:nowrap;color:${e.kind === "debit" ? "var(--bad)" : "var(--teal-ink)"}">${e.kind === "debit" ? "−" : "+"}${cr(e.amount)}</td><td>${del("wallet", e.id)}</td></tr>`).join("")}</tbody></table>` : `<p class="small muted">No wallet entries yet.</p>`}
           <form id="wForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;align-items:end" novalidate>
             <div class="field"><label for="wKind">Type</label><select class="select" id="wKind"><option value="credit">Credit</option><option value="debit">Debit (used)</option></select></div>
-            <div class="field"><label for="wAmt">Amount (₹)</label><input class="input" id="wAmt" type="number" min="1" step="1"></div>
+            <div class="field"><label for="wAmt">Credits</label><input class="input" id="wAmt" type="number" min="1" step="1"></div>
             <div class="field"><label for="wExp">Expires</label><input class="input" id="wExp" type="date" value="${plusMonths(12)}"></div>
             <div class="field" style="grid-column:1/-1"><label for="wSrc">Reason</label><input class="input" id="wSrc" placeholder="Cashback · Bali Honeymoon, Referral, Festive offer…"></div>
             <button class="btn btn-primary" type="submit" style="justify-self:start">${I.plus} Add entry</button>
@@ -425,11 +433,11 @@ SiteData.ready.then(() => {
       $("wKind").onchange = () => { $("wExp").disabled = $("wKind").value === "debit"; };
       $("wForm").addEventListener("submit", e => {
         e.preventDefault(); const amount = num("wAmt"), source = $("wSrc").value.trim(), kind = $("wKind").value;
-        if (amount < 1) return $("cErr").textContent = "Enter an amount in rupees.";
+        if (amount < 1) return $("cErr").textContent = "Enter how many credits.";
         if (!source) return $("cErr").textContent = "Add a reason. The customer sees it in their wallet.";
-        if (kind === "debit" && amount > bal) return $("cErr").textContent = `That's more than the balance of ${inr(bal)}.`;
+        if (kind === "debit" && amount > bal) return $("cErr").textContent = `That's more than the balance of ${cr(bal)}.`;
         const entry = { kind, amount, source, date: todayISO(), by: auth.currentUser.email }; if (kind === "credit" && $("wExp").value) entry.expires = $("wExp").value;
-        ref.collection("wallet").add(entry).then(() => done(kind === "credit" ? `${inr(amount)} added to ${u.name.split(" ")[0]}'s wallet.` : `${inr(amount)} deducted.`), fail);
+        ref.collection("wallet").add(entry).then(() => done(kind === "credit" ? `${cr(amount)} added to ${u.name.split(" ")[0]}'s wallet.` : `${cr(amount)} deducted.`), fail);
       });
       $("tForm").addEventListener("submit", e => {
         e.preventDefault(); const title = $("tTitle").value.trim(), start = $("tStart").value, end = $("tEnd").value;

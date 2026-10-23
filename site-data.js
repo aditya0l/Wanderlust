@@ -16,7 +16,13 @@
   const MAX_DOC = 900 * 1024;                     // Firestore documents top out at 1 MB
 
   // fill sections added to data/site.js after this copy was saved
-  const complete = d => { const def = clone(window.SITE_DEFAULT); if (!d || d.version !== def.version) return def; for (const k in def) if (!(k in d)) d[k] = def[k]; return d; };
+  const complete = d => {
+    const def = clone(window.SITE_DEFAULT); if (!d || d.version !== def.version) return def;
+    for (const k in def) if (!(k in d)) d[k] = def[k];
+    const byId = Object.fromEntries((def.packages || []).map(p => [p.id, p]));          // and fields added to packages since
+    (d.packages || []).forEach(p => { const base = byId[p.id]; if (base) for (const k in base) if (!(k in p)) p[k] = base[k]; });
+    return d;
+  };
 
   /* ---------- IndexedDB for uploaded audio ---------- */
   let dbp;
