@@ -18,12 +18,15 @@ Then open http://localhost:5178.
 |---|---|
 | `index.html` | The current design: editorial luxury look, hero slideshow, scroll-driven plane journey across Asia, filterable journeys, services, reviews, contact |
 | `sound.js` | Generative soundscapes for each place (Ladakh, Maldives, Jaipur, Dubai, Kerala, Manali, Singapore, Golden Triangle, Bali, Swiss Alps), built with the Web Audio API |
-| `account.html`, `account.js` | Customer account: phone OTP / Google sign-in, overview, trips, wallet, visa status, profile and saved travellers |
-| `account-data.js` | The account data layer. Runs on sample data in the browser today; swap its functions for Firebase calls to go live |
+| `account.html`, `account.js` | Customer account: Google sign-in, overview, trips, wallet, visa status, profile and saved travellers |
+| `account-firebase.js` | The account data layer on Firebase (Google sign-in, Firestore) |
+| `account-data.js` | The same layer on sample data, used by `account.html?demo` to show the screens without signing in |
 | `data/site.js` | All editable content: hero slides, packages and prices, music per place, popular searches, partners, policies. Edited through the admin panel |
-| `site-data.js` | Shared data layer for content, uploads and enquiries. The one file to switch to Firebase |
+| `site-data.js` | Shared data layer: live content from Firestore (with `data/site.js` as the fallback), enquiries, uploads |
+| `firebase-config.js`, `firebase.json`, `.firebaserc` | Firebase project `wanderlust-e4b8b` |
+| `firestore.rules` | Who can read and write what (see below) |
 | `policies.html` | Terms & conditions, cancellation, refund and privacy policies (text copied from the current site, linked from the footer; `policies.html#refund` opens one directly) |
-| `admin.html`, `admin.js` | Admin panel: packages and prices, hero slides, music uploads, partners, popular searches, policies, enquiries, publish. Demo passcode `wanderlust` |
+| `admin.html`, `admin.js` | Admin panel: packages and prices, hero slides, music, partners, popular searches, policies, customers (wallet, trips, visas), enquiries, publish. Firebase email sign-in |
 | `assets/audio/` | Licensed music files per place (see the README inside) |
 | `assets/` | Logo cut-outs (ink and light versions of the full logo, the W mark and the wordmark) and the original logo file |
 | `versions/` | Earlier rounds: v1 concept pitch, v2 "window seat" hero with 3D globe, v3 editorial without sound |
@@ -37,21 +40,40 @@ Libraries load from CDNs: GSAP 3.12.5 (ScrollTrigger, Flip) and Lenis 1.1.13. Ph
 - The soundscapes are synthesized sketches. Swap in licensed field recordings for the live site.
 - When `sound.js` changes, bump the `?v=` number on its script tag in `index.html` so browsers fetch the new file.
 
-## Account area: going live with Firebase
+## Firebase
 
-The account screens only talk to `AccountData` in `account-data.js`. To go live, replace each function body with Firebase calls (the planned Firestore layout is documented at the top of that file). The screens stay as they are.
+Project `wanderlust-e4b8b`, on the free Spark plan. Nothing here needs Blaze.
 
-- **Plan:** Blaze, with a budget alert. Phone OTP and Cloud Functions are not available on the free Spark plan.
-- **Wallet:** one Firestore document per credit or debit, written only by server code (Cloud Functions or an admin panel). Customers get read access only. The balance is always computed from unexpired entries.
-- **Credits:** site-only, not withdrawable, not transferable, expiring after 12 months.
+| What | Where in Firestore | Who writes it |
+|---|---|---|
+| Live site content | `site/live` (one JSON string) | Admins, with Publish |
+| Enquiries | `enquiries/{id}` | A signed-in customer sends one (it carries their uid); they see their own in My trips; admins read and update all |
+| Customer profile | `users/{uid}` | The customer (created on first Google sign-in) |
+| Saved travellers | `users/{uid}/travellers/{id}` | The customer |
+| Trips, visas, wallet | `users/{uid}/trips`, `/visas`, `/wallet` | Admins only. Customers can only read their own |
+| Admin list | `admin/{uid}` | Added by hand in the Firebase console |
+
+- **Sign-in:** Google for customers, email and password for admins. Phone OTP is left out because it is billed per SMS.
+- **Wallet:** one document per credit or debit. The balance is always worked out from the unexpired entries, never stored. Credits are site-only, can't be withdrawn or transferred, and expire after 12 months.
+- **Homepage speed:** public pages read `site/live` through the Firestore REST API (no SDK), under the loader. If Firestore is slow (over 2.5 s) or unreachable, they use `data/site.js`.
+- **Deploying rules:** `firebase deploy --only firestore:rules` from this folder.
+
+### One-time setup in the Firebase console
+
+1. Firestore Database → Create database → production mode, location `asia-south1` (Mumbai).
+2. Authentication → Get started → Sign-in method: enable Google and Email/Password.
+3. Authentication → Settings → Authorised domains: add the live domains (the Vercel address and thewanderlustexplorers.com).
+4. Authentication → Users → Add user: the admin's email and password. Copy the user UID.
+5. Firestore → Start collection `admin` → document ID = that UID, with any field (for example `name`).
+6. Deploy the rules (above), sign in to `admin.html`, and Publish once so the live content exists.
 
 ## Admin panel and publishing
 
-Open `admin.html` (demo passcode `wanderlust`). Changes are saved in that browser so you can check them on the site first. To publish for everyone, go to Publish → Download site.js and replace `data/site.js` on the server. Music uploaded in the admin only plays in that browser; for the live site put files in `assets/audio/` and use the link field. With Firebase, saving publishes directly and the passcode becomes a real admin login.
+Open `admin.html` and sign in with an admin account. Save keeps your edits in that browser so you can check them on the site first. Publish → Publish now sends them to every visitor. Customers lists everyone who has signed in; open one to add wallet credit, trips and visa updates. Music uploaded in the admin only plays in that browser; for the live site put files in `assets/audio/` and use the link field.
 
 ## Search and enquiries
 
-The hero search box has two modes, Holidays and Visa. The search (top bar, the hero search box, or press `/`) matches package names, destinations, routes and trip types, understands budgets like "under ₹20,000" or "under 2 lac", and suggests popular searches. Every package has Enquire now (opens a short form, then WhatsApp with the details filled in) and Call. Enquiries are listed in the admin panel.
+The hero search box has two modes, Holidays and Visa. The search (top bar, the hero search box, or press `/`) matches package names, destinations, routes and trip types, understands budgets like "under ₹20,000" or "under 2 lac", and suggests popular searches. Every package has Enquire now and Call. Visitors browse without an account; Enquire now, Plan my journey and the visa search ask them to sign in with Google first, then show the form with their name and number filled in, save the enquiry and open WhatsApp. Firebase only loads at that moment (or quietly after the intro for someone who signed in before). If the browser blocks the sign-in pop-up, as Instagram's and Facebook's in-app browsers do, sign-in continues on a full page and the enquiry reopens when they come back. Enquiries are listed in the admin panel and in the customer's account.
 
 ## Policies
 

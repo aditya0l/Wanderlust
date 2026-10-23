@@ -3,7 +3,7 @@
   const $ = id => document.getElementById(id);
   const D = window.AccountData;
   const WA = "917737930736";
-  const U = (id, w = 900) => `https://images.unsplash.com/${id}?w=${w}&q=78&auto=format&fit=crop`;
+  const U = (id, w = 900) => /^https?:/.test(id || "") ? id : `https://images.unsplash.com/${id || "photo-1598563262148-0a9496712b44"}?w=${w}&q=78&auto=format&fit=crop`;
   const inr = n => "₹" + Number(n).toLocaleString("en-IN");
   const fmt = d => new Date(d + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
   const fmtShort = d => new Date(d + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short" });
@@ -28,55 +28,16 @@
   function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 3200); }
 
   /* =================== sign in =================== */
-  let resendTimer;
   function showSignIn() {
     $("signin").hidden = false; $("app").hidden = true; $("tabbar").hidden = true; $("topAvatar").hidden = true;
-    $("phoneForm").hidden = false; $("otpForm").hidden = true; $("phone").focus({ preventScroll: true });
+    $("googleBtn").focus({ preventScroll: true });
   }
-  $("phone").addEventListener("input", e => { e.target.value = e.target.value.replace(/[^\d ]/g, ""); $("phoneError").textContent = ""; });
-  $("phoneForm").addEventListener("submit", async e => {
-    e.preventDefault();
-    const raw = $("phone").value.replace(/\s/g, "");
-    if (!/^[6-9]\d{9}$/.test(raw)) { $("phoneError").textContent = "Enter a 10-digit Indian mobile number, for example 98100 24567."; $("phone").focus(); return; }
-    const btn = $("sendBtn"); btn.disabled = true; btn.textContent = "Sending…";
-    try {
-      await D.sendCode("+91" + raw);
-      $("sentTo").textContent = "+91 " + raw.slice(0, 5) + " " + raw.slice(5);
-      $("phoneForm").hidden = true; $("otpForm").hidden = false;
-      const boxes = [...$("otp").children]; boxes.forEach(b => b.value = ""); boxes[0].focus();
-      startResend();
-    } catch (err) { $("phoneError").textContent = err.message; }
-    finally { btn.disabled = false; btn.textContent = "Send code"; }
+  $("googleBtn").addEventListener("click", async () => {
+    const b = $("googleBtn"); b.disabled = true; $("signinError").textContent = "";
+    try { if (await D.signInWithGoogle()) startApp(); }
+    catch (err) { $("signinError").textContent = err.message; }
+    finally { b.disabled = false; }
   });
-  function startResend() {
-    let s = 30; const el = $("resend"); clearInterval(resendTimer);
-    const tick = () => { if (s <= 0) { clearInterval(resendTimer); el.innerHTML = '<button type="button" class="btn-text" id="resendBtn">Resend code</button>'; $("resendBtn").onclick = () => { toast("A new code is on its way."); startResend(); }; return; } el.textContent = `Resend code in ${s--}s`; };
-    tick(); resendTimer = setInterval(tick, 1000);
-  }
-  const boxes = [...$("otp").children];
-  boxes.forEach((b, i) => {
-    b.addEventListener("input", () => {
-      $("otpError").textContent = "";
-      const digits = b.value.replace(/\D/g, "");
-      if (digits.length > 1) {            // SMS autofill or fast typing drops the whole code into one box
-        digits.slice(0, 6 - i).split("").forEach((d, k) => boxes[i + k].value = d);
-        (boxes[Math.min(i + digits.length, 5)]).focus();
-      } else { b.value = digits; if (digits && boxes[i + 1]) boxes[i + 1].focus(); }
-      if (boxes.every(x => x.value)) $("otpForm").requestSubmit();
-    });
-    b.addEventListener("keydown", e => { if (e.key === "Backspace" && !b.value && boxes[i - 1]) boxes[i - 1].focus(); });
-    b.addEventListener("paste", e => { const d = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0, 6); if (!d) return; e.preventDefault(); boxes.forEach((x, k) => x.value = d[k] || ""); (boxes[d.length] || boxes[5]).focus(); if (d.length === 6) $("otpForm").requestSubmit(); });
-  });
-  $("otpForm").addEventListener("submit", async e => {
-    e.preventDefault();
-    const code = boxes.map(b => b.value).join("");
-    const btn = $("verifyBtn"); btn.disabled = true; btn.textContent = "Checking…";
-    try { await D.verifyCode(null, code); clearInterval(resendTimer); startApp(); }
-    catch (err) { $("otpError").textContent = err.message; }
-    finally { btn.disabled = false; btn.textContent = "Verify and sign in"; }
-  });
-  $("changeNumber").addEventListener("click", () => { clearInterval(resendTimer); $("otpForm").hidden = true; $("phoneForm").hidden = false; $("phone").focus(); });
-  $("googleBtn").addEventListener("click", async () => { await D.signInWithGoogle(); startApp(); });
 
   /* =================== app shell =================== */
   const VIEWS = { overview: renderOverview, trips: renderTrips, wallet: renderWallet, visas: renderVisas, profile: renderProfile };
@@ -85,7 +46,7 @@
     $("signin").hidden = true; $("app").hidden = false; $("tabbar").hidden = false;
     const p = await D.getProfile();
     [$("sideAvatar"), $("topAvatar")].forEach(a => a.textContent = initials(p.name)); $("topAvatar").hidden = false;
-    $("sideName").textContent = p.name; $("sidePhone").textContent = p.phone;
+    $("sideName").textContent = p.name; $("sidePhone").textContent = p.phone || p.email || "";
     const visas = await D.listVisas(); const attention = visas.filter(v => /please/i.test(v.note)).length;
     [$("visaBadge"), $("visaBadgeM")].forEach(b => { b.hidden = !attention; b.textContent = attention; });
     const start = (location.hash || "").slice(1);
@@ -140,19 +101,23 @@
   /* =================== trips =================== */
   let tripTab = "upcoming";
   async function renderTrips(v) {
-    const trips = await D.listTrips();
+    const [trips, enqs] = await Promise.all([D.listTrips(), D.listEnquiries ? D.listEnquiries().catch(() => []) : []]);
+    const ENQ_ST = { new: ["Sent", "payment-due"], contacted: ["We've replied", "confirmed"], booked: ["Booked", "confirmed"], closed: ["Closed", "completed"] };
+    const openEnq = enqs.filter(e => e.status !== "closed").slice(0, 6);
     const list = trips.filter(t => tripTab === "upcoming" ? daysTo(t.end) >= 0 : daysTo(t.end) < 0).sort((a, b) => tripTab === "upcoming" ? a.start.localeCompare(b.start) : b.start.localeCompare(a.start));
     const STATUS = { confirmed: "Confirmed", "payment-due": "Balance due", completed: "Completed" };
     v.innerHTML = `
       <div class="view-head row"><div style="display:grid;gap:8px"><h1>My <em>trips</em></h1><p class="muted">Tickets, hotels and transfers for every booking.</p></div>
         <div class="seg" role="group" aria-label="Show trips"><button type="button" data-tab="upcoming" aria-pressed="${tripTab === "upcoming"}">Upcoming</button><button type="button" data-tab="past" aria-pressed="${tripTab === "past"}">Past</button></div></div>
+      ${tripTab === "upcoming" && openEnq.length ? `<section class="panel pad" style="display:grid;gap:12px"><div class="row"><h3>Your enquiries</h3><span class="small muted">We reply on WhatsApp</span></div>
+        <ul class="people">${openEnq.map(e => { const [l, c] = ENQ_ST[e.status] || ENQ_ST.new; return `<li><div><b>${esc(e.trip)}</b><span>Sent ${fmtShort(String(e.at).slice(0, 10))}${e.month ? " · " + esc(e.month) : ""}${e.travellers ? " · " + esc(e.travellers) + " travellers" : ""}</span></div><span class="pill ${c}">${l}</span></li>`; }).join("")}</ul></section>` : ""}
       ${list.length ? list.map(t => `
         <article class="panel trip">
           <div class="trip-img"><img src="${U(t.img, 800)}" alt="${esc(t.title)}" loading="lazy"></div>
           <div class="trip-body">
             <div class="row"><span class="pill ${t.status}">${STATUS[t.status]}</span><span class="small muted">Booking ${esc(t.id)}</span></div>
             <div style="display:grid;gap:6px"><h2>${esc(t.title)}</h2><div class="facts"><span><b>${fmtShort(t.start)} – ${fmt(t.end)}</b></span><span>${esc(t.place)}</span><span>${t.travellers} travellers</span></div></div>
-            <ul class="items">${t.items.map(i => `<li>${ICON[i.type] || ICON.info}<span>${esc(i.label)}</span><span class="when">${esc(i.when)}</span></li>`).join("")}</ul>
+            <ul class="items">${(t.items || []).map(i => `<li>${ICON[i.type] || ICON.info}<span>${esc(i.label)}</span><span class="when">${esc(i.when)}</span></li>`).join("")}</ul>
             ${t.status === "payment-due" ? `<div style="display:grid;gap:8px"><div class="row small"><span>Paid ${inr(t.paid)} of ${inr(t.total)}</span><b>${inr(t.total - t.paid)} due</b></div><div class="progress"><b style="width:${t.paid / t.total * 100}%"></b></div></div>` : ""}
             <div class="row" style="justify-content:flex-start">
               <button type="button" class="btn btn-quiet" data-demo="Vouchers and e-tickets will download here once bookings are connected.">${ICON.download} ${t.status === "completed" ? "Invoice" : "Vouchers & tickets"}</button>
@@ -214,8 +179,8 @@
         <h3>Your details</h3>
         <div class="form">
           <div class="field full"><label for="pName">Full name, as on your passport</label><input class="input" id="pName" value="${esc(p.name)}" autocomplete="name" required></div>
-          <div class="field"><label for="pPhone">Mobile number</label><input class="input" id="pPhone" value="${esc(p.phone)}" disabled title="Your sign-in number can't be changed here"></div>
-          <div class="field"><label for="pEmail">Email</label><input class="input" id="pEmail" type="email" value="${esc(p.email)}" autocomplete="email"></div>
+          <div class="field"><label for="pPhone">Mobile number</label><input class="input" id="pPhone" type="tel" inputmode="tel" value="${esc(p.phone)}" autocomplete="tel" placeholder="+91 98100 24567"><span class="small muted">For WhatsApp updates about your trips.</span></div>
+          <div class="field"><label for="pEmail">Email</label><input class="input" id="pEmail" type="email" value="${esc(p.email)}" disabled title="This is the Google account you signed in with"></div>
           <div class="field"><label for="pDob">Date of birth</label><input class="input" id="pDob" type="date" value="${esc(p.dob)}"></div>
           <div class="field"><label for="pCity">Home city</label><input class="input" id="pCity" value="${esc(p.city)}" autocomplete="address-level2"></div>
           <label class="switch full"><span><b style="font-weight:600">Trip updates on WhatsApp</b><br><span class="small muted">Booking confirmations, gate changes and visa updates.</span></span><input type="checkbox" id="pWa" ${p.whatsappUpdates ? "checked" : ""}></label>
@@ -234,11 +199,12 @@
 
     $("profileForm").addEventListener("submit", async e => {
       e.preventDefault();
-      const name = $("pName").value.trim(), email = $("pEmail").value.trim();
+      const name = $("pName").value.trim(), phone = $("pPhone").value.trim(), digits = phone.replace(/\D/g, "").replace(/^91(?=\d{10}$)/, "");
       if (name.length < 3) { $("profileError").textContent = "Add your full name as it appears on your passport."; $("pName").focus(); return; }
-      if (email && !/^\S+@\S+\.\S+$/.test(email)) { $("profileError").textContent = "That email address looks incomplete. Check it and try again."; $("pEmail").focus(); return; }
+      if (phone && !/^[6-9]\d{9}$/.test(digits)) { $("profileError").textContent = "Enter a 10-digit mobile number, for example 98100 24567."; $("pPhone").focus(); return; }
       $("profileError").textContent = "";
-      await D.updateProfile({ name, email, dob: $("pDob").value, city: $("pCity").value.trim(), whatsappUpdates: $("pWa").checked });
+      try { await D.updateProfile({ name, phone: digits ? "+91 " + digits.slice(0, 5) + " " + digits.slice(5) : "", dob: $("pDob").value, city: $("pCity").value.trim(), whatsappUpdates: $("pWa").checked }); }
+      catch (err) { $("profileError").textContent = err.message; return; }
       $("sideName").textContent = name; [$("sideAvatar"), $("topAvatar")].forEach(a => a.textContent = initials(name));
       toast("Details saved.");
     });
@@ -277,5 +243,6 @@
 
   document.addEventListener("click", e => { const d = e.target.closest("[data-demo]"); if (d) toast(d.dataset.demo); });
 
-  D.isSignedIn() ? startApp() : showSignIn();
+  $("demoBar").hidden = !D.demo;
+  (D.ready || Promise.resolve()).then(() => D.isSignedIn() ? startApp() : showSignIn());
 })();

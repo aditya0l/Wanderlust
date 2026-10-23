@@ -102,9 +102,10 @@ footer a:hover{color:var(--ink)}
 </footer>
 
 <script src="data/site.js?v=2"></script>
-<script src="site-data.js?v=2"></script>
+<script src="firebase-config.js?v=1"></script>
+<script src="site-data.js?v=4"></script>
 <script>
-(() => {
+SiteData.ready.then(() => {
   const $ = id => document.getElementById(id);
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const L = window.SITE.legal || {};
@@ -146,7 +147,7 @@ footer a:hover{color:var(--ink)}
   }
   addEventListener("hashchange", () => show(true));
   show(false);
-})();
+});
 </script>
 </body>
 </html>

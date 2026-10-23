@@ -1,0 +1,55 @@
+rules_version = '2';
+
+// Who can do what:
+//   anyone       reads the published site content
+//   a customer   sends enquiries (signed in, as themselves), reads their own profile, trips, visas and wallet; edits their profile and travellers
+//   an admin     everything (an admin is a signed-in user with a document at admin/{uid})
+// Wallet entries, trips and visas are written by admins only, so nobody can give themselves credit.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() { return signedIn() && exists(/databases/$(database)/documents/admin/$(request.auth.uid)); }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function str(v, max) { return v is string && v.size() <= max; }
+
+    match /site/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /admin/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow write: if false;                       // add admins in the Firebase console
+    }
+
+    match /enquiries/{id} {
+      allow read: if signedIn() && resource.data.uid == request.auth.uid;   // a customer sees their own
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(["trip", "tripId", "name", "phone", "month", "travellers", "message", "status", "at", "uid", "email"])
+        && str(request.resource.data.email, 120)
+        && str(request.resource.data.name, 80) && request.resource.data.name.size() >= 2
+        && str(request.resource.data.phone, 20)
+        && str(request.resource.data.trip, 120) && str(request.resource.data.tripId, 60)
+        && str(request.resource.data.month, 40) && str(request.resource.data.travellers, 40)
+        && str(request.resource.data.message, 1000) && str(request.resource.data.at, 40)
+        && request.resource.data.status == "new";
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /users/{uid} {
+      function profileOnly() {
+        return request.resource.data.diff(resource == null ? {} : resource.data).affectedKeys()
+          .hasOnly(["name", "email", "phone", "dob", "city", "whatsappUpdates", "referralCode", "createdAt"]);
+      }
+      allow read: if isOwner(uid) || isAdmin();
+      allow create: if (isOwner(uid) && profileOnly()) || isAdmin();
+      allow update: if (isOwner(uid) && profileOnly() && request.resource.data.referralCode == resource.data.referralCode) || isAdmin();
+      allow delete: if isAdmin();
+
+      match /travellers/{id} { allow read, write: if isOwner(uid) || isAdmin(); }
+      match /trips/{id}      { allow read: if isOwner(uid) || isAdmin(); allow write: if isAdmin(); }
+      match /visas/{id}      { allow read: if isOwner(uid) || isAdmin(); allow write: if isAdmin(); }
+      match /wallet/{id}     { allow read: if isOwner(uid) || isAdmin(); allow write: if isAdmin(); }
+    }
+  }
+}

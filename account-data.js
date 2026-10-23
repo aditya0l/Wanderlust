@@ -90,6 +90,7 @@
     /* ---------- trips and visas (read-only for customers) ---------- */
     async listTrips() { await delay(); return db.trips.map(t => ({ ...t })); },
     async listVisas() { await delay(); return db.visas.map(v => ({ ...v })); },
+    async listEnquiries() { await delay(); return [{ id: "e1", trip: "Kerala Backwaters", month: "December", travellers: "4", status: "contacted", at: new Date(today - 2 * 864e5).toISOString() }]; },
 
     /* ---------- wallet (read-only for customers; credits are written by server code) ---------- */
     async getWallet() {

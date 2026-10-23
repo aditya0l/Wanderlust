@@ -148,8 +148,8 @@ button.chip[aria-selected="true"]{background:var(--ink);color:var(--paper);box-s
 .stat b{display:block;font-size:1.7rem;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .empty{padding:40px 20px;text-align:center;color:var(--ink-2)}
 
-.toast{position:fixed;z-index:60;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,150%);background:var(--espresso);color:#F4F1EC;padding:11px 16px;border-radius:12px;font-size:.9rem;box-shadow:0 16px 36px -16px rgba(10,20,22,.7);transition:transform .5s var(--ease);max-width:calc(100% - 32px)}
-.toast.show{transform:translate(-50%,0)}
+.toast{position:fixed;z-index:60;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,calc(100% + 60px));visibility:hidden;background:var(--espresso);color:#F4F1EC;padding:11px 16px;border-radius:12px;font-size:.9rem;box-shadow:0 16px 36px -16px rgba(10,20,22,.7);transition:transform .5s var(--ease),visibility 0s .5s;max-width:calc(100% - 32px)}
+.toast.show{transform:translate(-50%,0);visibility:visible;transition:transform .55s var(--ease)}
 
 @media (max-width:900px){
   .layout{grid-template-columns:1fr;padding:16px 14px 90px}
@@ -178,10 +178,11 @@ button.chip[aria-selected="true"]{background:var(--ink);color:var(--paper);box-s
     <img src="assets/logo-full-ink.png" alt="The Wanderlust Explorers" width="841" height="952">
     <h1>Site admin</h1>
     <p class="muted small">Manage packages, prices, photos, music and enquiries.</p>
-    <div class="field"><label for="pass">Passcode</label><input class="input" id="pass" type="password" autocomplete="current-password"></div>
+    <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" autocomplete="username"></div>
+    <div class="field"><label for="pass">Password</label><input class="input" id="pass" type="password" autocomplete="current-password"></div>
     <p class="err" id="gateErr" role="alert"></p>
-    <button class="btn btn-primary" type="submit">Open admin</button>
-    <p class="small muted">Demo passcode: <b>wanderlust</b>. Real admin accounts arrive with Firebase.</p>
+    <button class="btn btn-primary" type="submit" id="gateBtn">Sign in</button>
+    <p class="small muted">Admin accounts are created in Firebase. Ask the site owner if you need access.</p>
   </form>
 </div>
 
@@ -191,6 +192,7 @@ button.chip[aria-selected="true"]{background:var(--ink);color:var(--paper);box-s
     <div class="top-right">
       <span class="status" id="status"><i></i><span id="statusText">All changes saved</span></span>
       <a class="btn btn-quiet" href="index.html" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9"/></svg><span>View site</span></a>
+      <button class="btn btn-quiet" id="signOut" type="button">Sign out</button>
       <button class="btn btn-primary" id="saveBtn" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m3 8.5 3 3 7-7"/></svg><span>Save changes</span></button>
     </div>
   </header>
@@ -202,6 +204,7 @@ button.chip[aria-selected="true"]{background:var(--ink);color:var(--paper);box-s
       <button class="tab" data-tab="partners"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.5 12.5v-1.6L11 7V3.6a1 1 0 0 0-2 0V7l-6.5 3.9v1.6L9 10.5v3.8l-1.8 1.3V17L10 16l2.8 1v-1.4L11 14.3v-3.8Z"/></svg>Partners<span class="count" id="cPartners"></span></button>
       <button class="tab" data-tab="search"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg>Popular searches</button>
       <button class="tab" data-tab="legal"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2.5h7l3.5 3.5v11.5H5Z"/><path d="M12 2.5V6h3.5M8 10h5M8 13h5"/></svg>Policies</button>
+      <button class="tab" data-tab="customers"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M2.5 16.5a5.5 5.5 0 0 1 11 0M13 4.2a3 3 0 0 1 0 5.6M15.5 12.2a5.5 5.5 0 0 1 2 4.3"/></svg>Customers</button>
       <button class="tab" data-tab="enquiries"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h11A1.5 1.5 0 0 1 17 5.5v7a1.5 1.5 0 0 1-1.5 1.5H8l-4 3v-3h.5A1.5 1.5 0 0 1 3 12.5Z"/></svg>Enquiries<span class="count" id="cEnquiries"></span></button>
       <button class="tab" data-tab="publish"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13V3M6 7l4-4 4 4M3.5 13v3.5h13V13"/></svg>Publish</button>
     </nav>
@@ -214,9 +217,14 @@ button.chip[aria-selected="true"]{background:var(--ink);color:var(--paper);box-s
 </div>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js?v=1"></script>
+<script>firebase.initializeApp(window.FIREBASE_CONFIG);</script>
 <script src="data/site.js?v=2"></script>
-<script src="site-data.js?v=2"></script>
+<script src="site-data.js?v=4"></script>
 <script src="sound.js?v=5"></script>
-<script src="admin.js"></script>
+<script src="admin.js?v=3"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@
 <meta name="theme-color" content="#0F1A1C">
 <link rel="icon" type="image/png" href="assets/logo-mark-ink.png">
 <link rel="apple-touch-icon" href="assets/logo-mark-ink.png">
+<link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Big+Shoulders+Stencil+Display:wght@700;800;900&family=Hanken+Grotesk:wght@400;500;600&display=swap">
@@ -401,6 +402,20 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 .enq-actions .enq-btn{justify-content:space-between;min-height:52px}
 .enq-actions .call-btn{min-height:52px}
 .enq-note{font-size:.82rem;color:var(--ink-3)}
+.enq-note a,.enq-sub a{color:var(--teal-ink);font-weight:600}
+.enq-wait{color:var(--ink-3);font-size:.95rem;min-height:120px}
+.enq-lead{color:var(--ink-2);font-size:.98rem}
+.enq-google{display:flex;align-items:center;justify-content:center;gap:12px;min-height:52px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);font-weight:600;font-size:1rem;color:var(--ink);transition:box-shadow .3s var(--ease),transform .3s var(--ease)}
+.enq-google:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.enq-google:active{transform:scale(.99)}
+.enq-google:disabled{opacity:.6;cursor:progress}
+.enq-google svg{width:18px;height:18px}
+.enq-or{display:flex;align-items:center;gap:12px;color:var(--ink-3);font-size:.8rem}
+.enq-or::before,.enq-or::after{content:"";flex:1;height:1px;background:var(--line)}
+.enq-actions.one{grid-template-columns:1fr}
+.enq-who{font-size:.86rem;color:var(--ink-3);margin-top:-4px}
+.enq-who b{color:var(--ink-2);font-weight:600}
+.enq-who button{color:var(--teal-ink);font-weight:600;font-size:inherit;text-decoration:underline;text-underline-offset:3px}
 .enq-done{display:grid;gap:12px;justify-items:start}
 .enq-done svg{width:42px;height:42px;color:var(--teal)}
 @media (max-width:640px){.enq{place-items:end stretch;padding:0}.enq-card{border-radius:24px 24px 0 0;width:100%;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(40px)}.enq-grid{grid-template-columns:1fr}.enq-actions{grid-template-columns:1fr}}
@@ -809,7 +824,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
         <p>Tell us where you would like to wake up. We will send a plan with real prices within one working day.</p>
         <div class="contact-line"><span class="label">Call or WhatsApp</span>+91 77379 30736</div>
         <div class="contact-line"><span class="label">Write to us</span>info@thewanderlustexplorers.com</div>
-        <a class="btn btn-light" href="https://wa.me/917737930736" target="_blank" rel="noopener">Start on WhatsApp <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></i></a>
+        <a class="btn btn-light" href="#final" data-plan>Plan my journey <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></i></a>
       </div>
     </div>
   </section>
@@ -828,7 +843,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 
 <nav class="mbar" id="mbar" aria-label="Contact">
   <a class="call" href="tel:+917737930736"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 2h2.6l1.2 3-1.6 1.1a8 8 0 0 0 4.2 4.2L11 8.7l3 1.2v2.6c0 .8-.7 1.5-1.5 1.5C6.6 14 2 9.4 2 3.5 2 2.7 2.7 2 3.5 2Z"/></svg>Call</a>
-  <a class="wa" href="https://wa.me/917737930736" target="_blank" rel="noopener">Plan on WhatsApp<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></a>
+  <a class="wa" href="#final" data-plan>Plan my journey<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></a>
 </nav>
 
 <footer class="site">
@@ -848,13 +863,31 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="data/site.js?v=2"></script>
-<script src="site-data.js?v=2"></script>
+<script src="firebase-config.js?v=1"></script>
+<script src="site-data.js?v=4"></script>
 <script src="sound.js?v=5"></script>
 <script>
-(() => {
+/* starts once the live content has arrived (or the 2.5 s fallback kicks in), under the loader */
+SiteData.ready.then(() => {
+const pageLoaded = document.readyState === "complete";
 gsap.registerPlugin(ScrollTrigger, Flip);
 const $ = id => document.getElementById(id);
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+/* ---------- talk to us: phones dial the office; computers and tablets have nothing to dial, so they open WhatsApp ---------- */
+const IS_PHONE = /Android.+Mobile|iPhone|iPod|Windows Phone/i.test(navigator.userAgent);
+const ICON_PHONE = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3.5 2h2.6l1.2 3-1.6 1.1a8 8 0 0 0 4.2 4.2L11 8.7l3 1.2v2.6c0 .8-.7 1.5-1.5 1.5C6.6 14 2 9.4 2 3.5 2 2.7 2.7 2 3.5 2Z"/></svg>';
+const ICON_WA = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2.6 13.4 3.4 11A5.6 5.6 0 1 1 5.3 12.7Z"/><path d="M6.1 5.9c.2 1.8 2.1 3.8 4 4l.8-1-1.3-.6-.6.6c-.6-.3-1.4-1-1.6-1.6l.6-.6-.7-1.3Z"/></svg>';
+function contactHref(about) {
+  const c = window.SITE.contact;
+  return IS_PHONE ? `tel:${c.phone.replace(/\s/g, "")}` : `https://wa.me/${c.whatsapp}?text=${encodeURIComponent(about ? `Hi, I'd like to talk about ${about}.` : "Hi, I'd like to plan a trip.")}`;
+}
+function contactBtn(about, phoneLabel) {
+  const c = window.SITE.contact;
+  return IS_PHONE
+    ? `<a class="call-btn" href="${contactHref(about)}">${ICON_PHONE}${esc(phoneLabel || "Call " + c.phone)}</a>`
+    : `<a class="call-btn" href="${contactHref(about)}" target="_blank" rel="noopener">${ICON_WA}${phoneLabel ? "WhatsApp" : "Chat on WhatsApp"}</a>`;
+}
+
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
 const U = (id, w = 1200) => `https://images.unsplash.com/${id}?w=${w}&q=78&auto=format&fit=crop`;
@@ -998,7 +1031,7 @@ gsap.to(".hero-inner", { y: -60, opacity: 0, ease: "none", scrollTrigger: { trig
 
 /* ---------- loader: the royal seal, then the palace doors open ---------- */
 lenis?.stop();
-let loaded = false; addEventListener("load", () => loaded = true); setTimeout(() => loaded = true, 2600);
+let loaded = pageLoaded; addEventListener("load", () => loaded = true); setTimeout(() => loaded = true, 2600);
 {
   const ticks = $("sealTicks"), NSs = "http://www.w3.org/2000/svg";
   for (let i = 0; i < 72; i++) { const a = i / 72 * Math.PI * 2, r1 = 174, r2 = i % 6 ? 177 : 180; const l = document.createElementNS(NSs, "line"); l.setAttribute("class", "tick"); l.setAttribute("x1", 200 + Math.cos(a) * r1); l.setAttribute("y1", 200 + Math.sin(a) * r1); l.setAttribute("x2", 200 + Math.cos(a) * r2); l.setAttribute("y2", 200 + Math.sin(a) * r2); ticks.appendChild(l); }
@@ -1288,7 +1321,7 @@ grid.innerHTML = TRIPS.map(t => `
         ${t.taste ? `<dt>Taste</dt><dd>${esc(t.taste)}</dd>` : ""}
         ${t.take ? `<dt>Bring home</dt><dd>${esc(t.take)}</dd>` : ""}
       </dl>` : ""}
-      <div class="trip-actions"><button type="button" class="enq-btn" data-enquire="${esc(t.id)}">Enquire now <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button><a class="call-btn" href="tel:${window.SITE.contact.phone.replace(/\s/g, "")}"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 2h2.6l1.2 3-1.6 1.1a8 8 0 0 0 4.2 4.2L11 8.7l3 1.2v2.6c0 .8-.7 1.5-1.5 1.5C6.6 14 2 9.4 2 3.5 2 2.7 2.7 2 3.5 2Z"/></svg>Call</a></div>
+      <div class="trip-actions"><button type="button" class="enq-btn" data-enquire="${esc(t.id)}">Enquire now <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button>${contactBtn(t.name, "Call")}</div>
     </div>
   </article>`).join("");
 const trips = [...grid.children];
@@ -1437,49 +1470,108 @@ const enq = $("enq"), enqCard = $("enqCard");
 let enqReturn = null;
 const ICON_X = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m4 4 8 8M12 4l-8 8"/></svg>';
 function months() { const out = [], d = new Date(); d.setDate(1); for (let i = 0; i < 12; i++) { out.push(d.toLocaleDateString("en-IN", { month: "long", year: "numeric" })); d.setMonth(d.getMonth() + 1); } return out; }
+/* ---------- sign-in, only when someone enquires. Firebase loads on demand; returning customers get it preloaded. ---------- */
+const FB_V = "10.14.1";
+let authP = null;
+const loadScript = src => new Promise((res, rej) => { const el = document.createElement("script"); el.src = src; el.onload = res; el.onerror = () => rej(new Error("Sign-in couldn't load. Check your connection and try again.")); document.head.appendChild(el); });
+function ensureAuth() {
+  return authP || (authP = (async () => {
+    for (const m of ["app", "auth", "firestore"]) await loadScript(`https://www.gstatic.com/firebasejs/${FB_V}/firebase-${m}-compat.js`);
+    await loadScript("account-firebase.js?v=3");
+    if (!window.AccountData || AccountData.demo) throw new Error("Sign-in isn't available right now. Call us instead.");
+    await AccountData.ready; return AccountData;
+  })().catch(e => { authP = null; throw e; }));
+}
+const ICON_G = '<svg viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.7H9v3.3h4.8a4.1 4.1 0 0 1-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.5Z"/><path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.7H.9v2.3A9 9 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.9 10.8a5.4 5.4 0 0 1 0-3.5V5H.9a9 9 0 0 0 0 8.1l3-2.3Z"/><path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.4L15 2.4A9 9 0 0 0 .9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6Z"/></svg>';
+const PENDING_ENQ = "wle-enquiry-after-signin";             // in-app browsers block pop-ups, so sign-in leaves the page; pick up where they were
+(() => {
+  let had = false, pending = null;
+  try { had = localStorage.getItem("wle-signed-in") === "1"; pending = JSON.parse(sessionStorage.getItem(PENDING_ENQ)); sessionStorage.removeItem(PENDING_ENQ); } catch (e) {}
+  if (pending) setTimeout(() => openEnquiry(...pending), 3400);      // after the doors open
+  else if (had) setTimeout(() => (window.requestIdleCallback || setTimeout)(() => ensureAuth().catch(() => {})), 4000);
+})();
+
 function openEnquiry(id, query, opts = {}) {
   const t = TRIPS.find(x => x.id === id);
   const title = opts.title || (t ? t.name : "A custom trip"), sub = opts.sub || (t ? `${t.nights} nights · from ${inr(t.price)} per person` : (query ? `"${query}"` : "Tell us where and when"));
+  const callBtn = contactBtn(title);
   enqReturn = document.activeElement;
   enqCard.innerHTML = `
     <button type="button" class="enq-x" id="enqClose" aria-label="Close">${ICON_X}</button>
     <span class="label">Enquire</span><h3 id="enqTitle">${esc(title)}</h3><p class="enq-sub">${esc(sub)}</p>
-    <form id="enqForm" novalidate style="display:grid;gap:14px">
+    <div id="enqBody" style="display:grid;gap:14px"><p class="enq-wait">One moment…</p></div>`;
+  enq.classList.add("open"); lenis?.stop(); document.body.style.overflow = "hidden";
+  $("enqClose").onclick = closeEnquiry;
+  $("enqClose").focus();
+  const body = () => $("enqBody");
+  const isOpen = () => enq.classList.contains("open") && body();
+
+  ensureAuth().then(async D => {
+    if (!isOpen()) return;
+    if (D.isSignedIn()) showForm(D, await D.getProfile()); else showSignIn(D);
+  }, err => { if (isOpen()) body().innerHTML = `<p class="enq-err">${esc(err.message)}</p><div class="enq-actions one">${callBtn}</div>`; });
+
+  function showSignIn(D) {
+    body().innerHTML = `
+      <p class="enq-lead">Sign in to send your enquiry. It's saved to your account, so you can follow it up and collect wallet credits on the booking.</p>
+      <button type="button" class="enq-google" id="eGoogle">${ICON_G}Continue with Google</button>
+      <p class="enq-err" id="eErr" role="alert"></p>
+      <div class="enq-or"><span>${IS_PHONE ? "or call us" : "or message us"}</span></div>
+      <div class="enq-actions one">${callBtn}</div>
+      <p class="enq-note">By signing in you agree to our <a href="policies.html#terms">Terms</a> and <a href="policies.html#privacy">Privacy policy</a>.</p>`;
+    $("eGoogle").focus();
+    $("eGoogle").onclick = async () => {
+      const b = $("eGoogle"); b.disabled = true; $("eErr").textContent = "";
+      try { sessionStorage.setItem(PENDING_ENQ, JSON.stringify([id, query || "", opts])); } catch (e) {}
+      try { if (await D.signInWithGoogle()) { try { sessionStorage.removeItem(PENDING_ENQ); } catch (e) {} if (isOpen()) showForm(D, await D.getProfile()); } }
+      catch (err) { try { sessionStorage.removeItem(PENDING_ENQ); } catch (e) {} if (isOpen()) { $("eErr").textContent = err.message; b.disabled = false; } }
+    };
+  }
+
+  function showForm(D, p) {
+    const phone10 = String(p.phone || "").replace(/\D/g, "").slice(-10);
+    body().innerHTML = `
+      <p class="enq-who">Signed in as <b>${esc(p.email || p.name)}</b> · <button type="button" id="eSwitch">Not you?</button></p>
+      <form id="enqForm" novalidate style="display:grid;gap:14px">
       <div class="enq-grid">
-        <div class="enq-field full"><label for="eName">Your name</label><input id="eName" autocomplete="name" placeholder="Full name"></div>
-        <div class="enq-field full"><label for="ePhone">Mobile number</label><div class="enq-phone"><span>+91</span><input id="ePhone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="98100 24567" maxlength="12"></div></div>
+        <div class="enq-field full"><label for="eName">Your name</label><input id="eName" autocomplete="name" placeholder="Full name" value="${esc(p.name || "")}"></div>
+        <div class="enq-field full"><label for="ePhone">Mobile number</label><div class="enq-phone"><span>+91</span><input id="ePhone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="98100 24567" maxlength="12" value="${esc(phone10)}"></div></div>
         <div class="enq-field"><label for="eMonth">When</label><select id="eMonth"><option value="">Choose a month</option>${months().map(m => `<option>${m}</option>`).join("")}<option>Not decided yet</option></select></div>
         <div class="enq-field"><label for="ePax">Travellers</label><select id="ePax">${[1,2,3,4,5,6,7,8].map(n => `<option ${n === 2 ? "selected" : ""}>${n}</option>`).join("")}<option>9 or more (group fare)</option></select></div>
         <div class="enq-field full"><label for="eMsg">Anything we should know? <span style="font-weight:400;color:var(--ink-3)">Optional</span></label><textarea id="eMsg" placeholder="Honeymoon, travelling with parents, budget…">${query ? esc(query) : ""}</textarea></div>
       </div>
       <p class="enq-err" id="eErr" role="alert"></p>
-      <div class="enq-actions"><button type="submit" class="enq-btn">Send on WhatsApp <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button><a class="call-btn" href="tel:${window.SITE.contact.phone.replace(/\s/g, "")}"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 2h2.6l1.2 3-1.6 1.1a8 8 0 0 0 4.2 4.2L11 8.7l3 1.2v2.6c0 .8-.7 1.5-1.5 1.5C6.6 14 2 9.4 2 3.5 2 2.7 2.7 2 3.5 2Z"/></svg>Call ${esc(window.SITE.contact.phone)}</a></div>
+      <div class="enq-actions"><button type="submit" class="enq-btn">Send on WhatsApp <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button>${callBtn}</div>
       <p class="enq-note">We reply on WhatsApp during working hours, usually within the hour.</p>
     </form>`;
-  enq.classList.add("open"); lenis?.stop(); document.body.style.overflow = "hidden";
-  $("enqClose").onclick = closeEnquiry;
-  $("ePhone").addEventListener("input", e => e.target.value = e.target.value.replace(/[^\d ]/g, ""));
-  setTimeout(() => $("eName").focus(), 80);
-  $("enqForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const name = $("eName").value.trim(), phone = $("ePhone").value.replace(/\s/g, "");
-    if (name.length < 2) { $("eErr").textContent = "Add your name so we know who to reply to."; $("eName").focus(); return; }
-    if (!/^[6-9]\d{9}$/.test(phone)) { $("eErr").textContent = "Enter a 10-digit mobile number, for example 98100 24567."; $("ePhone").focus(); return; }
-    const data = { trip: title, tripId: t ? t.id : "custom", name, phone: "+91 " + phone, month: $("eMonth").value || "Not decided", travellers: $("ePax").value, message: $("eMsg").value.trim() };
-    SiteData.addEnquiry(data);
-    const text = `Hi, I'd like to enquire about ${title}.\nName: ${name}\nPhone: ${data.phone}\nWhen: ${data.month}\nTravellers: ${data.travellers}${data.message ? `\nNote: ${data.message}` : ""}`;
-    const link = `https://wa.me/${window.SITE.contact.whatsapp}?text=${encodeURIComponent(text)}`;
-    window.open(link, "_blank", "noopener");
-    enqCard.innerHTML = `<button type="button" class="enq-x" id="enqClose" aria-label="Close">${ICON_X}</button>
+    $("eSwitch").onclick = async () => { await D.signOut(); showSignIn(D); };
+    $("ePhone").addEventListener("input", e => e.target.value = e.target.value.replace(/[^\d ]/g, ""));
+    setTimeout(() => (p.name && phone10 ? $("eMonth") : $("eName")).focus(), 80);
+    $("enqForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const name = $("eName").value.trim(), phone = $("ePhone").value.replace(/\s/g, "");
+      if (name.length < 2) { $("eErr").textContent = "Add your name so we know who to reply to."; $("eName").focus(); return; }
+      if (!/^[6-9]\d{9}$/.test(phone)) { $("eErr").textContent = "Enter a 10-digit mobile number, for example 98100 24567."; $("ePhone").focus(); return; }
+      const data = { trip: title, tripId: t ? t.id : "custom", name, phone: "+91 " + phone, month: $("eMonth").value || "Not decided", travellers: $("ePax").value, message: $("eMsg").value.trim() };
+      const text = `Hi, I'd like to enquire about ${title}.\nName: ${name}\nPhone: ${data.phone}\nWhen: ${data.month}\nTravellers: ${data.travellers}${data.message ? `\nNote: ${data.message}` : ""}`;
+      const link = `https://wa.me/${window.SITE.contact.whatsapp}?text=${encodeURIComponent(text)}`;
+      window.open(link, "_blank", "noopener");                       // first, while the tap still counts as a user action
+      SiteData.addEnquiry(data).catch(err => console.warn("Enquiry not saved:", err));
+      if (!phone10) D.updateProfile({ phone: "+91 " + phone.slice(0, 5) + " " + phone.slice(5) }).catch(() => {});
+      enqCard.innerHTML = `<button type="button" class="enq-x" id="enqClose" aria-label="Close">${ICON_X}</button>
       <div class="enq-done"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><circle cx="20" cy="20" r="17"/><path d="m12.5 20.5 5 5 10-11"/></svg>
-      <h3>Thanks, ${esc(name.split(" ")[0])}.</h3><p class="enq-sub" style="margin:0">WhatsApp has opened with your enquiry for ${esc(title)}. Press send there and our team will reply with a plan and real prices.</p>
+      <h3>Thanks, ${esc(name.split(" ")[0])}.</h3><p class="enq-sub" style="margin:0">WhatsApp has opened with your enquiry for ${esc(title)}. Press send there and our team will reply with a plan and real prices. You'll also find it in <a href="account.html">your account</a>.</p>
       <a class="call-btn" href="${link}" target="_blank" rel="noopener">WhatsApp didn't open? Tap here</a></div>`;
-    $("enqClose").onclick = closeEnquiry;
-  });
+      $("enqClose").onclick = closeEnquiry; $("enqClose").focus();
+    });
+  }
 }
 function closeEnquiry() { enq.classList.remove("open"); lenis?.start(); document.body.style.overflow = ""; enqReturn?.focus?.(); }
 enq.addEventListener("click", e => { if (e.target === enq) closeEnquiry(); });
-document.addEventListener("click", e => { const b = e.target.closest(".trip [data-enquire]"); if (b) openEnquiry(b.dataset.enquire); });
+document.addEventListener("click", e => {
+  const b = e.target.closest(".trip [data-enquire]"); if (b) openEnquiry(b.dataset.enquire);
+  const pl = e.target.closest("[data-plan]"); if (pl) { e.preventDefault(); openEnquiry("custom", "", { title: "Plan my journey", sub: "Tell us where and when, and we'll send a plan with real prices" }); }
+});
 
 /* ---------- services: image follows the cursor ---------- */
 if (fine) {
@@ -1652,14 +1744,14 @@ $("grid").addEventListener("click", e => {
     const begin = () => { started = true; build(); };
     ScrollTrigger.addEventListener("refresh", rebuild);
     addEventListener("resize", rebuild);
-    addEventListener("load", rebuild);
+    if (!pageLoaded) addEventListener("load", rebuild);
     window.__flightStart = () => setTimeout(begin, 200);   // measured once the doors have opened, not during the loader
     gsap.ticker.add(frame);
   }
 }
 
-addEventListener("load", () => ScrollTrigger.refresh());
-})();
+if (pageLoaded) ScrollTrigger.refresh(); else addEventListener("load", () => ScrollTrigger.refresh());
+});
 </script>
 </body>
 </html>

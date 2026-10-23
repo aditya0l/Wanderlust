@@ -1,7 +1,7 @@
 /* Admin panel. Edits a working copy of the site content and saves it through SiteData.
-   Today that means this browser (localStorage + IndexedDB) and a downloadable data/site.js.
-   With Firebase: SiteData writes Firestore/Storage and the passcode gate becomes Firebase Auth. */
-(() => {
+   Save keeps a draft in this browser; Publish writes it to Firestore (site/live) for every visitor.
+   Sign-in is Firebase Auth (email and password); only users listed in admin/{uid} get in. */
+SiteData.ready.then(() => {
   const $ = id => document.getElementById(id);
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const inr = n => "₹" + Number(n || 0).toLocaleString("en-IN");
@@ -36,25 +36,50 @@
   addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
   addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); save(); } if (e.key === "Escape") closeDrawer(); });
 
-  /* ---------- gate ---------- */
-  const unlocked = () => { try { return sessionStorage.getItem("wle-admin") === "1"; } catch (e) { return false; } };
-  $("gateForm").addEventListener("submit", e => {
+  /* ---------- gate: Firebase Auth, then a check that this user is an admin ---------- */
+  const auth = firebase.auth(), fdb = firebase.firestore();
+  let opened = false;
+  const gateMsg = {
+    "auth/invalid-credential": "That email and password don't match. Check them and try again.",
+    "auth/wrong-password": "That email and password don't match. Check them and try again.",
+    "auth/user-not-found": "That email and password don't match. Check them and try again.",
+    "auth/too-many-requests": "Too many attempts. Wait a few minutes, then try again.",
+    "auth/network-request-failed": "No connection. Check your internet and try again.",
+    "auth/operation-not-allowed": "Email sign-in isn't switched on in Firebase yet (Authentication → Sign-in method).",
+    "auth/configuration-not-found": "Authentication isn't set up in Firebase yet (Authentication → Get started).",
+  };
+  $("gateForm").addEventListener("submit", async e => {
     e.preventDefault();
-    if ($("pass").value.trim().toLowerCase() !== "wanderlust") { $("gateErr").textContent = "That passcode isn't right. Check with the site owner."; $("pass").select(); return; }
-    try { sessionStorage.setItem("wle-admin", "1"); } catch (err) {}
-    open();
+    const email = $("email").value.trim(), pass = $("pass").value, btn = $("gateBtn");
+    if (!email || !pass) { $("gateErr").textContent = "Enter your admin email and password."; return; }
+    btn.disabled = true; btn.textContent = "Signing in…"; $("gateErr").textContent = "";
+    try { await auth.signInWithEmailAndPassword(email, pass); }
+    catch (err) { $("gateErr").textContent = gateMsg[err.code] || err.message; $("pass").select(); }
+    finally { btn.disabled = false; btn.textContent = "Sign in"; }
   });
-  function open() { $("gate").hidden = true; $("admin").hidden = false; if (SiteData.hasDraft()) $("statusText").textContent = "Saved in this browser"; counts(); go(location.hash.slice(1) || "packages"); }
+  auth.onAuthStateChanged(async u => {
+    if (!u) { if (opened) location.reload(); return; }
+    let ok = false;
+    try { ok = (await fdb.doc("admin/" + u.uid).get()).exists; } catch (err) {}
+    if (!ok) {
+      $("gateErr").innerHTML = `Signed in as ${esc(u.email)}, but this account isn't an admin. In Firestore, add a document <b>admin/${esc(u.uid)}</b>, then sign in again.`;
+      auth.signOut(); return;
+    }
+    opened = true; open();
+  });
+  $("signOut").addEventListener("click", () => { if (dirty && !confirm("You have unsaved changes. Sign out anyway?")) return; dirty = false; auth.signOut(); });
+
+  async function open() { $("gate").hidden = true; $("admin").hidden = false; loadEnquiries(); if (SiteData.hasDraft()) $("statusText").textContent = "Saved in this browser"; counts(); go(location.hash.slice(1) || "packages"); }
 
   /* ---------- tabs ---------- */
-  const VIEWS = { packages: vPackages, slides: vSlides, sounds: vSounds, partners: vPartners, search: vSearch, legal: vLegal, enquiries: vEnquiries, publish: vPublish };
+  const VIEWS = { packages: vPackages, slides: vSlides, sounds: vSounds, partners: vPartners, search: vSearch, legal: vLegal, customers: vCustomers, enquiries: vEnquiries, publish: vPublish };
   function go(t) { if (!VIEWS[t]) t = "packages"; tab = t; history.replaceState(null, "", "#" + t); document.querySelectorAll(".tab").forEach(b => b.dataset.tab === t ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")); VIEWS[t]($("main")); }
   document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => go(b.dataset.tab)));
   $("saveBtn").addEventListener("click", save);
   function counts() {
     $("cPackages").textContent = site.packages.length; $("cSlides").textContent = site.slides.length; $("cPartners").textContent = site.partners.length;
     const withFile = Object.values(site.sounds).filter(s => s.file).length; $("cSounds").textContent = `${withFile}/${Object.keys(site.sounds).length}`;
-    const n = SiteData.listEnquiries().filter(e => e.status === "new").length; const c = $("cEnquiries"); c.textContent = n || SiteData.listEnquiries().length; c.classList.toggle("new", n > 0);
+    const n = enqs.filter(e => e.status === "new").length; const c = $("cEnquiries"); c.textContent = n || enqs.length || ""; c.classList.toggle("new", n > 0);
   }
   const move = (arr, i, d) => { const j = i + d; if (j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; };
   function confirmBtn(btn, run) { if (btn.dataset.armed) { run(); return; } btn.dataset.armed = 1; btn.classList.add("confirm"); const old = btn.innerHTML; btn.textContent = "Tap again to confirm"; setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.classList.remove("confirm"); btn.innerHTML = old; } }, 3500); }
@@ -267,27 +292,29 @@
   }
 
   /* =================== enquiries =================== */
-  let enqFilter = "all";
-  function vEnquiries(m) {
-    const all = SiteData.listEnquiries(), list = all.filter(e => enqFilter === "all" || e.status === enqFilter);
+  let enqFilter = "all", enqs = [];
+  async function loadEnquiries() { try { enqs = await SiteData.listEnquiries(); } catch (e) { toast("Couldn't load enquiries: " + e.message); } counts(); return enqs; }
+  async function vEnquiries(m) {
+    m.innerHTML = `<div class="card empty">Loading enquiries…</div>`;
+    const all = await loadEnquiries(), list = all.filter(e => enqFilter === "all" || e.status === enqFilter);
     const n = s => all.filter(e => e.status === s).length;
     const ST = [["new", "New"], ["contacted", "Contacted"], ["booked", "Booked"], ["closed", "Closed"]];
     const when = iso => new Date(iso).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
     m.innerHTML = `
-      <div class="head"><div style="display:grid;gap:6px"><h1>Enquiries</h1><p class="muted">Every "Enquire now" sent from the site. Today this list only holds enquiries made in this browser; with Firebase it collects them from every visitor.</p></div>
+      <div class="head"><div style="display:grid;gap:6px"><h1>Enquiries</h1><p class="muted">Every "Enquire now" sent from the site, newest first.</p></div>
         <div style="display:flex;gap:8px"><button class="btn btn-quiet" id="csv" ${all.length ? "" : "disabled"}>${I.down2} Export CSV</button></div></div>
       <div class="stats">${[["all", "All", all.length], ...ST.map(([k, l]) => [k, l, n(k)])].slice(0, 4).map(([k, l, c]) => `<button class="card stat" data-f="${k}" style="text-align:left;${enqFilter === k ? "box-shadow:inset 0 0 0 2px var(--teal)" : ""}"><span class="label">${l}</span><b>${c}</b></button>`).join("")}</div>
       ${list.length ? `<div class="card table-wrap"><table><thead><tr><th>Received</th><th>Trip</th><th>Traveller</th><th class="hide-sm">When · Who</th><th>Status</th><th></th></tr></thead><tbody>
         ${list.map(e => `<tr><td class="small num" style="white-space:nowrap">${when(e.at)}</td><td class="cell-main"><b>${esc(e.trip)}</b>${e.message ? `<span>${esc(e.message)}</span>` : ""}</td>
-          <td class="cell-main"><b>${esc(e.name)}</b><span><a href="tel:${esc(e.phone.replace(/\s/g, ""))}">${esc(e.phone)}</a></span></td>
+          <td class="cell-main"><b>${esc(e.name)}</b><span><a href="tel:${esc(e.phone.replace(/\s/g, ""))}">${esc(e.phone)}</a>${e.email ? ` · ${esc(e.email)}` : ""}</span></td>
           <td class="hide-sm small">${esc(e.month)} · ${esc(e.travellers)}</td>
           <td><select class="select" data-st="${e.id}" style="min-width:130px">${ST.map(([k, l]) => `<option value="${k}" ${e.status === k ? "selected" : ""}>${l}</option>`).join("")}</select></td>
           <td><a class="btn btn-quiet" href="https://wa.me/${esc(e.phone.replace(/\D/g, ""))}?text=${encodeURIComponent(`Hi ${e.name.split(" ")[0]}, thanks for your enquiry about ${e.trip}. `)}" target="_blank" rel="noopener">Reply</a></td></tr>`).join("")}
       </tbody></table></div>` : `<div class="card empty">${all.length ? "No enquiries with this status." : "No enquiries yet. They appear here when someone taps Enquire now on the site."}</div>`}`;
     m.querySelectorAll("[data-f]").forEach(b => b.addEventListener("click", () => { enqFilter = b.dataset.f; vEnquiries(m); }));
-    m.querySelectorAll("[data-st]").forEach(s => s.addEventListener("change", () => { SiteData.updateEnquiry(s.dataset.st, { status: s.value }); counts(); toast("Status updated."); }));
+    m.querySelectorAll("[data-st]").forEach(s => s.addEventListener("change", () => { const e = enqs.find(x => x.id === s.dataset.st); SiteData.updateEnquiry(s.dataset.st, { status: s.value }).then(() => { if (e) e.status = s.value; counts(); toast("Status updated."); }, err => toast("Couldn't update: " + err.message)); }));
     const csv = $("csv"); if (csv) csv.addEventListener("click", () => {
-      const rows = [["Received", "Trip", "Name", "Phone", "When", "Travellers", "Message", "Status"], ...all.map(e => [e.at, e.trip, e.name, e.phone, e.month, e.travellers, e.message, e.status])];
+      const rows = [["Received", "Trip", "Name", "Phone", "Email", "When", "Travellers", "Message", "Status"], ...all.map(e => [e.at, e.trip, e.name, e.phone, e.email, e.month, e.travellers, e.message, e.status])];
       const text = rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
       const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: "text/csv" })); a.download = `wanderlust-enquiries-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
     });
@@ -295,16 +322,135 @@
 
   /* =================== publish =================== */
   function vPublish(m) {
+    const when = SiteData.isLive() ? "Visitors see the content you last published." : "Nothing published yet: visitors see the content bundled with the site.";
     m.innerHTML = `
-      <div class="head"><div style="display:grid;gap:6px"><h1>Publish</h1><p class="muted">How your changes reach the live website.</p></div></div>
-      <div class="card pad" style="display:grid;gap:10px"><h3>1. Save changes</h3><p class="muted">Saves your edits in this browser so you can check them on the site here first. Visitors don't see them yet.</p><button class="btn btn-primary" id="pSave" style="justify-self:start">Save changes</button></div>
-      <div class="card pad" style="display:grid;gap:10px"><h3>2. Download the site file</h3><p class="muted">Downloads <b>site.js</b> with all your content. Replace <b>data/site.js</b> on the web server with it to publish for everyone. Uploaded photos are included; uploaded music files are not, so put music in <b>assets/audio/</b> and use the link field.</p><button class="btn btn-quiet" id="pDownload" style="justify-self:start">${I.down2} Download site.js</button></div>
-      <div class="note info">${I.info}<span>Once Firebase is connected, saving publishes straight to the live site and this download step goes away.</span></div>
+      <div class="head"><div style="display:grid;gap:6px"><h1>Publish</h1><p class="muted">${when}</p></div></div>
+      <div class="card pad" style="display:grid;gap:10px"><h3>1. Save changes</h3><p class="muted">Saves your edits in this browser so you can check them on the site here first. Visitors don't see them yet.</p><button class="btn btn-quiet" id="pSave" style="justify-self:start">Save changes</button></div>
+      <div class="card pad" style="display:grid;gap:10px"><h3>2. Publish to the live site</h3><p class="muted">Everyone sees the new content on their next visit. Music uploaded in this browser isn't published; put music files in <b>assets/audio/</b> and use the link field.</p><button class="btn btn-primary" id="pPublish" style="justify-self:start">Publish now</button></div>
+      <div class="card pad" style="display:grid;gap:10px"><h3>Backup</h3><p class="muted">Downloads <b>site.js</b> with all your content. Replacing <b>data/site.js</b> in the code with it updates the built-in copy the site falls back to.</p><button class="btn btn-quiet" id="pDownload" style="justify-self:start">${I.down2} Download site.js</button></div>
       <div class="card pad" style="display:grid;gap:10px"><h3>Discard changes</h3><p class="muted">Throws away everything saved in this browser and goes back to the published content.</p><button class="btn btn-danger" id="pReset" style="justify-self:start">${I.trash} Discard and reload published content</button></div>`;
     $("pSave").onclick = save;
-    $("pDownload").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([SiteData.publishedFile(site)], { type: "text/javascript" })); a.download = "site.js"; a.click(); toast("site.js downloaded. Upload it to data/site.js on your server."); };
-    $("pReset").onclick = e => confirmBtn(e.currentTarget, () => { SiteData.clearDraft(); site = clone(window.SITE_DEFAULT); window.SITE = site; dirty = false; $("status").classList.remove("dirty"); $("statusText").textContent = "Showing published content"; counts(); toast("Changes discarded."); vPublish(m); });
+    $("pPublish").onclick = async e => {
+      const b = e.currentTarget; b.disabled = true; b.textContent = "Publishing…";
+      try { await SiteData.publish(site); dirty = false; $("status").classList.remove("dirty"); $("statusText").textContent = "Published"; toast("Published. Visitors see it on their next visit."); vPublish(m); }
+      catch (err) { toast(err.code === "permission-denied" ? "This account can't publish. Check it's listed in the admin collection in Firestore." : err.message); b.disabled = false; b.textContent = "Publish now"; }
+    };
+    $("pDownload").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([SiteData.publishedFile(site)], { type: "text/javascript" })); a.download = "site.js"; a.click(); toast("site.js downloaded."); };
+    $("pReset").onclick = e => confirmBtn(e.currentTarget, () => { SiteData.clearDraft(); site = SiteData.published(); window.SITE = site; dirty = false; $("status").classList.remove("dirty"); $("statusText").textContent = "Showing published content"; counts(); toast("Changes discarded."); vPublish(m); });
   }
 
-  unlocked() ? open() : $("pass").focus();
-})();
+  /* =================== customers: profiles, wallet credits, trips and visas =================== */
+  const todayISO = () => new Date().toISOString().slice(0, 10);
+  const plusMonths = n => { const d = new Date(); d.setMonth(d.getMonth() + n); return d.toISOString().slice(0, 10); };
+  const fmtDate = d => d ? new Date(d + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "";
+  const VISA_STEPS = ["Documents received", "Checked by our team", "Submitted", "Approved"];
+  const TRIP_ST = [["confirmed", "Confirmed"], ["payment-due", "Balance due"], ["completed", "Completed"]];
+  let custQ = "";
+  async function vCustomers(m) {
+    m.innerHTML = `<div class="card empty">Loading customers…</div>`;
+    let users = [];
+    try { users = (await fdb.collection("users").orderBy("createdAt", "desc").limit(500).get()).docs.map(d => ({ uid: d.id, ...d.data() })); }
+    catch (err) { m.innerHTML = `<div class="card empty">Couldn't load customers: ${esc(err.message)}</div>`; return; }
+    const render = () => {
+      const q = custQ.toLowerCase(), list = users.filter(u => !q || [u.name, u.email, u.phone, u.city].join(" ").toLowerCase().includes(q));
+      $("custRows").innerHTML = list.map(u => `<tr><td class="cell-main"><b>${esc(u.name)}</b><span>${esc(u.email)}</span></td><td class="hide-sm">${esc(u.phone) || '<span class="muted">Not added</span>'}</td><td class="hide-sm small">${esc(fmtDate((u.createdAt || "").slice(0, 10)))}</td><td><button class="btn btn-quiet" data-cust="${u.uid}">Open</button></td></tr>`).join("")
+        || `<tr><td colspan="4" class="muted">${users.length ? "No customer matches that search." : "No customers yet. They appear here after they sign in on the account page."}</td></tr>`;
+      $("custRows").querySelectorAll("[data-cust]").forEach(b => b.addEventListener("click", () => openCustomer(users.find(u => u.uid === b.dataset.cust))));
+    };
+    m.innerHTML = `
+      <div class="head"><div style="display:grid;gap:6px"><h1>Customers</h1><p class="muted">Everyone who has signed in. Open a customer to add wallet credit, trips and visa updates; they see them in their account straight away.</p></div></div>
+      <input class="input" id="custQ" placeholder="Search by name, email, phone or city" value="${esc(custQ)}" style="max-width:420px">
+      <div class="card table-wrap"><table><thead><tr><th>Customer</th><th class="hide-sm">Phone</th><th class="hide-sm">Joined</th><th></th></tr></thead><tbody id="custRows"></tbody></table></div>`;
+    $("custQ").addEventListener("input", e => { custQ = e.target.value; render(); });
+    render();
+  }
+
+  async function openCustomer(u) {
+    const ref = fdb.collection("users").doc(u.uid);
+    const [w, t, v] = await Promise.all(["wallet", "trips", "visas"].map(c => ref.collection(c).get().then(s => s.docs.map(d => ({ id: d.id, ...d.data() })))));
+    w.sort((a, b) => String(b.date).localeCompare(String(a.date))); t.sort((a, b) => String(b.start).localeCompare(String(a.start)));
+    const now = todayISO(), bal = Math.max(0, w.filter(e => e.kind === "credit" && (!e.expires || e.expires >= now)).reduce((s, e) => s + Number(e.amount), 0) - w.filter(e => e.kind === "debit").reduce((s, e) => s + Number(e.amount), 0));
+    const del = (c, id) => `<button class="icon-btn" data-del="${c}/${id}" aria-label="Delete">${I.trash}</button>`;
+    openDrawer(`
+      <div class="drawer-head"><h2 id="drawerTitle">${esc(u.name)}</h2><button class="icon-btn" id="dClose" aria-label="Close">${I.x}</button></div>
+      <div class="drawer-body">
+        <p class="small muted">${esc(u.email)}${u.phone ? " · " + esc(u.phone) : ""}${u.city ? " · " + esc(u.city) : ""}${u.referralCode ? " · Referral code " + esc(u.referralCode) : ""}</p>
+
+        <section class="card pad" style="display:grid;gap:12px">
+          <div class="row"><h3>Wallet</h3><b class="num" style="font-size:1.3rem">${inr(bal)}</b></div>
+          ${w.length ? `<table><tbody>${w.map(e => `<tr><td class="cell-main"><b>${esc(e.source)}</b><span>${esc(fmtDate(e.date))}${e.expires ? " · expires " + esc(fmtDate(e.expires)) : ""}</span></td><td class="num" style="white-space:nowrap;color:${e.kind === "debit" ? "var(--bad)" : "var(--teal-ink)"}">${e.kind === "debit" ? "−" : "+"}${inr(e.amount)}</td><td>${del("wallet", e.id)}</td></tr>`).join("")}</tbody></table>` : `<p class="small muted">No wallet entries yet.</p>`}
+          <form id="wForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;align-items:end" novalidate>
+            <div class="field"><label for="wKind">Type</label><select class="select" id="wKind"><option value="credit">Credit</option><option value="debit">Debit (used)</option></select></div>
+            <div class="field"><label for="wAmt">Amount (₹)</label><input class="input" id="wAmt" type="number" min="1" step="1"></div>
+            <div class="field"><label for="wExp">Expires</label><input class="input" id="wExp" type="date" value="${plusMonths(12)}"></div>
+            <div class="field" style="grid-column:1/-1"><label for="wSrc">Reason</label><input class="input" id="wSrc" placeholder="Cashback · Bali Honeymoon, Referral, Festive offer…"></div>
+            <button class="btn btn-primary" type="submit" style="justify-self:start">${I.plus} Add entry</button>
+          </form>
+        </section>
+
+        <section class="card pad" style="display:grid;gap:12px">
+          <h3>Trips</h3>
+          ${t.length ? `<table><tbody>${t.map(x => `<tr><td class="cell-main"><b>${esc(x.title)}</b><span>${esc(x.id)} · ${esc(fmtDate(x.start))} – ${esc(fmtDate(x.end))}</span></td><td><select class="select" data-tst="${x.id}" style="min-width:130px">${TRIP_ST.map(([k, l]) => `<option value="${k}" ${x.status === k ? "selected" : ""}>${l}</option>`).join("")}</select></td><td>${del("trips", x.id)}</td></tr>`).join("")}</tbody></table>` : `<p class="small muted">No trips yet.</p>`}
+          <form id="tForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;align-items:end" novalidate>
+            <div class="field" style="grid-column:1/-1"><label for="tTitle">Trip name</label><input class="input" id="tTitle" placeholder="Bali Honeymoon"></div>
+            <div class="field" style="grid-column:1/-1"><label for="tPlace">Places</label><input class="input" id="tPlace" placeholder="Ubud and Uluwatu, Indonesia"></div>
+            <div class="field"><label for="tStart">Starts</label><input class="input" id="tStart" type="date"></div>
+            <div class="field"><label for="tEnd">Ends</label><input class="input" id="tEnd" type="date"></div>
+            <div class="field"><label for="tPax">Travellers</label><input class="input" id="tPax" type="number" min="1" value="2"></div>
+            <div class="field"><label for="tTotal">Total (₹)</label><input class="input" id="tTotal" type="number" min="0" step="500"></div>
+            <div class="field"><label for="tPaid">Paid (₹)</label><input class="input" id="tPaid" type="number" min="0" step="500"></div>
+            <div class="field"><label for="tImg">Photo</label><input class="input" id="tImg" placeholder="Unsplash id or link"></div>
+            <div class="field" style="grid-column:1/-1"><label for="tItems">Itinerary, one per line</label><textarea class="textarea" id="tItems" placeholder="flight | DEL → DPS · IndiGo 6E 1603 | Day 1 · 22:40&#10;hotel | Ubud jungle villa | Nights 1–3"></textarea><span class="hint">Type | what | when. Types: flight, hotel, train, transfer.</span></div>
+            <button class="btn btn-primary" type="submit" style="justify-self:start">${I.plus} Add trip</button>
+          </form>
+        </section>
+
+        <section class="card pad" style="display:grid;gap:12px">
+          <h3>Visas</h3>
+          ${v.length ? `<table><tbody>${v.map(x => `<tr><td class="cell-main"><b>${esc(x.country)} · ${esc(x.applicant)}</b><span>${esc(x.note || "")}</span></td><td><select class="select" data-vst="${x.id}" style="min-width:150px">${VISA_STEPS.map((l, i) => `<option value="${i + 1}" ${Number(x.step) === i + 1 ? "selected" : ""}>${l}</option>`).join("")}</select></td><td>${del("visas", x.id)}</td></tr>`).join("")}</tbody></table>` : `<p class="small muted">No visa applications yet.</p>`}
+          <form id="vForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;align-items:end" novalidate>
+            <div class="field"><label for="vCountry">Country</label><input class="input" id="vCountry" placeholder="Indonesia"></div>
+            <div class="field"><label for="vType">Visa type</label><input class="input" id="vType" placeholder="e-Visa on Arrival"></div>
+            <div class="field"><label for="vApp">Applicant</label><input class="input" id="vApp" value="${esc(u.name)}"></div>
+            <div class="field" style="grid-column:1/-1"><label for="vNote">Note for the customer</label><input class="input" id="vNote" placeholder="Start with &quot;Please&quot; when they need to do something; it's flagged in their account."></div>
+            <button class="btn btn-primary" type="submit" style="justify-self:start">${I.plus} Add visa</button>
+          </form>
+        </section>
+        <p class="err" id="cErr" role="alert"></p>
+      </div>`, () => {
+      $("dClose").onclick = closeDrawer;
+      const fail = err => { $("cErr").textContent = err.code === "permission-denied" ? "This account can't change customer data." : err.message; };
+      const done = msg => { toast(msg); openCustomer(u); };
+      const num = id => Math.round(Number($(id).value) || 0);
+      $("wKind").onchange = () => { $("wExp").disabled = $("wKind").value === "debit"; };
+      $("wForm").addEventListener("submit", e => {
+        e.preventDefault(); const amount = num("wAmt"), source = $("wSrc").value.trim(), kind = $("wKind").value;
+        if (amount < 1) return $("cErr").textContent = "Enter an amount in rupees.";
+        if (!source) return $("cErr").textContent = "Add a reason. The customer sees it in their wallet.";
+        if (kind === "debit" && amount > bal) return $("cErr").textContent = `That's more than the balance of ${inr(bal)}.`;
+        const entry = { kind, amount, source, date: todayISO(), by: auth.currentUser.email }; if (kind === "credit" && $("wExp").value) entry.expires = $("wExp").value;
+        ref.collection("wallet").add(entry).then(() => done(kind === "credit" ? `${inr(amount)} added to ${u.name.split(" ")[0]}'s wallet.` : `${inr(amount)} deducted.`), fail);
+      });
+      $("tForm").addEventListener("submit", e => {
+        e.preventDefault(); const title = $("tTitle").value.trim(), start = $("tStart").value, end = $("tEnd").value;
+        if (!title || !start || !end) return $("cErr").textContent = "A trip needs a name, a start date and an end date.";
+        if (end < start) return $("cErr").textContent = "The trip ends before it starts. Check the dates.";
+        const total = num("tTotal"), paid = num("tPaid");
+        const items = $("tItems").value.split("\n").map(l => l.split("|").map(x => x.trim())).filter(x => x[0]).map(([type, label, when]) => label ? { type: type.toLowerCase(), label, when: when || "" } : { type: "info", label: type, when: "" });
+        const id = "WLE-" + Date.now().toString().slice(-5);
+        ref.collection("trips").doc(id).set({ title, place: $("tPlace").value.trim(), start, end, travellers: num("tPax") || 1, total, paid, status: paid >= total ? "confirmed" : "payment-due", img: $("tImg").value.trim(), items })
+          .then(() => done(`Trip ${id} added.`), fail);
+      });
+      $("vForm").addEventListener("submit", e => {
+        e.preventDefault(); const country = $("vCountry").value.trim();
+        if (!country) return $("cErr").textContent = "Add the visa country.";
+        ref.collection("visas").add({ country, type: $("vType").value.trim(), applicant: $("vApp").value.trim() || u.name, step: 1, steps: VISA_STEPS, updated: todayISO(), note: $("vNote").value.trim() }).then(() => done("Visa application added."), fail);
+      });
+      $("drawerPanel").querySelectorAll("[data-tst]").forEach(sel => sel.addEventListener("change", () => ref.collection("trips").doc(sel.dataset.tst).update({ status: sel.value }).then(() => toast("Trip status updated."), fail)));
+      $("drawerPanel").querySelectorAll("[data-vst]").forEach(sel => sel.addEventListener("change", () => ref.collection("visas").doc(sel.dataset.vst).update({ step: Number(sel.value), updated: todayISO() }).then(() => toast("Visa status updated."), fail)));
+      $("drawerPanel").querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => confirmBtn(b, () => { const [c, id] = b.dataset.del.split("/"); ref.collection(c).doc(id).delete().then(() => done("Deleted."), fail); })));
+    });
+  }
+
+  $("email").focus();
+});

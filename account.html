@@ -218,8 +218,8 @@ main.view{min-width:0;display:grid;gap:28px;align-content:start}
 .sheet{border-radius:18px;background:var(--stone);padding:18px;display:grid;gap:16px;box-shadow:inset 0 0 0 1px var(--line)}
 
 /* toast */
-.toast{position:fixed;z-index:60;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);background:var(--espresso);color:var(--cream);padding:12px 18px;border-radius:14px;font-size:.92rem;box-shadow:0 18px 40px -18px rgba(10,20,22,.7);transition:transform .6s var(--ease);max-width:calc(100% - 32px)}
-.toast.show{transform:translate(-50%,0)}
+.toast{position:fixed;z-index:60;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,calc(100% + 60px));visibility:hidden;background:var(--espresso);color:var(--cream);padding:12px 18px;border-radius:14px;font-size:.92rem;box-shadow:0 18px 40px -18px rgba(10,20,22,.7);transition:transform .6s var(--ease),visibility 0s .6s;max-width:calc(100% - 32px)}
+.toast.show{transform:translate(-50%,0);visibility:visible;transition:transform .55s var(--ease)}
 
 /* entrance */
 .enter > *{animation:rise .8s var(--ease) both}
@@ -254,7 +254,7 @@ main.view{min-width:0;display:grid;gap:28px;align-content:start}
 </style>
 </head>
 <body>
-<div class="demo" role="note"><span><b>Demo account.</b> Sample data stored in this browser only. Sign-in and the wallet go live once Firebase is connected.</span><button type="button" id="resetDemo">Reset demo data</button></div>
+<div class="demo" role="note" id="demoBar" hidden><span><b>Demo account.</b> Sample data stored in this browser only. Sign-in and the wallet go live once Firebase is connected.</span><button type="button" id="resetDemo">Reset demo data</button></div>
 
 <header class="top">
   <a class="logo" href="index.html" aria-label="The Wanderlust Explorers, home"><img src="assets/logo-wordmark-ink.png" alt="" width="841" height="372"></a>
@@ -281,34 +281,12 @@ main.view{min-width:0;display:grid;gap:28px;align-content:start}
   <div class="signin-form">
     <div style="display:grid;gap:10px">
       <h1>Welcome <em>back.</em></h1>
-      <p class="muted">Sign in with your mobile number. We'll text you a one-time code.</p>
+      <p class="muted">Sign in with your Google account to see your trips, wallet credits and visa status.</p>
     </div>
 
-    <form id="phoneForm" class="wide" style="display:grid;gap:14px" novalidate>
-      <div class="field">
-        <label for="phone">Mobile number</label>
-        <div class="phone"><span>+91</span><input class="input" id="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="98100 24567" maxlength="12"></div>
-      </div>
-      <p class="error" id="phoneError" role="alert"></p>
-      <button class="btn btn-primary wide" type="submit" id="sendBtn">Send code</button>
-    </form>
-
-    <form id="otpForm" class="wide" style="display:grid;gap:14px" hidden novalidate>
-      <div class="field">
-        <label for="otp0">Enter the 6-digit code sent to <b id="sentTo"></b></label>
-        <div class="otp" id="otp">
-          <input id="otp0" inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1"><input inputmode="numeric" aria-label="Digit 2"><input inputmode="numeric" aria-label="Digit 3"><input inputmode="numeric" aria-label="Digit 4"><input inputmode="numeric" aria-label="Digit 5"><input inputmode="numeric" aria-label="Digit 6">
-        </div>
-      </div>
-      <p class="error" id="otpError" role="alert"></p>
-      <button class="btn btn-primary wide" type="submit" id="verifyBtn">Verify and sign in</button>
-      <div class="row small"><button type="button" class="btn-text" id="changeNumber">Change number</button><span class="muted" id="resend">Resend code in 30s</span></div>
-      <p class="fineprint">Demo mode: any 6 digits will sign you in.</p>
-    </form>
-
-    <div class="or">or</div>
-    <button class="btn btn-quiet google" type="button" id="googleBtn"><svg viewBox="0 0 18 18"><path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.7H9v3.3h4.8a4.1 4.1 0 0 1-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.5Z"/><path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.7H.9v2.3A9 9 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.9 10.8a5.4 5.4 0 0 1 0-3.5V5H.9a9 9 0 0 0 0 8.1l3-2.3Z"/><path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.4L15 2.4A9 9 0 0 0 .9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6Z"/></svg>Continue with Google</button>
-    <p class="fineprint">By signing in you agree to our Terms and Privacy policy. We never share your number.</p>
+    <button class="btn btn-quiet google wide" type="button" id="googleBtn"><svg viewBox="0 0 18 18"><path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.7H9v3.3h4.8a4.1 4.1 0 0 1-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.5Z"/><path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.7H.9v2.3A9 9 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.9 10.8a5.4 5.4 0 0 1 0-3.5V5H.9a9 9 0 0 0 0 8.1l3-2.3Z"/><path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.4L15 2.4A9 9 0 0 0 .9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6Z"/></svg>Continue with Google</button>
+    <p class="error" id="signinError" role="alert"></p>
+    <p class="fineprint">By signing in you agree to our <a href="policies.html#terms">Terms</a> and <a href="policies.html#privacy">Privacy policy</a>. We never share your details.</p>
   </div>
 </section>
 
@@ -336,7 +314,12 @@ main.view{min-width:0;display:grid;gap:28px;align-content:start}
 
 <div class="toast" id="toast" role="status"></div>
 
-<script src="account-data.js"></script>
-<script src="account.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js?v=1"></script>
+<script src="account-data.js?v=3"></script>
+<script src="account-firebase.js?v=3"></script>
+<script src="account.js?v=3"></script>
 </body>
 </html>
