@@ -323,7 +323,7 @@ footer.site{background:var(--espresso);color:var(--cream);padding-block:80px cal
 .foot-word p{color:rgba(244,241,236,.6);max-width:34ch;font-size:.92rem;justify-self:end;text-align:right}
 @media (max-width:640px){.foot-word{grid-template-columns:1fr}.foot-word p{justify-self:start;text-align:left}}
 .foot-base{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:40px;font-size:.78rem;color:rgba(242,237,230,.5)}
-.foot-base nav{display:flex;gap:22px}
+.foot-base nav{display:flex;flex-wrap:wrap;gap:8px 22px}
 .foot-base a:hover{color:var(--cream)}
 @media (max-width:760px){.foot-top{grid-template-columns:1fr 1fr}.foot-top > div:first-child{grid-column:1/-1}}
 
@@ -423,9 +423,9 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 @keyframes railL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes railR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 .air{display:flex;align-items:center;gap:14px;padding:0 clamp(26px,3vw,44px);border-right:1px solid var(--line-2);height:56px}
-.air img{height:30px;width:auto;max-width:72px;object-fit:contain;filter:grayscale(1) contrast(1.1);opacity:.7;transition:filter .5s var(--ease),opacity .5s var(--ease)}
+.air img{height:30px;width:auto;max-width:72px;object-fit:contain;transition:transform .5s var(--ease)}
 .air span{font-size:.92rem;font-weight:600;color:var(--ink-2);white-space:nowrap}
-.air:hover img{filter:none;opacity:1}
+.air:hover img{transform:scale(1.06)}
 .htl{display:flex;align-items:center;gap:clamp(26px,3vw,44px);padding-right:clamp(26px,3vw,44px)}
 .htl span{font-family:var(--serif);font-size:clamp(1.5rem,2.6vw,2.2rem);letter-spacing:-.01em;white-space:nowrap;color:var(--ink);transition:color .4s var(--ease)}
 .htl:nth-child(even) span{font-style:italic;color:var(--teal-ink)}
@@ -539,7 +539,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
   .search-shell{margin-top:-48px}
   .bezel{border-radius:24px;padding:5px}
   .bezel-core{border-radius:19px;padding:6px}
-  .tabs{padding:2px 4px 0;gap:0;justify-content:space-between}
+  .tabs{padding:2px 4px 0;gap:0}
   .fields{grid-template-columns:1fr 1fr}
   .field,.field:first-child{padding:10px 12px;border-left:0;border-top:1px solid var(--line-2);border-radius:0}
   .field:nth-child(-n+2){border-top:0}
@@ -679,8 +679,6 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
       <div class="bezel-core">
         <div class="tabs" role="tablist" aria-label="What are you planning">
           <button type="button" role="tab" aria-selected="true" data-tab="holiday">Holidays</button>
-          <button type="button" role="tab" aria-selected="false" data-tab="flight">Flights</button>
-          <button type="button" role="tab" aria-selected="false" data-tab="hotel">Hotels</button>
           <button type="button" role="tab" aria-selected="false" data-tab="visa">Visa</button>
         </div>
         <div class="fields" id="fields"></div>
@@ -841,7 +839,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
       <div><span class="label">Help</span><ul><li><a href="account.html#trips">Find my booking</a></li><li><a href="account.html#trips">Web check-in</a></li><li><a href="account.html#trips">Flight status</a></li><li><a href="#final">Contact</a></li></ul></div>
     </div>
     <div class="foot-word"><img src="assets/logo-full-light.png" alt="The Wanderlust Explorers" width="841" height="952" loading="lazy"><p>Flights, visas and holidays from Delhi. Call or WhatsApp +91 77379 30736.</p></div>
-    <div class="foot-base"><span>© 2026 The Wanderlust Explorers. Prices are indicative.</span><nav aria-label="Legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cancellations</a></nav></div>
+    <div class="foot-base"><span>© 2026 The Wanderlust Explorers. Prices are indicative.</span><nav aria-label="Legal"><a href="policies.html#terms">Terms &amp; conditions</a><a href="policies.html#cancellation">Cancellation</a><a href="policies.html#refund">Refunds</a><a href="policies.html#privacy">Privacy</a></nav></div>
   </div>
 </footer>
 
@@ -849,8 +847,8 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="data/site.js?v=1"></script>
-<script src="site-data.js?v=1"></script>
+<script src="data/site.js?v=2"></script>
+<script src="site-data.js?v=2"></script>
 <script src="sound.js?v=5"></script>
 <script>
 (() => {
@@ -1044,27 +1042,21 @@ function intro() {
 
 /* ---------- search box: every field is a picker, nothing to type ---------- */
 const CITIES = [["DEL","New Delhi","Indira Gandhi International"],["BOM","Mumbai","Chhatrapati Shivaji Maharaj Intl"],["BLR","Bengaluru","Kempegowda International"],["CCU","Kolkata","Netaji Subhash Chandra Bose Intl"],["HYD","Hyderabad","Rajiv Gandhi International"],["MAA","Chennai","Chennai International"],["AMD","Ahmedabad","Sardar Vallabhbhai Patel Intl"],["PNQ","Pune","Pune Airport"],["JAI","Jaipur","Jaipur International"],["LKO","Lucknow","Chaudhary Charan Singh Intl"]];
-const AIRPORTS = [["DXB","Dubai"],["SIN","Singapore"],["BKK","Bangkok"],["DPS","Bali (Denpasar)"],["MLE","Malé, Maldives"],["KTM","Kathmandu"],["LHR","London Heathrow"],["ZRH","Zürich"],["JFK","New York JFK"],["GOI","Goa"],["IXL","Leh"],["KUU","Kullu-Manali"],["COK","Kochi"],["JAI","Jaipur"],["BOM","Mumbai"],["BLR","Bengaluru"]];
-const HOTEL_CITIES = ["Goa","Jaipur","Udaipur","Manali","Leh","Munnar","Kochi","Agra","New Delhi","Mumbai","Dubai","Singapore","Bali","Bangkok","Maldives"];
 const VISAS = ["United Arab Emirates","Singapore","Thailand","Indonesia (Bali)","Maldives","United Kingdom","Schengen (Europe)","United States","Canada","Australia","Japan","Vietnam"];
 const isoD = d => { const z = new Date(d.getTime() - d.getTimezoneOffset() * 6e4); return z.toISOString().slice(0, 10); };
 const addD = n => { const d = new Date(); d.setDate(d.getDate() + n); return isoD(d); };
 const SFORM = {
   holiday: { cta: "Find journeys", fields: [{ k: "from", label: "From", type: "city" }, { k: "to", label: "Where to", type: "dest" }, { k: "date", label: "When", type: "date", def: 30, hint: "Flexible by 3 days" }, { k: "pax", label: "Travellers", type: "pax", rooms: true }] },
-  flight:  { cta: "Get fares", fields: [{ k: "from", label: "From", type: "city" }, { k: "to", label: "To", type: "airport" }, { k: "date", label: "Depart", type: "date", def: 21, hint: "Return date? Tell us later" }, { k: "pax", label: "Travellers", type: "pax" }] },
-  hotel:   { cta: "Get hotel rates", fields: [{ k: "city", label: "City", type: "hotelcity" }, { k: "in", label: "Check-in", type: "date", def: 30, hint: "After 2 pm" }, { k: "out", label: "Check-out", type: "date", def: 33, hint: "Before 11 am" }, { k: "pax", label: "Guests", type: "pax", rooms: true }] },
   visa:    { cta: "Check visa", fields: [{ k: "country", label: "Visa for", type: "visa" }, { k: "date", label: "Travel date", type: "date", def: 45, hint: "Apply about 2 weeks ahead" }, { k: "kind", label: "Visa type", type: "kind" }, { k: "pax", label: "Applicants", type: "pax", adultsOnly: true }] },
 };
 let sTab = "holiday";
-const sVal = { from: "DEL", to: "", toAir: "DXB", city: "Goa", country: "United Arab Emirates", kind: "Tourist", pax: { a: 2, c: 0, r: 1 } };
+const sVal = { from: "DEL", to: "", country: "United Arab Emirates", kind: "Tourist", pax: { a: 2, c: 0, r: 1 } };
 const paxText = (f, v) => f.adultsOnly ? `${v.a} applicant${v.a > 1 ? "s" : ""}` : `${v.a} adult${v.a > 1 ? "s" : ""}${v.c ? ` · ${v.c} child${v.c > 1 ? "ren" : ""}` : ""}`;
 const paxHint = (f, v) => f.rooms ? `${v.r} room${v.r > 1 ? "s" : ""}` : f.adultsOnly ? "Each applicant needs a passport" : "Economy";
 const fmtD = v => v ? new Date(v + "T00:00:00").toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" }) : "";
 function fieldHTML(f) {
   const id = "sf_" + f.k, opt = (v, l, sel) => `<option value="${esc(v)}"${sel ? " selected" : ""}>${esc(l)}</option>`;
   if (f.type === "city") { const c = CITIES.find(x => x[0] === sVal.from) || CITIES[0]; return `<label for="${id}">${f.label}</label><select id="${id}" data-k="from">${CITIES.map(x => opt(x[0], x[1], x[0] === sVal.from)).join("")}</select><small id="${id}_s">${c[0]} · ${c[2]}</small>`; }
-  if (f.type === "airport") return `<label for="${id}">${f.label}</label><select id="${id}" data-k="toAir">${AIRPORTS.map(x => opt(x[0], x[1], x[0] === sVal.toAir)).join("")}</select><small id="${id}_s">${sVal.toAir}</small>`;
-  if (f.type === "hotelcity") return `<label for="${id}">${f.label}</label><select id="${id}" data-k="city">${HOTEL_CITIES.map(x => opt(x, x, x === sVal.city)).join("")}</select><small>Hand-picked hotels, 3 to 5 stars</small>`;
   if (f.type === "visa") return `<label for="${id}">${f.label}</label><select id="${id}" data-k="country">${VISAS.map(x => opt(x, x, x === sVal.country)).join("")}</select><small>Indian passport</small>`;
   if (f.type === "kind") return `<label for="${id}">${f.label}</label><select id="${id}" data-k="kind">${["Tourist", "Business", "Transit", "Student"].map(x => opt(x, x, x === sVal.kind)).join("")}</select><small>Single entry</small>`;
   if (f.type === "dest") { const t = TRIPS.find(x => x.id === sVal.to); return `<label for="${id}">${f.label}</label><button type="button" class="fpick${t ? "" : " empty"}" id="${id}" data-pick="dest">${t ? esc(t.name) : "Choose a destination"}</button><small>${t ? `${t.nights} nights · from ${inr(t.price)}` : `Any of our ${TRIPS.length} journeys`}</small>`; }
@@ -1086,8 +1078,6 @@ $("fields").addEventListener("change", e => {
   const el = e.target, k = el.dataset.k; if (!k) return;
   sVal[k] = el.value;
   if (k === "from") { const c = CITIES.find(x => x[0] === el.value); $("sf_from_s").textContent = `${c[0]} · ${c[2]}`; }
-  if (k === "toAir") $("sf_to_s").textContent = el.value;
-  if (k === "in" && sVal.out && sVal.out <= sVal.in) { const d = new Date(sVal.in + "T00:00:00"); d.setDate(d.getDate() + 2); sVal.out = isoD(d); const o = $("sf_out"); if (o) o.value = sVal.out; }
 });
 /* travellers panel */
 let paxOpen = null;
@@ -1121,9 +1111,6 @@ $("search").addEventListener("submit", e => {
   e.preventDefault(); closePax();
   const pax = sVal.pax, who = `${pax.a} adult${pax.a > 1 ? "s" : ""}${pax.c ? `, ${pax.c} child${pax.c > 1 ? "ren" : ""}` : ""}`;
   if (sTab === "holiday") { if (sVal.to) viewTrip(sVal.to); else openSearch("", id => { sVal.to = id; renderForm(false); viewTrip(id); }); return; }
-  const from = (CITIES.find(x => x[0] === sVal.from) || CITIES[0])[1];
-  if (sTab === "flight") { const to = (AIRPORTS.find(x => x[0] === sVal.toAir) || AIRPORTS[0])[1]; openEnquiry("custom", `Flight ${from} → ${to} on ${fmtD(sVal.date)} for ${who}.`, { title: `${from} → ${to}`, sub: `Flight · ${fmtD(sVal.date)} · ${who}` }); }
-  if (sTab === "hotel") openEnquiry("custom", `Hotel in ${sVal.city}, ${fmtD(sVal.in)} to ${fmtD(sVal.out)}, ${who}, ${pax.r} room${pax.r > 1 ? "s" : ""}.`, { title: `Hotels in ${sVal.city}`, sub: `${fmtD(sVal.in)} – ${fmtD(sVal.out)} · ${who}` });
   if (sTab === "visa") openEnquiry("custom", `${sVal.kind} visa for ${sVal.country}, travelling ${fmtD(sVal.date)}, ${pax.a} applicant${pax.a > 1 ? "s" : ""}.`, { title: `${sVal.country} visa`, sub: `${sVal.kind} · ${pax.a} applicant${pax.a > 1 ? "s" : ""} · travelling ${fmtD(sVal.date)}` });
 });
 
@@ -1230,11 +1217,11 @@ function renderWin(i, o) {
   if (winIdx !== i) { winIdx = i; fillWin(i); }
   const jr = $("journey").getBoundingClientRect(), core = stopEls[i].querySelector(".core").getBoundingClientRect();
   const px = core.left + core.width / 2 - jr.left, py = core.top + core.height / 2 - jr.top, mob = innerWidth < 760;
-  const ww = mob ? Math.min(jr.width * .56, 240) : Math.min(300, Math.max(220, jr.width * .21)), wh = ww * 1.36;
+  const ww = mob ? Math.min(jr.width * .56, 240) : Math.min(420, Math.max(280, jr.width * .27), (jr.height - 300) / 1.36), wh = ww * 1.36;
   const cl = (v, a, b) => Math.min(Math.max(v, a), b);
   let fx, fy;
   if (mob) { fx = jr.width / 2; fy = cl(jr.height * .44, wh / 2 + 70, jr.height - wh / 2 - 170); }
-  else { const right = px < jr.width * .52; fx = cl(px + (right ? 1 : -1) * (ww / 2 + 110), ww / 2 + 30, jr.width - ww / 2 - 30); fy = cl(py - 30, wh / 2 + 130, jr.height - wh / 2 - 150); }
+  else { const right = px < jr.width * .52; fx = cl(px + (right ? 1 : -1) * (ww / 2 + 120), ww / 2 + 30, jr.width - ww / 2 - 30); fy = cl(py - 30, wh / 2 + 130, jr.height - wh / 2 - 150); }
   const e = o * o * (3 - 2 * o), cx = px + (fx - px) * e, cy = py + (fy - py) * e, sc = .06 + .94 * e;
   pwin.style.visibility = "visible";
   pwin.style.width = ww + "px"; pwin.style.height = wh + "px";

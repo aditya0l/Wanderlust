@@ -21,7 +21,12 @@
 
   const SiteData = {
     /* content */
-    get() { const d = read(DRAFT); return d && d.version === window.SITE_DEFAULT.version ? d : clone(window.SITE_DEFAULT); },
+    get() {
+      const def = clone(window.SITE_DEFAULT), d = read(DRAFT);
+      if (!d || d.version !== def.version) return def;
+      for (const k in def) if (!(k in d)) d[k] = def[k];            // sections added after this draft was saved
+      return d;
+    },
     hasDraft: () => !!read(DRAFT),
     saveDraft(site) { site.updatedAt = new Date().toISOString(); if (!write(DRAFT, site)) throw new Error("This browser's storage is full. Use image links instead of uploads, or remove some uploaded images."); },
     clearDraft() { try { localStorage.removeItem(DRAFT); } catch (e) {} },

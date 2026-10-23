@@ -20,9 +20,10 @@ Then open http://localhost:5178.
 | `sound.js` | Generative soundscapes for each place (Ladakh, Maldives, Jaipur, Dubai, Kerala, Manali, Singapore, Golden Triangle, Bali, Swiss Alps), built with the Web Audio API |
 | `account.html`, `account.js` | Customer account: phone OTP / Google sign-in, overview, trips, wallet, visa status, profile and saved travellers |
 | `account-data.js` | The account data layer. Runs on sample data in the browser today; swap its functions for Firebase calls to go live |
-| `data/site.js` | All editable content: hero slides, packages and prices, music per place, popular searches, partners. Edited through the admin panel |
+| `data/site.js` | All editable content: hero slides, packages and prices, music per place, popular searches, partners, policies. Edited through the admin panel |
 | `site-data.js` | Shared data layer for content, uploads and enquiries. The one file to switch to Firebase |
-| `admin.html`, `admin.js` | Admin panel: packages and prices, hero slides, music uploads, partners, popular searches, enquiries, publish. Demo passcode `wanderlust` |
+| `policies.html` | Terms & conditions, cancellation, refund and privacy policies (text copied from the current site, linked from the footer; `policies.html#refund` opens one directly) |
+| `admin.html`, `admin.js` | Admin panel: packages and prices, hero slides, music uploads, partners, popular searches, policies, enquiries, publish. Demo passcode `wanderlust` |
 | `assets/audio/` | Licensed music files per place (see the README inside) |
 | `assets/` | Logo cut-outs (ink and light versions of the full logo, the W mark and the wordmark) and the original logo file |
 | `versions/` | Earlier rounds: v1 concept pitch, v2 "window seat" hero with 3D globe, v3 editorial without sound |
@@ -50,7 +51,11 @@ Open `admin.html` (demo passcode `wanderlust`). Changes are saved in that browse
 
 ## Search and enquiries
 
-The search (top bar, the hero search box, or press `/`) matches package names, destinations, routes and trip types, understands budgets like "under ₹20,000" or "under 2 lac", and suggests popular searches. Every package has Enquire now (opens a short form, then WhatsApp with the details filled in) and Call. Enquiries are listed in the admin panel.
+The hero search box has two modes, Holidays and Visa. The search (top bar, the hero search box, or press `/`) matches package names, destinations, routes and trip types, understands budgets like "under ₹20,000" or "under 2 lac", and suggests popular searches. Every package has Enquire now (opens a short form, then WhatsApp with the details filled in) and Call. Enquiries are listed in the admin panel.
+
+## Policies
+
+The four policies were copied word for word from the current thewanderlustexplorers.com. They still describe flight, hotel and bus bookings, so the client should review them before launch. Edit them in the admin under Policies: a line starting with `## ` is a heading, `- ` is a bullet, and emails and 10-digit phone numbers become links.
 
 ## Signature motion
 

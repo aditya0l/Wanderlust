@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Policies — The Wanderlust Explorers</title>
+<meta name="description" content="Terms & conditions, cancellation policy, refund policy and privacy policy of The Wanderlust Explorers.">
+<meta name="theme-color" content="#F5F4F1">
+<link rel="icon" type="image/png" href="assets/logo-mark-ink.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* Policies: one page, four documents. Same brand system as the site; content comes from SITE.legal (editable in the admin). */
+:root{
+  --stone:#F5F4F1; --paper:#FCFBF9; --sand:#E7E6E2;
+  --ink:#221E20; --ink-2:#4F4A4C; --ink-3:#625C5F;
+  --line:rgba(34,30,32,.14); --line-2:rgba(34,30,32,.08);
+  --teal:#048A97; --teal-ink:#036C76; --aqua:#6AC8C6;
+  --serif:"Bodoni Moda","Didot","Bodoni 72","Times New Roman",serif;
+  --sans:"Hanken Grotesk","Avenir Next","Segoe UI",sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --gutter:clamp(16px,4vw,56px);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
+body{background:var(--stone);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{display:block;max-width:100%}
+:focus-visible{outline:1px solid var(--teal);outline-offset:4px}
+::selection{background:var(--aqua);color:var(--ink)}
+.label{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:calc(10px + env(safe-area-inset-top,0px)) var(--gutter) 10px;background:rgba(245,244,241,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-2)}
+.top .logo img{height:46px;width:auto}
+.top a.back{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);text-decoration:none;font-weight:600;font-size:.9rem;transition:background .3s var(--ease)}
+.top a.back:hover{background:var(--paper)}
+
+.page{display:grid;grid-template-columns:minmax(200px,260px) minmax(0,1fr);gap:clamp(32px,6vw,96px);padding:clamp(48px,7vw,96px) var(--gutter) clamp(80px,10vw,140px);max-width:1240px;margin:0 auto}
+.index{position:sticky;top:110px;align-self:start;display:grid;gap:18px}
+.index nav{display:grid;border-top:1px solid var(--line)}
+.index a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;font-weight:500;color:var(--ink-2);transition:color .3s var(--ease)}
+.index a::after{content:"";width:7px;height:7px;transform:rotate(45deg) scale(0);box-shadow:inset 0 0 0 1.2px var(--teal);transition:transform .4s var(--ease)}
+.index a:hover{color:var(--ink)}
+.index a[aria-current="page"]{color:var(--teal-ink);font-weight:600}
+.index a[aria-current="page"]::after{transform:rotate(45deg) scale(1)}
+.index .help{font-size:.9rem;color:var(--ink-3)}
+.index .help a{display:inline;padding:0;border:0;color:var(--teal-ink);font-weight:600}
+.index .help a::after{display:none}
+
+.doc{max-width:68ch}
+.doc header{display:grid;gap:14px;padding-bottom:clamp(28px,4vw,44px);margin-bottom:clamp(28px,4vw,44px);border-bottom:1px solid var(--line)}
+.doc h1{font-family:var(--serif);font-weight:500;font-variation-settings:"opsz" 72;font-size:clamp(2.4rem,5.4vw,4.2rem);line-height:1.02;letter-spacing:-.025em;text-wrap:balance}
+.doc header p{color:var(--ink-3);font-size:.95rem}
+.doc h2{font-family:var(--serif);font-weight:500;font-variation-settings:"opsz" 28;font-size:clamp(1.35rem,2.2vw,1.65rem);letter-spacing:-.015em;line-height:1.2;margin:2.2em 0 .6em;text-wrap:balance}
+.doc h2:first-of-type{margin-top:0}
+.doc p{color:var(--ink-2);margin-bottom:1em}
+.doc ul{list-style:none;display:grid;gap:.6em;margin:0 0 1.2em}
+.doc li{position:relative;padding-left:22px;color:var(--ink-2)}
+.doc li::before{content:"";position:absolute;left:2px;top:.72em;width:6px;height:6px;transform:rotate(45deg);background:var(--teal)}
+.doc a{color:var(--teal-ink);font-weight:600;text-underline-offset:3px}
+.doc .contact{margin-top:clamp(40px,6vw,64px);padding:clamp(22px,3vw,30px);border-radius:18px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2);display:grid;gap:6px}
+.doc .contact b{font-weight:600}
+.doc .contact span{color:var(--ink-3);font-size:.95rem}
+
+footer{border-top:1px solid var(--line);padding:28px var(--gutter);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:.88rem;color:var(--ink-3)}
+footer a{text-decoration:none}
+footer a:hover{color:var(--ink)}
+
+@media (max-width:820px){
+  .page{grid-template-columns:1fr;gap:28px;padding-top:28px}
+  .index{position:sticky;top:67px;z-index:20;margin:0 calc(var(--gutter) * -1);padding:0 var(--gutter);background:rgba(245,244,241,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .index .label,.index .help{display:none}
+  .index nav{display:flex;gap:6px;overflow-x:auto;border:0;padding:10px 0;scrollbar-width:none}
+  .index nav::-webkit-scrollbar{display:none}
+  .index a{flex:none;padding:0 16px;min-height:40px;border:0;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);white-space:nowrap;font-size:.92rem}
+  .index a::after{display:none}
+  .index a[aria-current="page"]{background:var(--ink);color:var(--stone);box-shadow:none}
+  .top .logo img{height:40px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="index.html" aria-label="The Wanderlust Explorers, home"><img src="assets/logo-full-ink.png" alt="The Wanderlust Explorers" width="841" height="952"></a>
+  <a class="back" href="index.html">Back to the site</a>
+</header>
+
+<div class="page">
+  <aside class="index">
+    <span class="label">Policies</span>
+    <nav id="index" aria-label="Policies"></nav>
+    <p class="help">Questions about a booking? Call <a href="tel:+917737930736">+91 77379 30736</a> or write to <a href="mailto:info@thewanderlustexplorers.com">info@thewanderlustexplorers.com</a>.</p>
+  </aside>
+  <main class="doc" id="doc" tabindex="-1"></main>
+</div>
+
+<footer>
+  <span>© 2026 The Wanderlust Explorers</span>
+  <span>Office 501, R-Tech Capital Highstreet, Mahal Rd, Jaipur, Rajasthan 302017</span>
+</footer>
+
+<script src="data/site.js?v=2"></script>
+<script src="site-data.js?v=2"></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const L = window.SITE.legal || {};
+  const keys = Object.keys(L).filter(k => L[k] && L[k].title);
+  const c = window.SITE.contact || {};
+
+  // links: emails, and the office number written as 10 digits
+  const linkify = s => esc(s)
+    .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, m => `<a href="mailto:${m}">${m}</a>`)
+    .replace(/\b(\d{10})\b/g, m => `<a href="tel:+91${m}">${m}</a>`);
+
+  // "## " heading, "- " bullet, anything else a paragraph
+  function render(body) {
+    let html = "", list = false;
+    for (const raw of String(body || "").split("\n")) {
+      const l = raw.trim(); if (!l) continue;
+      const li = l.startsWith("- ");
+      if (list && !li) { html += "</ul>"; list = false; }
+      if (l.startsWith("## ")) html += `<h2>${linkify(l.slice(3))}</h2>`;
+      else if (li) { if (!list) { html += "<ul>"; list = true; } html += `<li>${linkify(l.slice(2))}</li>`; }
+      else html += `<p>${linkify(l)}</p>`;
+    }
+    return html + (list ? "</ul>" : "");
+  }
+
+  $("index").innerHTML = keys.map(k => `<a href="#${k}" data-k="${k}">${esc(L[k].title)}</a>`).join("");
+
+  function show(focus) {
+    const k = keys.includes(location.hash.slice(1)) ? location.hash.slice(1) : keys[0];
+    if (!k) { $("doc").innerHTML = "<p>No policies have been published yet.</p>"; return; }
+    const d = L[k];
+    document.title = `${d.title} — The Wanderlust Explorers`;
+    document.querySelectorAll("#index a").forEach(a => a.dataset.k === k ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+    $("doc").innerHTML = `<header><span class="label">The Wanderlust Explorers</span><h1>${esc(d.title)}</h1>${d.updated ? `<p>Last updated ${esc(d.updated)}</p>` : ""}</header>
+      ${render(d.body)}
+      <div class="contact"><b>Need help with a booking?</b><span>Call or WhatsApp <a href="tel:${esc((c.phone || "+91 77379 30736").replace(/\s/g, ""))}">${esc(c.phone || "+91 77379 30736")}</a>, or email <a href="mailto:${esc(c.email || "info@thewanderlustexplorers.com")}">${esc(c.email || "info@thewanderlustexplorers.com")}</a>.</span></div>`;
+    const cur = document.querySelector('#index a[aria-current="page"]'); if (cur) cur.scrollIntoView({ block: "nearest", inline: "center" });
+    if (focus) { scrollTo(0, 0); $("doc").focus({ preventScroll: true }); }
+  }
+  addEventListener("hashchange", () => show(true));
+  show(false);
+})();
+</script>
+</body>
+</html>

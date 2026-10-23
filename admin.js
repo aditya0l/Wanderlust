@@ -47,7 +47,7 @@
   function open() { $("gate").hidden = true; $("admin").hidden = false; if (SiteData.hasDraft()) $("statusText").textContent = "Saved in this browser"; counts(); go(location.hash.slice(1) || "packages"); }
 
   /* ---------- tabs ---------- */
-  const VIEWS = { packages: vPackages, slides: vSlides, sounds: vSounds, partners: vPartners, search: vSearch, enquiries: vEnquiries, publish: vPublish };
+  const VIEWS = { packages: vPackages, slides: vSlides, sounds: vSounds, partners: vPartners, search: vSearch, legal: vLegal, enquiries: vEnquiries, publish: vPublish };
   function go(t) { if (!VIEWS[t]) t = "packages"; tab = t; history.replaceState(null, "", "#" + t); document.querySelectorAll(".tab").forEach(b => b.dataset.tab === t ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")); VIEWS[t]($("main")); }
   document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => go(b.dataset.tab)));
   $("saveBtn").addEventListener("click", save);
@@ -240,6 +240,30 @@
       </div>`;
     m.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => { site.popular.splice(+b.dataset.del, 1); markDirty(); vSearch(m); }));
     $("addQ").addEventListener("submit", e => { e.preventDefault(); const v = $("qNew").value.trim(); if (!v) return; site.popular.push(v); markDirty(); vSearch(m); $("qNew").focus(); });
+  }
+
+  /* =================== policies =================== */
+  let legalKey = "terms";
+  function vLegal(m) {
+    const L = site.legal || (site.legal = {}), keys = Object.keys(L);
+    if (!L[legalKey]) legalKey = keys[0];
+    const d = L[legalKey];
+    m.innerHTML = `
+      <div class="head"><div style="display:grid;gap:6px"><h1>Policies</h1><p class="muted">Shown on the website's policies page and linked from the footer. Copied from your current site; edit them here.</p></div>
+        <a class="btn btn-quiet" href="policies.html#${esc(legalKey)}" target="_blank" rel="noopener">View on site</a></div>
+      <div class="chips" role="tablist" aria-label="Policy">${keys.map(k => `<button class="chip" role="tab" data-lk="${k}" aria-selected="${k === legalKey}">${esc(L[k].title)}</button>`).join("")}</div>
+      <div class="card pad" style="display:grid;gap:16px">
+        <div class="form-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+          <div class="field"><label for="lTitle">Title</label><input class="input" id="lTitle" value="${esc(d.title)}"></div>
+          <div class="field"><label for="lUpdated">Last updated</label><input class="input" id="lUpdated" value="${esc(d.updated)}" placeholder="e.g. 23 October 2026"><span class="hint">Optional. Shown under the title.</span></div>
+        </div>
+        <div class="field"><label for="lBody">Text</label><textarea class="textarea" id="lBody" rows="22" style="font-size:.92rem;line-height:1.6">${esc(d.body)}</textarea>
+          <span class="hint">Start a line with <b>## </b> for a heading and <b>- </b> for a bullet point. Every other line is a paragraph. Emails and 10-digit phone numbers become links.</span></div>
+      </div>`;
+    m.querySelectorAll("[data-lk]").forEach(b => b.addEventListener("click", () => { legalKey = b.dataset.lk; vLegal(m); }));
+    $("lTitle").addEventListener("input", e => { d.title = e.target.value; markDirty(); });
+    $("lUpdated").addEventListener("input", e => { d.updated = e.target.value; markDirty(); });
+    $("lBody").addEventListener("input", e => { d.body = e.target.value; markDirty(); });
   }
 
   /* =================== enquiries =================== */
