@@ -30,7 +30,8 @@ service cloud.firestore {
     match /enquiries/{id} {
       allow read: if signedIn() && resource.data.uid == request.auth.uid;   // a customer sees their own
       allow create: if signedIn() && request.resource.data.uid == request.auth.uid
-        && request.resource.data.keys().hasOnly(["trip", "tripId", "name", "phone", "month", "travellers", "message", "status", "at", "uid", "email"])
+        && request.resource.data.keys().hasOnly(["trip", "tripId", "name", "phone", "month", "travellers", "from", "hotel", "budget", "message", "status", "at", "uid", "email"])
+        && str(request.resource.data.get("from", ""), 60) && str(request.resource.data.get("hotel", ""), 40) && str(request.resource.data.get("budget", ""), 40)
         && str(request.resource.data.email, 120)
         && str(request.resource.data.name, 80) && request.resource.data.name.size() >= 2
         && str(request.resource.data.phone, 20)

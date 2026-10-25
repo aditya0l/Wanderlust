@@ -113,7 +113,7 @@
     async addEnquiry(e) {
       const u = window.firebase && firebase.auth && firebase.auth().currentUser;
       if (!u) throw new Error("Sign in to send an enquiry.");
-      const item = { trip: "", tripId: "", name: "", phone: "", month: "", travellers: "", message: "", ...e, status: "new", at: new Date().toISOString(), uid: u.uid, email: u.email || "" };
+      const item = { trip: "", tripId: "", name: "", phone: "", month: "", travellers: "", from: "", hotel: "", budget: "", message: "", ...e, status: "new", at: new Date().toISOString(), uid: u.uid, email: u.email || "" };
       const ref = await fs().collection("enquiries").add(item);
       return { id: ref.id, ...item };
     },

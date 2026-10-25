@@ -803,7 +803,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
   <div class="nav-right"><div class="island"><span class="nav-phone">+91 77379 30736</span><a class="acct-link" href="account.html" aria-label="My account"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3.2"/><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6"/></svg></a><a class="btn btn-light" href="#final">Plan a journey <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></i></a></div></div>
 </header>
 
-<div class="dest" id="dest" role="dialog" aria-label="Journeys" hidden><div class="dest-places" id="destPlaces" role="tablist" aria-label="Places"></div><div class="dest-list" id="destList"></div></div>
+<div class="dest" id="dest" role="dialog" aria-label="Journeys" data-lenis-prevent hidden><div class="dest-places" id="destPlaces" role="tablist" aria-label="Places"></div><div class="dest-list" id="destList"></div></div>
 
 <nav class="menu" id="menu" aria-label="Site">
   <ol>
@@ -997,15 +997,15 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
   </section>
 </main>
 
-<div class="ss" id="ss" role="dialog" aria-modal="true" aria-label="Search destinations and packages">
+<div class="ss" id="ss" role="dialog" aria-modal="true" aria-label="Search destinations and packages" data-lenis-prevent>
   <div class="ss-card">
     <div class="ss-bar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg><input id="ssInput" type="search" enterkeyhint="search" placeholder="Search Ladakh, honeymoon, under ₹20,000…" autocomplete="off" aria-controls="ssBody"><button type="button" class="ss-close" id="ssClose">Close</button></div>
     <div class="ss-body" id="ssBody"></div>
   </div>
 </div>
 
-<div class="pkg" id="pkg" role="dialog" aria-modal="true" aria-labelledby="pkgTitle" hidden></div>
-<div class="enq" id="enq" role="dialog" aria-modal="true" aria-labelledby="enqTitle">
+<div class="pkg" id="pkg" role="dialog" aria-modal="true" aria-labelledby="pkgTitle" data-lenis-prevent hidden></div>
+<div class="enq" id="enq" role="dialog" aria-modal="true" aria-labelledby="enqTitle" data-lenis-prevent>
   <div class="enq-card" id="enqCard"></div>
 </div>
 
@@ -1032,7 +1032,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="data/site.js?v=4"></script>
 <script src="firebase-config.js?v=1"></script>
-<script src="site-data.js?v=6"></script>
+<script src="site-data.js?v=7"></script>
 <script src="sound.js?v=5"></script>
 <script>
 /* starts once the live content has arrived (or the 2.5 s fallback kicks in), under the loader */
@@ -1936,10 +1936,13 @@ function openEnquiry(id, query, opts = {}) {
         <div class="enq-field full"><label for="ePhone">Mobile number</label><div class="enq-phone"><span>+91</span><input id="ePhone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="98100 24567" maxlength="12" value="${esc(phone10)}"></div></div>
         <div class="enq-field"><label for="eMonth">When</label><select id="eMonth"><option value="">Choose a month</option>${months().map(m => `<option>${m}</option>`).join("")}<option>Not decided yet</option></select></div>
         <div class="enq-field"><label for="ePax">Travellers</label><select id="ePax">${[1,2,3,4,5,6,7,8].map(n => `<option ${n === 2 ? "selected" : ""}>${n}</option>`).join("")}<option>9 or more (group fare)</option></select></div>
-        <div class="enq-field full"><label for="eMsg">Anything we should know? <span style="font-weight:400;color:var(--ink-3)">Optional</span></label><textarea id="eMsg" placeholder="Honeymoon, travelling with parents, budget…">${query ? esc(query) : ""}</textarea></div>
+        <div class="enq-field"><label for="eFrom">Leaving from</label><select id="eFrom">${CITIES.map(c => `<option ${c[1] === "New Delhi" ? "selected" : ""}>${c[1]}</option>`).join("")}<option>Another city</option></select></div>
+        <div class="enq-field"><label for="eHotel">Hotel</label><select id="eHotel"><option>No preference</option><option>3-star</option><option selected>4-star</option><option>5-star / luxury</option></select></div>
+        <div class="enq-field full"><label for="eBudget">Budget per person <span style="font-weight:400;color:var(--ink-3)">Helps us pick the right hotels</span></label><select id="eBudget"><option value="">Not sure yet</option>${["Under ₹25,000", "₹25,000 – ₹50,000", "₹50,000 – ₹1 lakh", "₹1 – 2 lakh", "Over ₹2 lakh"].map(b => `<option>${b}</option>`).join("")}</select></div>
+        <div class="enq-field full"><label for="eMsg">Anything we should know? <span style="font-weight:400;color:var(--ink-3)">Optional</span></label><textarea id="eMsg" placeholder="Honeymoon, travelling with parents, food preferences…">${query ? esc(query) : ""}</textarea></div>
       </div>
       <p class="enq-err" id="eErr" role="alert"></p>
-      <div class="enq-actions"><button type="submit" class="enq-btn">Send on WhatsApp <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button>${callBtn}</div>
+      <div class="enq-actions${IS_PHONE ? "" : " one"}"><button type="submit" class="enq-btn">Send on WhatsApp <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button>${IS_PHONE ? callBtn : ""}</div>
       <p class="enq-note">We reply on WhatsApp during working hours, usually within the hour.</p>
     </form>`;
     $("eSwitch").onclick = async () => { await D.signOut(); showSignIn(D); };
@@ -1950,8 +1953,8 @@ function openEnquiry(id, query, opts = {}) {
       const name = $("eName").value.trim(), phone = $("ePhone").value.replace(/\s/g, "");
       if (name.length < 2) { $("eErr").textContent = "Add your name so we know who to reply to."; $("eName").focus(); return; }
       if (!/^[6-9]\d{9}$/.test(phone)) { $("eErr").textContent = "Enter a 10-digit mobile number, for example 98100 24567."; $("ePhone").focus(); return; }
-      const data = { trip: title, tripId: t ? t.id : "custom", name, phone: "+91 " + phone, month: $("eMonth").value || "Not decided", travellers: $("ePax").value, message: $("eMsg").value.trim() };
-      const text = `Hi, I'd like to enquire about ${title}.\nName: ${name}\nPhone: ${data.phone}\nWhen: ${data.month}\nTravellers: ${data.travellers}${data.message ? `\nNote: ${data.message}` : ""}`;
+      const data = { trip: title, tripId: t ? t.id : "custom", name, phone: "+91 " + phone, month: $("eMonth").value || "Not decided", travellers: $("ePax").value, from: $("eFrom").value, hotel: $("eHotel").value, budget: $("eBudget").value || "Not sure yet", message: $("eMsg").value.trim() };
+      const text = `Hi, I'd like to enquire about ${title}.\nName: ${name}\nPhone: ${data.phone}\nWhen: ${data.month}\nTravellers: ${data.travellers}\nLeaving from: ${data.from}\nHotel: ${data.hotel}\nBudget per person: ${data.budget}${data.message ? `\nNote: ${data.message}` : ""}`;
       const link = `https://wa.me/${window.SITE.contact.whatsapp}?text=${encodeURIComponent(text)}`;
       window.open(link, "_blank", "noopener");                       // first, while the tap still counts as a user action
       SiteData.addEnquiry(data).catch(err => console.warn("Enquiry not saved:", err));

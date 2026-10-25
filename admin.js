@@ -371,14 +371,14 @@ SiteData.ready.then(() => {
       ${list.length ? `<div class="card table-wrap"><table><thead><tr><th>Received</th><th>Trip</th><th>Traveller</th><th class="hide-sm">When · Who</th><th>Status</th><th></th></tr></thead><tbody>
         ${list.map(e => `<tr><td class="small num" style="white-space:nowrap">${when(e.at)}</td><td class="cell-main"><b>${esc(e.trip)}</b>${e.message ? `<span>${esc(e.message)}</span>` : ""}</td>
           <td class="cell-main"><b>${esc(e.name)}</b><span><a href="tel:${esc(e.phone.replace(/\s/g, ""))}">${esc(e.phone)}</a>${e.email ? ` · ${esc(e.email)}` : ""}</span></td>
-          <td class="hide-sm small">${esc(e.month)} · ${esc(e.travellers)}</td>
+          <td class="hide-sm small">${esc(e.month)} · ${esc(e.travellers)}${e.from || e.hotel || e.budget ? `<br><span class="muted">${[e.from && "From " + e.from, e.hotel, e.budget && "Budget " + e.budget].filter(Boolean).map(esc).join(" · ")}</span>` : ""}</td>
           <td><select class="select" data-st="${e.id}" style="min-width:130px">${ST.map(([k, l]) => `<option value="${k}" ${e.status === k ? "selected" : ""}>${l}</option>`).join("")}</select></td>
           <td><a class="btn btn-quiet" href="https://wa.me/${esc(e.phone.replace(/\D/g, ""))}?text=${encodeURIComponent(`Hi ${e.name.split(" ")[0]}, thanks for your enquiry about ${e.trip}. `)}" target="_blank" rel="noopener">Reply</a></td></tr>`).join("")}
       </tbody></table></div>` : `<div class="card empty">${all.length ? "No enquiries with this status." : "No enquiries yet. They appear here when someone taps Enquire now on the site."}</div>`}`;
     m.querySelectorAll("[data-f]").forEach(b => b.addEventListener("click", () => { enqFilter = b.dataset.f; vEnquiries(m); }));
     m.querySelectorAll("[data-st]").forEach(s => s.addEventListener("change", () => { const e = enqs.find(x => x.id === s.dataset.st); SiteData.updateEnquiry(s.dataset.st, { status: s.value }).then(() => { if (e) e.status = s.value; counts(); toast("Status updated."); }, err => toast("Couldn't update: " + err.message)); }));
     const csv = $("csv"); if (csv) csv.addEventListener("click", () => {
-      const rows = [["Received", "Trip", "Name", "Phone", "Email", "When", "Travellers", "Message", "Status"], ...all.map(e => [e.at, e.trip, e.name, e.phone, e.email, e.month, e.travellers, e.message, e.status])];
+      const rows = [["Received", "Trip", "Name", "Phone", "Email", "When", "Travellers", "Leaving from", "Hotel", "Budget per person", "Message", "Status"], ...all.map(e => [e.at, e.trip, e.name, e.phone, e.email, e.month, e.travellers, e.from, e.hotel, e.budget, e.message, e.status])];
       const text = rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
       const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: "text/csv" })); a.download = `wanderlust-enquiries-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
     });
