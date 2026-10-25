@@ -12,6 +12,7 @@
 <meta name="theme-color" content="#0F1A1C">
 <link rel="icon" type="image/png" href="assets/logo-mark-ink.png">
 <link rel="apple-touch-icon" href="assets/logo-mark-ink.png">
+<script>try { if (sessionStorage.getItem("wle-intro-seen") || /[?&]trip=/.test(location.search)) document.documentElement.classList.add("intro-seen"); } catch (e) {}</script>
 <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,6 +71,11 @@ em{font-style:italic;font-weight:500}
 .btn-glass:hover{background:rgba(242,237,230,.24)}
 
 /* ---------- loader: the royal seal and the palace doors ---------- */
+.intro-seen .loader{display:none}
+.intro-seen body::before{content:"";position:fixed;inset:0;z-index:99;background:var(--stone);pointer-events:none;transition:opacity .45s var(--ease)}
+.intro-seen.page-in body::before{opacity:0}
+@keyframes veilSafety{to{opacity:0}}
+.intro-seen body::before{animation:veilSafety .4s 4s forwards}
 .loader{position:fixed;inset:0;z-index:100;color:var(--cream);display:grid;place-items:center;align-content:center;gap:clamp(22px,3.5vh,36px);pointer-events:auto}
 .door{position:absolute;top:0;bottom:0;width:50.2%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%236AC8C6' stroke-opacity='.09' stroke-width='1'%3E%3Ccircle cx='36' cy='18' r='18'/%3E%3Ccircle cx='36' cy='54' r='18'/%3E%3Ccircle cx='18' cy='36' r='18'/%3E%3Ccircle cx='54' cy='36' r='18'/%3E%3Ccircle cx='36' cy='36' r='6'/%3E%3C/g%3E%3C/svg%3E") center/72px 72px,radial-gradient(120% 90% at 100% 50%,#16262A 0%,var(--espresso) 70%);will-change:transform}
 .door.l{left:0}
@@ -362,6 +368,31 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 @media (max-width:640px){.ss{padding:0;align-items:stretch}.ss-card{border-radius:0;max-height:none;height:100svh;width:100%}.ss-bar{padding-top:calc(10px + env(safe-area-inset-top,0px))}.ss-row{grid-template-columns:56px 1fr}.ss-row img{width:56px;height:56px}.ss-row .acts{grid-column:2;justify-content:flex-start}}
 
 /* ---------- query bar above journeys ---------- */
+.qbar[hidden]{display:none}
+/* journeys dropdown in the top bar */
+.dest-btn{display:flex;align-items:center;gap:8px;padding:8px 14px 8px 16px;border-radius:999px;font-size:.84rem;font-weight:500;border-left:1px solid rgba(127,127,127,.3)}
+.dest-btn svg{width:12px;height:12px;transition:transform .4s var(--ease)}
+.dest-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.dest{position:fixed;z-index:59;top:calc(env(safe-area-inset-top,0px) + 82px);left:var(--gutter);width:min(940px,calc(100vw - var(--gutter) * 2));display:grid;grid-template-columns:200px 1fr;gap:8px;padding:10px;border-radius:24px;background:var(--paper);color:var(--ink);box-shadow:0 40px 80px -30px rgba(15,26,28,.45),inset 0 0 0 1px var(--line-2);opacity:0;transform:translateY(-10px) scale(.985);transform-origin:20% 0;transition:opacity .35s var(--ease),transform .5s var(--ease)}
+.dest.open{opacity:1;transform:none}
+.dest[hidden]{display:none}
+.dest-places{display:grid;align-content:start;gap:2px;padding:6px;border-right:1px solid var(--line-2)}
+.dest-places button{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:11px 14px;border-radius:14px;text-align:left;font-weight:500;color:var(--ink-2);transition:background .25s,color .25s}
+.dest-places button sup{font-size:.7rem;color:var(--ink-3)}
+.dest-places button[aria-selected="true"]{background:var(--stone);color:var(--ink);font-weight:600}
+.dest-places .all{margin-top:8px;color:var(--teal-ink);font-weight:600;font-size:.88rem}
+.dest-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:6px;align-content:start;max-height:min(520px,calc(100svh - 140px));overflow:auto}
+.dest-item{display:grid;gap:8px;padding:8px;border-radius:16px;text-align:left;transition:background .25s}
+.dest-item:hover,.dest-item:focus-visible{background:var(--stone)}
+.dest-item img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:11px;background:var(--sand)}
+.dest-item b{font-family:var(--serif);font-weight:500;font-size:1.18rem;line-height:1.1;letter-spacing:-.01em}
+.dest-item span{font-size:.8rem;color:var(--ink-3)}
+.dest-item span em{font-style:normal;font-weight:600;color:var(--ink)}
+.menu-places{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.menu-places button{min-height:40px;padding:0 16px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(244,241,236,.28);font-weight:500;font-size:.92rem}
+.menu-places button sup{font-size:.68rem;opacity:.6;margin-left:3px}
+@media (max-width:900px){.dest-btn,.dest{display:none!important}}
+@media (min-width:901px){.menu-places{display:none}.menu-side > div:has(.menu-places){display:none}}
 .qbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:-30px 0 34px;padding:12px 16px;border-radius:14px;background:#E4F2F2;color:var(--teal-ink);font-size:.92rem}
 .qbar button{min-height:40px;padding:0 14px;border-radius:999px;font-weight:600;color:var(--teal-ink);box-shadow:inset 0 0 0 1px rgba(3,108,118,.3)}
 
@@ -519,6 +550,137 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 .paxpop .done{margin:8px 0 4px;justify-self:end;min-height:40px;padding:0 18px;border-radius:999px;background:var(--teal-ink);color:#fff;font-weight:600;font-size:.88rem}
 @media (pointer:coarse){.step button{width:44px;height:44px}}
 
+/* ---------- package details: opens over the page, its own address (?trip=id) ---------- */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.pkg{position:fixed;inset:0;z-index:70;background:var(--stone);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;opacity:0;transform:translateY(28px);transition:opacity .45s var(--ease),transform .7s var(--ease)}
+.pkg.open{opacity:1;transform:none}
+.pkg[hidden]{display:none}
+.pkg-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 12px) var(--gutter) 12px;background:rgba(245,244,241,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line-2)}
+.pkg-top img{height:34px;width:auto}
+.pkg-back{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;border-radius:999px;font-weight:600;font-size:.88rem;box-shadow:inset 0 0 0 1px var(--line);transition:box-shadow .3s var(--ease)}
+.pkg-back:hover{box-shadow:inset 0 0 0 1px var(--ink-3)}
+.pkg-back svg{width:16px;height:16px}
+.pkg-x{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line)}
+.pkg-x svg{width:16px;height:16px}
+
+.pkg-gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;height:clamp(280px,46vw,520px);padding:16px var(--gutter) 0;max-width:1400px;margin:0 auto}
+.pkg-gallery figure{position:relative;margin:0;border-radius:18px;overflow:hidden;background:var(--sand)}
+.pkg-gallery figure:first-child{grid-row:1 / span 2}
+.pkg-gallery img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.pkg-gallery figure:hover img{transform:scale(1.04)}
+.pkg-gallery.n1{grid-template-columns:1fr}
+.pkg-gallery.n1 figure:first-child,.pkg-gallery.n2 figure:first-child,.pkg-gallery.n3 figure:first-child{grid-row:auto}
+.pkg-gallery.n2{grid-template-columns:2fr 1fr;grid-template-rows:1fr}
+.pkg-gallery.n3{grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr}
+.pkg-gallery.n3 figure:first-child{grid-row:1 / span 2}
+.pkg-count{position:absolute;right:12px;bottom:12px;padding:6px 12px;border-radius:999px;background:rgba(15,26,28,.62);color:#fff;font-size:.78rem;font-weight:600;backdrop-filter:blur(8px)}
+
+.pkg-wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:clamp(28px,4vw,64px);max-width:1400px;margin:0 auto;padding:clamp(28px,4vw,48px) var(--gutter) clamp(90px,10vw,140px);align-items:start}
+.pkg-head{display:grid;gap:12px;margin-bottom:8px}
+.pkg-head h1{font-family:var(--serif);font-weight:500;font-variation-settings:"opsz" 72;font-size:clamp(2.4rem,5vw,4rem);line-height:1.02;letter-spacing:-.025em}
+.pkg-head .sub{font-size:1.08rem;color:var(--ink-2)}
+.pkg-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pkg-facts span{display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:0 14px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2);font-size:.86rem;font-weight:500;color:var(--ink-2)}
+.pkg-facts svg{width:15px;height:15px;color:var(--teal-ink)}
+
+.pkg-nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 69px);z-index:4;display:flex;gap:4px;margin:26px 0 8px;padding:6px 0;background:var(--stone);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.pkg-nav::-webkit-scrollbar{display:none}
+.pkg-nav a{position:relative;flex:none;padding:10px 14px;font-size:.9rem;font-weight:500;color:var(--ink-3);text-decoration:none;transition:color .3s}
+.pkg-nav a::after{content:"";position:absolute;left:14px;right:14px;bottom:-7px;height:2px;background:var(--teal-ink);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.pkg-nav a.on{color:var(--ink)}
+.pkg-nav a.on::after{transform:scaleX(1)}
+
+.pkg-sec{padding-top:clamp(30px,4vw,44px);scroll-margin-top:140px}
+.pkg-sec > h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.6rem,2.6vw,2.1rem);letter-spacing:-.015em;margin-bottom:16px}
+.pkg-sec p{color:var(--ink-2);max-width:68ch}
+.pkg-sec p + p{margin-top:.8em}
+.pkg-more{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.pkg-more.full{display:block}
+.pkg-link{margin-top:10px;font-weight:600;color:var(--teal-ink);text-decoration:underline;text-underline-offset:3px}
+.pkg-hl{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 22px;margin-top:20px}
+.pkg-hl li,.pkg-list li{position:relative;padding-left:28px;color:var(--ink-2)}
+.pkg-hl li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;transform:rotate(45deg);background:var(--teal)}
+.pkg-local{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin-top:22px;padding:18px 20px;border-radius:18px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2);font-size:.95rem}
+.pkg-local dt{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding-top:3px}
+.pkg-local dd em{font-family:var(--serif);font-size:1.1rem;color:var(--teal-ink);margin-right:8px}
+
+.pkg-days-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+.pkg-days-head h2{margin:0;font-family:var(--serif);font-weight:500;font-size:clamp(1.6rem,2.6vw,2.1rem);letter-spacing:-.015em}
+.pkg-days-head button{font-weight:600;font-size:.88rem;color:var(--teal-ink);min-height:40px}
+.pkg-days{list-style:none;position:relative;display:grid}
+.pkg-days::before{content:"";position:absolute;left:27px;top:28px;bottom:28px;width:1px;background:linear-gradient(var(--teal),rgba(4,138,151,.15))}
+.pkg-day{position:relative;display:grid;grid-template-columns:56px 1fr;gap:16px;padding-bottom:10px}
+.pkg-day .chip{position:relative;z-index:1;width:56px;height:56px;border-radius:50%;display:grid;place-content:center;text-align:center;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);line-height:1;transition:background .4s var(--ease),color .4s var(--ease),box-shadow .4s}
+.pkg-day .chip small{font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.pkg-day .chip b{font-size:1.25rem;font-weight:600;font-variant-numeric:tabular-nums}
+.pkg-day.open .chip{background:var(--teal-ink);color:#fff;box-shadow:none}
+.pkg-day.open .chip small{color:rgba(255,255,255,.75)}
+.pkg-day-btn{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;min-height:56px;padding:8px 0;text-align:left;font-family:var(--serif);font-size:clamp(1.15rem,1.7vw,1.35rem);font-weight:500;line-height:1.25;letter-spacing:-.01em}
+.pkg-day-btn svg{flex:none;width:14px;height:14px;color:var(--ink-3);transition:transform .45s var(--ease)}
+.pkg-day.open .pkg-day-btn svg{transform:rotate(180deg)}
+.pkg-day-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s var(--ease)}
+.pkg-day.open .pkg-day-body{grid-template-rows:1fr}
+.pkg-day-body > div{overflow:hidden}
+.pkg-day-inner{display:grid;gap:12px;padding:4px 0 22px}
+.pkg-day-inner img{width:100%;max-width:560px;aspect-ratio:16/9;object-fit:cover;border-radius:14px;background:var(--sand)}
+
+.pkg-inc{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pkg-box{padding:22px;border-radius:20px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2)}
+.pkg-box h3{font-family:var(--sans);font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.pkg-list{list-style:none;display:grid;gap:10px;font-size:.95rem}
+.pkg-list li::before{content:"";position:absolute;left:0;top:.2em;width:18px;height:18px;border-radius:50%;background:var(--ok-wash,#E3F1EC) center/10px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m2.5 6.2 2.3 2.3 4.7-5' fill='none' stroke='%23036C76' stroke-width='1.8'/%3E%3C/svg%3E")}
+.pkg-list.no li::before{background-color:#F6E6E3;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m3.5 3.5 5 5m0-5-5 5' fill='none' stroke='%23A3322A' stroke-width='1.6'/%3E%3C/svg%3E")}
+.pkg-pay{list-style:none;display:grid;gap:0;margin-top:4px}
+.pkg-pay li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line-2);font-size:.95rem;color:var(--ink-2)}
+.pkg-pay li b{color:var(--ink);font-weight:600;white-space:nowrap}
+.pkg-policy-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.pkg-policy-links a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);font-size:.88rem;font-weight:600;text-decoration:none;transition:box-shadow .3s}
+.pkg-policy-links a:hover{box-shadow:inset 0 0 0 1px var(--ink-3)}
+.pkg-note{margin-top:16px;font-size:.85rem;color:var(--ink-3)}
+
+.pkg-aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 92px);display:grid;gap:14px}
+.pkg-card{display:grid;gap:14px;padding:24px;border-radius:24px;background:var(--paper);box-shadow:0 30px 60px -36px rgba(15,26,28,.35),inset 0 0 0 1px var(--line-2)}
+.pkg-card .from{font-size:.82rem;color:var(--ink-3)}
+.pkg-card .price{font-size:2.1rem;font-weight:600;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.pkg-card .per{font-size:.85rem;color:var(--ink-3)}
+.pkg-card .enq-btn{justify-content:space-between;width:100%;min-height:52px;font-size:1rem}
+.pkg-card .call-btn{justify-content:center;width:100%}
+.pkg-card .listen-row{display:flex;justify-content:center}
+.pkg-card .listen{position:static;background:var(--stone);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.pkg-assure{display:grid;gap:8px;padding:16px 20px;border-radius:18px;box-shadow:inset 0 0 0 1px var(--line-2);font-size:.86rem;color:var(--ink-2)}
+.pkg-assure span{display:flex;gap:10px;align-items:flex-start}
+.pkg-assure svg{flex:none;width:16px;height:16px;margin-top:3px;color:var(--teal-ink)}
+.pkg-skel{height:16px;border-radius:8px;background:linear-gradient(90deg,var(--sand),var(--paper),var(--sand));background-size:200% 100%;animation:pkgShimmer 1.4s linear infinite;margin-top:12px}
+@keyframes pkgShimmer{to{background-position:-200% 0}}
+.pkg-mbar{display:none}
+.trip .frame{cursor:pointer}
+.trip-meta .see{grid-column:1/-1;justify-self:start;display:inline-flex;align-items:center;gap:8px;font-size:.88rem;font-weight:600;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--line);transition:text-decoration-color .3s}
+.trip-meta .see:hover{text-decoration-color:var(--ink)}
+.trip-meta .see svg{width:14px;height:14px}
+
+@media (max-width:980px){
+  .pkg-wrap{grid-template-columns:1fr}
+  .pkg-aside{position:static;display:none}
+  .pkg-mbar{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;bottom:0;z-index:6;padding:12px var(--gutter) calc(12px + env(safe-area-inset-bottom,0px));background:rgba(252,251,249,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line-2)}
+  .pkg-mbar .p{display:grid;line-height:1.15}
+  .pkg-mbar .p small{font-size:.74rem;color:var(--ink-3)}
+  .pkg-mbar .p b{font-size:1.25rem;font-weight:600;font-variant-numeric:tabular-nums}
+  .pkg-mbar .acts{display:flex;gap:8px}
+  .pkg-mbar .call-btn{padding:0 14px}
+  .pkg-wrap{padding-bottom:40px}
+  .pkg-nav{top:calc(env(safe-area-inset-top,0px) + 69px)}
+}
+@media (max-width:700px){
+  .pkg-gallery{display:flex;height:auto;gap:8px;padding:12px var(--gutter) 0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .pkg-gallery::-webkit-scrollbar{display:none}
+  .pkg-gallery figure{flex:0 0 86%;aspect-ratio:4/3;scroll-snap-align:center}
+  .pkg-gallery.n1 figure{flex-basis:100%}
+  .pkg-inc{grid-template-columns:1fr}
+  .pkg-mbar .call-btn span{display:none}
+  .pkg-top img{display:none}
+}
+@media (prefers-reduced-motion:reduce){.pkg{transition:none;transform:none}.pkg-day-body{transition:none}}
+
 /* ================= mobile ================= */
 .mbar{display:none}
 .svc-thumb{display:none}
@@ -636,10 +798,12 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 
 <!-- NAV -->
 <header class="nav" id="nav">
-  <div><div class="island"><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span class="burger"><span></span><span></span></span><span id="menuLabel">Menu</span></button><button class="sound-btn" id="soundBtn" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="soundLabel">Sound</span></button><button class="sound-btn search-btn" id="searchBtn" aria-haspopup="dialog" aria-controls="ss"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg><span class="search-label">Search</span></button></div></div>
+  <div><div class="island"><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span class="burger"><span></span><span></span></span><span id="menuLabel">Menu</span></button><button class="dest-btn" id="destBtn" type="button" aria-expanded="false" aria-controls="dest">Journeys<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button><button class="sound-btn" id="soundBtn" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="soundLabel">Sound</span></button><button class="sound-btn search-btn" id="searchBtn" aria-haspopup="dialog" aria-controls="ss"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg><span class="search-label">Search</span></button></div></div>
   <a class="brand" href="#top" aria-label="The Wanderlust Explorers, home"><img class="on-dark" src="assets/logo-wordmark-light.png" alt="" width="841" height="372"><img class="on-paper" src="assets/logo-wordmark-ink.png" alt="" width="841" height="372"></a>
   <div class="nav-right"><div class="island"><span class="nav-phone">+91 77379 30736</span><a class="acct-link" href="account.html" aria-label="My account"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3.2"/><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6"/></svg></a><a class="btn btn-light" href="#final">Plan a journey <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></i></a></div></div>
 </header>
+
+<div class="dest" id="dest" role="dialog" aria-label="Journeys" hidden><div class="dest-places" id="destPlaces" role="tablist" aria-label="Places"></div><div class="dest-list" id="destList"></div></div>
 
 <nav class="menu" id="menu" aria-label="Site">
   <ol>
@@ -652,6 +816,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
     <li><a href="account.html" data-external><span class="mask"><span><small>06</small>My account</span></span></a></li>
   </ol>
   <div class="menu-side">
+    <div><span class="label">Journeys by place</span><div class="menu-places" id="menuPlaces"></div></div>
     <div><span class="label">Call the team</span><p>+91 77379 30736<br>info@thewanderlustexplorers.com</p></div>
     <div><span class="label">Hours</span><p>Planning desk 10:00–19:00 IST<br>Travel support, 24 hours</p></div>
   </div>
@@ -839,6 +1004,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
   </div>
 </div>
 
+<div class="pkg" id="pkg" role="dialog" aria-modal="true" aria-labelledby="pkgTitle" hidden></div>
 <div class="enq" id="enq" role="dialog" aria-modal="true" aria-labelledby="enqTitle">
   <div class="enq-card" id="enqCard"></div>
 </div>
@@ -864,9 +1030,9 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="data/site.js?v=3"></script>
+<script src="data/site.js?v=4"></script>
 <script src="firebase-config.js?v=1"></script>
-<script src="site-data.js?v=5"></script>
+<script src="site-data.js?v=6"></script>
 <script src="sound.js?v=5"></script>
 <script>
 /* starts once the live content has arrived (or the 2.5 s fallback kicks in), under the loader */
@@ -1035,8 +1201,10 @@ document.querySelectorAll("#slideBars button").forEach((b, i) => b.addEventListe
 gsap.to("#slides", { yPercent: 16, ease: "none", scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: true } });
 gsap.to(".hero-inner", { y: -60, opacity: 0, ease: "none", scrollTrigger: { trigger: "#hero", start: "35% top", end: "bottom top", scrub: true } });
 
-/* ---------- loader: the royal seal, then the palace doors open ---------- */
-lenis?.stop();
+/* ---------- loader: the royal seal, then the palace doors open. Once per tab: coming back from
+   another page (account, policies) skips straight to the page. ---------- */
+const INTRO_SEEN = document.documentElement.classList.contains("intro-seen");
+if (!INTRO_SEEN) lenis?.stop();
 let loaded = pageLoaded; addEventListener("load", () => loaded = true); setTimeout(() => loaded = true, 2600);
 {
   const ticks = $("sealTicks"), NSs = "http://www.w3.org/2000/svg";
@@ -1046,7 +1214,8 @@ const ring = $("ringProg"), RL = 2 * Math.PI * 182;
 ring.style.strokeDasharray = RL; ring.style.strokeDashoffset = RL;
 gsap.set("#sealMark", { opacity: 0, y: 18, scale: .94 });
 gsap.set("#loaderWordmark", { opacity: 0, y: 14 });
-gsap.timeline({ onComplete: waitLoad })
+if (INTRO_SEEN) { $("loader").style.display = "none"; setTimeout(quickStart, 60); }
+else gsap.timeline({ onComplete: waitLoad })
   .from(".seal .ring-base, .seal .ring-inner", { opacity: 0, scale: .96, svgOrigin: "200 200", duration: 1.4, ease: "power2.out" }, 0)
   .from("#sealTicks", { opacity: 0, duration: 1.2 }, .2)
   .from("#sealText", { opacity: 0, duration: 1.6, ease: "power1.out" }, .3)
@@ -1063,7 +1232,16 @@ function endLoad() {
     .to(".door.l", { xPercent: -101, duration: 1.6, ease: "expo.inOut" }, "-=.3")
     .to(".door.r", { xPercent: 101, duration: 1.6, ease: "expo.inOut" }, "<")
     .set("#loader", { display: "none" })
+    .add(() => { try { sessionStorage.setItem("wle-intro-seen", "1"); } catch (e) {} })
     .add(intro, "-=1.25");
+}
+function quickStart() {                         // the page as it is, with only a soft settle of the hero photo
+  lenis?.start();
+  document.documentElement.classList.add("page-in");
+  gsap.fromTo(slides[0].querySelector("img"), { scale: 1.14 }, { scale: 1.08, duration: 1.6, ease: "expo.out" });
+  runBar(0);
+  window.__flightStart && window.__flightStart();
+  (window.requestIdleCallback || setTimeout)(prepareClouds);
 }
 function intro() {
   lenis?.start();
@@ -1162,8 +1340,8 @@ gsap.utils.toArray(".reveal").forEach(el => gsap.from(el, { y: 40, opacity: 0, d
 function revealImg(frame, delay = 0) {
   const img = frame.querySelector("img");
   const st = { trigger: frame, start: "top 90%" };
-  gsap.fromTo(frame, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.7, delay, ease: "expo.inOut", scrollTrigger: st });
-  gsap.fromTo(img, { scale: 1.4 }, { scale: 1, duration: 2.4, delay, scrollTrigger: st });
+  return [gsap.fromTo(frame, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.7, delay, ease: "expo.inOut", scrollTrigger: st }),
+          gsap.fromTo(img, { scale: 1.4 }, { scale: 1, duration: 2.4, delay, scrollTrigger: st })];
 }
 document.querySelectorAll(".reveal-img").forEach((f, i) => revealImg(f, i * .15));
 
@@ -1323,6 +1501,7 @@ grid.innerHTML = TRIPS.map(t => `
       <span class="sub">${esc(t.sub)}</span>
       ${t.route ? `<span class="route">${esc(t.route)}</span>` : ""}
       ${proofLine(t)}
+      <a class="see" href="?trip=${encodeURIComponent(t.id)}">See the day-by-day itinerary <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
       ${t.say || t.taste || t.take ? `<dl class="local">
         ${t.say ? `<dt>Say</dt><dd><em>${esc(t.say)}</em>${esc(t.means)}</dd>` : ""}
         ${t.taste ? `<dt>Taste</dt><dd>${esc(t.taste)}</dd>` : ""}
@@ -1331,10 +1510,10 @@ grid.innerHTML = TRIPS.map(t => `
       <div class="trip-actions"><button type="button" class="enq-btn" data-enquire="${esc(t.id)}">Enquire now <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button>${contactBtn(t.name, "Call")}</div>
     </div>
   </article>`).join("");
-const trips = [...grid.children];
+const trips = [...grid.children], tripIntros = [];
 trips.forEach(t => {
-  revealImg(t.querySelector(".frame"));
-  gsap.from(t.querySelector(".trip-meta"), { y: 24, opacity: 0, duration: 1.5, delay: .3, scrollTrigger: { trigger: t, start: "top 90%" } });
+  tripIntros.push(...revealImg(t.querySelector(".frame")));
+  tripIntros.push(gsap.from(t.querySelector(".trip-meta"), { y: 24, opacity: 0, duration: 1.5, delay: .3, scrollTrigger: { trigger: t, start: "top 90%" } }));
   gsap.fromTo(t.querySelector("img"), { yPercent: -4 }, { yPercent: 4, ease: "none", scrollTrigger: { trigger: t, start: "top bottom", end: "bottom top", scrub: true } });
 });
 /* social proof, only from real numbers: "booked" is entered by the client from their records;
@@ -1348,15 +1527,62 @@ function proofLine(t) {
 }
 const fBox = $("filters");
 fBox.innerHTML = FILTERS.map(([k, l], i) => `<button type="button" data-f="${k}" aria-pressed="${i === 0}">${l}<sup>${k === "all" ? TRIPS.length : TRIPS.filter(t => slugP(placeOf(t)) === k).length}</sup></button>`).join("");
+let introsDone = false, filterTl = null;
 function filterGrid(show, filtered) {
-  const state = Flip.getState(trips);
-  grid.classList.toggle("filtered", filtered);
-  trips.forEach(t => t.classList.toggle("is-hidden", !show(t)));
-  Flip.from(state, { duration: 1.2, ease: "expo.inOut", absolute: true, stagger: .03,
-    onEnter: els => gsap.fromTo(els, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1.2 }),
-    onLeave: els => gsap.to(els, { opacity: 0, duration: .4, ease: "power2.in" }),
-    onComplete: () => ScrollTrigger.refresh() });
+  // cards further down still wait for their scroll entrance; once the grid is filtered they'd stay invisible, so finish them
+  if (!introsDone) {
+    tripIntros.forEach(tw => { tw.scrollTrigger && tw.scrollTrigger.kill(); tw.kill(); });
+    trips.forEach(t => { gsap.set(t.querySelector(".frame"), { clipPath: "inset(0% 0% 0% 0%)" }); gsap.set(t.querySelector(".frame img"), { scale: 1 }); gsap.set(t.querySelector(".trip-meta"), { opacity: 1, y: 0 }); });
+    introsDone = true;
+  }
+  filterTl && filterTl.kill();
+  const next = trips.filter(show), top = $("collections").getBoundingClientRect().top;
+  filterTl = gsap.timeline()
+    .to(grid, { opacity: 0, y: 14, duration: .28, ease: "power2.in" })
+    .add(() => {
+      grid.classList.toggle("filtered", filtered);
+      trips.forEach(t => t.classList.toggle("is-hidden", !next.includes(t)));
+      if (top < -200) lenis ? lenis.scrollTo(fBox, { offset: -120, immediate: true }) : fBox.scrollIntoView({ block: "start" });
+      ScrollTrigger.refresh();
+    })
+    .set(grid, { y: 0, opacity: 1 })
+    .fromTo(next, { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: .9, ease: "expo.out", stagger: .06, clearProps: "opacity,transform" });
 }
+/* journeys from the top bar: pick a place, see its journeys, jump to one */
+const destBtn = $("destBtn"), destEl = $("dest");
+const PLACES = FILTERS.filter(([k]) => k !== "all");
+let destPlace = PLACES[0] && PLACES[0][0], destOpen = false, destHoverT;
+function renderDest() {
+  $("destPlaces").innerHTML = PLACES.map(([k, l]) => `<button type="button" role="tab" data-place="${k}" aria-selected="${k === destPlace}">${l}<sup>${TRIPS.filter(t => slugP(placeOf(t)) === k).length}</sup></button>`).join("")
+    + `<button type="button" class="all" data-all>All ${TRIPS.length} journeys →</button>`;
+  $("destList").innerHTML = TRIPS.filter(t => slugP(placeOf(t)) === destPlace).map(t => `<button type="button" class="dest-item" data-trip="${esc(t.id)}"><img src="${esc(SiteData.img(t.img, 480))}" alt="" loading="lazy"><b>${esc(t.name)}</b><span>${esc(t.country && t.country !== placeOf(t) ? t.country : t.region || placeOf(t))} · ${t.nights} nights · from <em>${inr(t.price)}</em></span></button>`).join("");
+}
+function toggleDest(open) {
+  if (open === destOpen) return; destOpen = open; destBtn.setAttribute("aria-expanded", open);
+  if (open) { renderDest(); destEl.hidden = false; requestAnimationFrame(() => destEl.classList.add("open")); }
+  else { destEl.classList.remove("open"); setTimeout(() => { if (!destOpen) destEl.hidden = true; }, 350); }
+}
+function showPlace(k) {
+  const b = fBox.querySelector(`[data-f="${k}"]`) || fBox.querySelector("button");
+  lenis ? lenis.scrollTo(fBox, { offset: -120, duration: 1.4 }) : fBox.scrollIntoView({ behavior: "smooth" });
+  setTimeout(() => b.click(), 500);
+}
+destBtn.addEventListener("click", e => { e.stopPropagation(); toggleDest(!destOpen); });
+destBtn.addEventListener("mouseenter", () => { if (matchMedia("(hover:hover)").matches) { clearTimeout(destHoverT); toggleDest(true); } });
+destEl.addEventListener("mouseenter", () => clearTimeout(destHoverT));
+[destBtn, destEl].forEach(el => el.addEventListener("mouseleave", () => { if (matchMedia("(hover:hover)").matches) destHoverT = setTimeout(() => toggleDest(false), 260); }));
+destEl.addEventListener("mouseover", e => { const p = e.target.closest("[data-place]"); if (p && p.dataset.place !== destPlace) { destPlace = p.dataset.place; renderDest(); } });
+destEl.addEventListener("click", e => {
+  const p = e.target.closest("[data-place]"); if (p) { destPlace = p.dataset.place; renderDest(); destEl.querySelector(`[data-place="${destPlace}"]`).focus(); return; }
+  const t = e.target.closest("[data-trip]"); if (t) { toggleDest(false); viewTrip(t.dataset.trip); return; }
+  if (e.target.closest("[data-all]")) { toggleDest(false); showPlace("all"); }
+});
+document.addEventListener("click", e => { if (destOpen && !e.target.closest("#dest, #destBtn")) toggleDest(false); });
+addEventListener("keydown", e => { if (e.key === "Escape" && destOpen) { toggleDest(false); destBtn.focus(); } });
+addEventListener("scroll", () => { if (destOpen && !destEl.matches(":hover")) toggleDest(false); }, { passive: true });
+$("menuPlaces").innerHTML = PLACES.map(([k, l]) => `<button type="button" data-place="${k}">${l}<sup>${TRIPS.filter(t => slugP(placeOf(t)) === k).length}</sup></button>`).join("");
+$("menuPlaces").addEventListener("click", e => { const b = e.target.closest("[data-place]"); if (!b) return; toggleMenu(false); setTimeout(() => showPlace(b.dataset.place), 400); });
+
 const qbar = $("qbar");
 function clearQuery() { qbar.hidden = true; }
 fBox.addEventListener("click", e => {
@@ -1444,12 +1670,168 @@ function openSearch(q = "", pick = null) {
   setTimeout(() => ssInput.focus(), 60);
 }
 function closeSearch() { ss.classList.remove("open"); lenis?.start(); document.body.style.overflow = ""; ssReturn?.focus?.(); }
-function viewTrip(id) {
-  closeSearch();
-  const el = $("trip-" + id); if (!el) return;
-  if (el.classList.contains("is-hidden")) { clearQuery(); fBox.querySelector("button").click(); }
-  setTimeout(() => { lenis ? lenis.scrollTo(el, { offset: -90, duration: 1.6 }) : el.scrollIntoView({ behavior: "smooth", block: "center" }); gsap.fromTo(el.querySelector(".frame"), { boxShadow: "0 0 0 0 rgba(4,138,151,0)" }, { boxShadow: "0 0 0 6px rgba(4,138,151,.45)", duration: .5, yoyo: true, repeat: 3, delay: 1.2 }); }, 120);
+function viewTrip(id) { closeSearch(); openTrip(id); }
+/* ---------- package details: photos, overview, day-by-day itinerary, inclusions, policies ---------- */
+const pkgEl = $("pkg");
+let pkgOpenId = null, pkgReturn = null, pkgSpy = null, pkgPushed = false;
+const ICO = {
+  back: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg>',
+  chev: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>',
+  moon: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13 9.6A5.6 5.6 0 1 1 6.4 3a4.4 4.4 0 0 0 6.6 6.6Z"/></svg>',
+  pin: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M8 14.5s4.5-4.1 4.5-7.7a4.5 4.5 0 0 0-9 0c0 3.6 4.5 7.7 4.5 7.7Z"/><circle cx="8" cy="6.8" r="1.6"/></svg>',
+  route: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="3.5" cy="12.5" r="1.5"/><circle cx="12.5" cy="3.5" r="1.5"/><path d="M5 12.5h4.5a2.5 2.5 0 0 0 0-5h-3a2.5 2.5 0 0 1 0-5H11"/></svg>',
+  check: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>',
+};
+const paras = t => String(t || "").split("\n").map(x => x.trim()).filter(Boolean).map(x => `<p>${esc(x)}</p>`).join("");
+
+function pkgShell(t) {
+  const imgs = [SiteData.img(t.img, 1600)].filter(Boolean);
+  const days = t.nights + 1;
+  return `
+  <div class="pkg-top"><button type="button" class="pkg-back" id="pkgBack">${ICO.back}All journeys</button><img src="assets/logo-wordmark-ink.png" alt="" width="841" height="372"><button type="button" class="pkg-x" id="pkgClose" aria-label="Close">${ICON_X}</button></div>
+  <div class="pkg-gallery n1" id="pkgGallery">${imgs.map(src => `<figure><img src="${esc(src)}" alt="${esc(t.name)}"></figure>`).join("")}</div>
+  <div class="pkg-wrap">
+    <article>
+      <header class="pkg-head">
+        <span class="label">${esc(t.country && t.country !== placeOf(t) ? t.country : placeOf(t))}${t.badge ? ` · ${esc(t.badge)}` : ""}</span>
+        <h1 id="pkgTitle">${esc(t.name)}</h1>
+        ${t.sub ? `<p class="sub">${esc(t.sub)}</p>` : ""}
+        <div class="pkg-facts"><span>${ICO.moon}${t.nights} nights · ${days} days</span>${t.region ? `<span>${ICO.pin}${esc(t.region)}</span>` : ""}${t.route ? `<span>${ICO.route}${esc(t.route)}</span>` : ""}</div>
+        ${proofLine(t).replace('class="proof"', 'class="proof" style="margin-top:6px"')}
+      </header>
+      <nav class="pkg-nav" id="pkgNav" aria-label="Sections"><a href="#pkg-overview" class="on">Overview</a><a href="#pkg-itinerary">Itinerary</a><a href="#pkg-inclusions">Inclusions</a><a href="#pkg-policies">Policies</a></nav>
+      <div id="pkgBody"><div class="pkg-sec"><div class="pkg-skel" style="width:40%"></div><div class="pkg-skel"></div><div class="pkg-skel"></div><div class="pkg-skel" style="width:70%"></div></div></div>
+    </article>
+    <aside class="pkg-aside">
+      <div class="pkg-card">
+        <div><span class="from">Starting from</span><div class="price">${inr(t.price)}</div><span class="per">per person, twin sharing · ${t.nights}N / ${days}D</span></div>
+        <button type="button" class="enq-btn" data-pkg-enquire>Enquire now <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button>
+        ${contactBtn(t.name)}
+        ${t.scape ? `<div class="listen-row"><button type="button" class="listen" data-pkg-scape="${esc(t.scape)}" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Hear ${esc(t.name.split(" ")[0])}</button></div>` : ""}
+      </div>
+      <div class="pkg-assure"><span>${ICO.check}A real plan with real prices, usually within a working day</span><span>${ICO.check}Every date, hotel and transfer can be changed to suit you</span><span>${ICO.check}One person to call before, during and after the trip</span></div>
+    </aside>
+  </div>
+  <div class="pkg-mbar"><div class="p"><small>From, per person</small><b>${inr(t.price)}</b></div><div class="acts">${contactBtn(t.name, "Call").replace("</svg>Call<", "</svg><span>Call</span><").replace("</svg>WhatsApp<", "</svg><span>WhatsApp</span><")}<button type="button" class="enq-btn" data-pkg-enquire>Enquire <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></i></button></div></div>`;
 }
+
+function pkgBody(t, d) {
+  const local = t.say || t.taste || t.take ? `<dl class="pkg-local">${t.say ? `<dt>Say</dt><dd><em>${esc(t.say)}</em>${esc(t.means)}</dd>` : ""}${t.taste ? `<dt>Taste</dt><dd>${esc(t.taste)}</dd>` : ""}${t.take ? `<dt>Bring home</dt><dd>${esc(t.take)}</dd>` : ""}</dl>` : "";
+  const ov = (d && d.overview || []).filter(Boolean);
+  const hl = (d && d.highlights || []).filter(Boolean);
+  const days = (d && d.days || []).filter(x => x && (x.title || x.body));
+  const inc = (d && d.inclusions || []).filter(Boolean), exc = (d && d.exclusions || []).filter(Boolean);
+  const pay = (d && d.payment || []).filter(Boolean);
+  const payIntro = pay.filter(x => !x.includes(":")), payRows = pay.filter(x => x.includes(":"));
+  return `
+    <section class="pkg-sec" id="pkg-overview"><h2>Overview</h2>
+      ${ov.length ? `<div class="pkg-more" id="pkgMore">${ov.map(p => `<p>${esc(p)}</p>`).join("")}</div><button type="button" class="pkg-link" id="pkgMoreBtn" hidden>Read more</button>`
+        : `<p>${esc(t.sub || t.name)}${t.route ? `, ${esc(t.route)}` : ""}. Tell us your dates and who's travelling, and we'll shape the days around you.</p>`}
+      ${hl.length ? `<ul class="pkg-hl">${hl.map(h => `<li>${esc(h)}</li>`).join("")}</ul>` : ""}
+      ${local}
+    </section>
+    <section class="pkg-sec" id="pkg-itinerary">
+      <div class="pkg-days-head"><h2>Day by day</h2>${days.length > 1 ? `<button type="button" id="pkgAll">Expand all</button>` : ""}</div>
+      ${days.length ? `<ol class="pkg-days">${days.map((x, i) => `<li class="pkg-day${i ? "" : " open"}">
+          <span class="chip" aria-hidden="true"><small>Day</small><b>${i + 1}</b></span>
+          <div><button type="button" class="pkg-day-btn" aria-expanded="${!i}" aria-controls="pkgD${i}"><span><span class="sr-only">Day ${i + 1}: </span>${esc(x.title || `Day ${i + 1}`)}</span>${ICO.chev}</button>
+          <div class="pkg-day-body" id="pkgD${i}"><div><div class="pkg-day-inner">${x.img ? `<img src="${esc(x.img)}" alt="" loading="lazy">` : ""}${paras(x.body)}</div></div></div></div></li>`).join("")}</ol>`
+        : `<p>The day-by-day plan for ${esc(t.name)} is made around your dates. Send an enquiry and we'll share it with real prices.</p>`}
+    </section>
+    <section class="pkg-sec" id="pkg-inclusions"><h2>What's included</h2>
+      ${inc.length || exc.length ? `<div class="pkg-inc">
+        <div class="pkg-box"><h3>Included</h3>${inc.length ? `<ul class="pkg-list">${inc.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p>Shared with your quote.</p>`}</div>
+        <div class="pkg-box"><h3>Not included</h3>${exc.length ? `<ul class="pkg-list no">${exc.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p>Shared with your quote.</p>`}</div></div>`
+        : `<p>Hotels, transfers and sightseeing are confirmed in your quote, with everything that is and isn't included listed clearly.</p>`}
+    </section>
+    <section class="pkg-sec" id="pkg-policies"><h2>Payment &amp; policies</h2>
+      ${payIntro.map(x => `<p><b style="color:var(--ink);font-weight:600">${esc(x)}</b></p>`).join("")}
+      ${payRows.length ? `<ul class="pkg-pay">${payRows.map(x => { const k = x.lastIndexOf(":"); return `<li><span>${esc(x.slice(0, k).trim())}</span><b>${esc(x.slice(k + 1).trim())}</b></li>`; }).join("")}</ul>` : ""}
+      <div class="pkg-policy-links"><a href="policies.html#cancellation">Cancellation policy</a><a href="policies.html#refund">Refund policy</a><a href="policies.html#terms">Terms &amp; conditions</a></div>
+      <p class="pkg-note">Prices are per person on twin sharing, from Delhi unless noted, and depend on dates and availability. GST extra where applicable.</p>
+    </section>`;
+}
+
+async function openTrip(id, push = true) {
+  const t = TRIPS.find(x => x.id === id); if (!t) return;
+  closeSearch(); toggleDest(false);
+  pkgReturn = pkgOpenId ? pkgReturn : document.activeElement; pkgOpenId = id;
+  if (push) { history.pushState({ trip: id }, "", `?trip=${encodeURIComponent(id)}`); pkgPushed = true; }
+  pkgEl.innerHTML = pkgShell(t); pkgEl.hidden = false; pkgEl.scrollTop = 0;
+  requestAnimationFrame(() => pkgEl.classList.add("open"));
+  lenis?.stop(); document.body.style.overflow = "hidden";
+  document.title = `${t.name} · ${t.nights} nights — The Wanderlust Explorers`;
+  $("pkgClose").focus({ preventScroll: true });
+
+  const d = await SiteData.itinerary(id);
+  if (pkgOpenId !== id) return;
+  const gal = [SiteData.img(t.img, 1600), ...((d && d.gallery) || [])].filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 5);
+  if (gal.length > 1) {
+    const g = $("pkgGallery"), n = Math.min(gal.length, 5);
+    g.className = `pkg-gallery n${n >= 5 ? 5 : n}`;
+    g.innerHTML = gal.map((src, i) => `<figure><img src="${esc(src)}" alt="${i ? "" : esc(t.name)}" ${i ? 'loading="lazy"' : ""}></figure>`).join("");
+  }
+  $("pkgBody").innerHTML = pkgBody(t, d);
+  const more = $("pkgMore"); if (more && more.scrollHeight > more.clientHeight + 4) { $("pkgMoreBtn").hidden = false; }
+  gsap.from("#pkgBody .pkg-sec", { y: 24, opacity: 0, duration: .9, stagger: .08, ease: "expo.out" });
+  // highlight the section in view
+  const links = [...pkgEl.querySelectorAll(".pkg-nav a")];
+  pkgSpy && pkgSpy.disconnect();
+  pkgSpy = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id)); }), { root: pkgEl, rootMargin: "-30% 0px -60% 0px" });
+  pkgEl.querySelectorAll(".pkg-sec[id]").forEach(s => pkgSpy.observe(s));
+}
+
+function closeTrip(fromPop = false) {
+  if (!pkgOpenId) return;
+  pkgOpenId = null; pkgSpy && pkgSpy.disconnect();
+  if (soundSource === "pkg") stopSound();
+  pkgEl.classList.remove("open");
+  setTimeout(() => { if (!pkgOpenId) { pkgEl.hidden = true; pkgEl.innerHTML = ""; } }, 450);
+  lenis?.start(); document.body.style.overflow = "";
+  document.title = "The Wanderlust Explorers — Journeys from Delhi";
+  if (!fromPop) { if (pkgPushed) history.back(); else history.replaceState(null, "", location.pathname); }   // a shared link has no page of ours behind it
+  pkgPushed = false;
+  pkgReturn?.focus?.({ preventScroll: true });
+}
+
+pkgEl.addEventListener("click", e => {
+  if (e.target.closest("#pkgClose, #pkgBack")) { closeTrip(); return; }
+  if (e.target.closest("[data-pkg-enquire]")) { openEnquiry(pkgOpenId); return; }
+  const day = e.target.closest(".pkg-day-btn");
+  if (day) { const li = day.closest(".pkg-day"), open = !li.classList.contains("open"); li.classList.toggle("open", open); day.setAttribute("aria-expanded", open); return; }
+  if (e.target.closest("#pkgAll")) {
+    const all = [...pkgEl.querySelectorAll(".pkg-day")], open = all.some(li => !li.classList.contains("open"));
+    all.forEach(li => { li.classList.toggle("open", open); li.querySelector(".pkg-day-btn").setAttribute("aria-expanded", open); });
+    e.target.textContent = open ? "Collapse all" : "Expand all"; return;
+  }
+  if (e.target.closest("#pkgMoreBtn")) { $("pkgMore").classList.add("full"); e.target.hidden = true; return; }
+  const nav = e.target.closest(".pkg-nav a");
+  if (nav) { e.preventDefault(); const s = pkgEl.querySelector(nav.getAttribute("href")); if (s) pkgEl.scrollTo({ top: s.offsetTop - 130, behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth" }); return; }
+  const hear = e.target.closest("[data-pkg-scape]");
+  if (hear) {
+    const k = hear.dataset.pkgScape, playing = soundSource === "pkg" && Soundscape.key === k;
+    if (playing) stopSound(); else { soundSource = "pkg"; watchSound(null); Soundscape.play(k); }
+    hear.classList.toggle("is-playing", !playing); hear.setAttribute("aria-pressed", !playing);
+  }
+});
+addEventListener("keydown", e => {
+  if (!pkgOpenId || $("enq").classList.contains("open")) return;
+  if (e.key === "Escape") closeTrip();
+  if (e.key === "Tab") {                                           // keep focus inside the details
+    const f = [...pkgEl.querySelectorAll('button:not([disabled]),a[href],[tabindex]:not([tabindex="-1"])')].filter(x => x.offsetParent);
+    if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  }
+});
+addEventListener("popstate", e => { const id = e.state && e.state.trip; if (id) openTrip(id, false); else closeTrip(true); });
+// cards open their details: the photo, the name, or "See the itinerary"
+$("grid").addEventListener("click", e => {
+  if (e.target.closest(".listen, [data-enquire], .call-btn")) return;
+  const hit = e.target.closest(".frame, .trip-meta h3, .see"); if (!hit) return;
+  e.preventDefault(); openTrip(hit.closest(".trip").dataset.id);
+});
+{ const q = new URLSearchParams(location.search).get("trip"); if (q && TRIPS.some(t => t.id === q)) { history.replaceState({ trip: q }, "", location.href); setTimeout(() => openTrip(q, false), INTRO_SEEN ? 80 : 0); } }
 $("searchBtn").addEventListener("click", () => openSearch());
 $("menuSearch").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); toggleMenu(false); setTimeout(() => openSearch(), 350); });
 $("ssClose").addEventListener("click", closeSearch);

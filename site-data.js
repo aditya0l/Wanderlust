@@ -32,7 +32,7 @@
     r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
   }));
   const idbDo = async (mode, fn) => { const db = await idb(); return new Promise((res, rej) => { const tx = db.transaction("audio", mode); const q = fn(tx.objectStore("audio")); tx.oncomplete = () => res(q && q.result); tx.onerror = () => rej(tx.error); }); };
-  const urlCache = {};
+  const urlCache = {}, itinCache = {};
 
   /* ---------- live content ---------- */
   let live = null;                                // what visitors see right now (null until fetched or if never published)
@@ -67,6 +67,29 @@
       await fs().doc("site/live").set({ json, updatedAt: new Date().toISOString(), by: user ? user.email : "" });
       live = s; SiteData.clearDraft();
     },
+
+    /* itineraries: one Firestore document per package (itineraries/{id}), loaded when someone opens that package.
+       The client's original itineraries ship as data/itineraries/{id}.json and are used until the admin saves an edit. */
+    async itinerary(id) {
+      if (id in itinCache) return itinCache[id];
+      let doc = null;
+      const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 2500);
+      try {
+        const r = await fetch(`${REST}/itineraries/${encodeURIComponent(id)}?key=${CFG.apiKey}`, { signal: ctl.signal, cache: "no-store" });
+        if (r.ok) { const j = await r.json(), v = j.fields && j.fields.json && j.fields.json.stringValue; if (v) doc = { ...JSON.parse(v), edited: true }; }
+      } catch (e) {} finally { clearTimeout(t); }
+      if (!doc) { try { const r = await fetch(`data/itineraries/${encodeURIComponent(id)}.json`); if (r.ok) doc = await r.json(); } catch (e) {} }
+      return (itinCache[id] = doc);
+    },
+    async saveItinerary(id, data) {                // admin only
+      const clean = { ...data }; delete clean.edited;
+      const json = JSON.stringify(clean);
+      if (json.length > MAX_DOC) throw new Error("This itinerary is too long to save. Shorten the day descriptions.");
+      const user = firebase.auth().currentUser;
+      await fs().doc("itineraries/" + id).set({ json, updatedAt: new Date().toISOString(), by: user ? user.email : "" });
+      itinCache[id] = { ...clean, edited: true };
+    },
+    async resetItinerary(id) { await fs().doc("itineraries/" + id).delete(); delete itinCache[id]; },
 
     /* media */
     img(ref, w = 1200) {

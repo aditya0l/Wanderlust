@@ -25,6 +25,7 @@ Then open http://localhost:5178.
 | `site-data.js` | Shared data layer: live content from Firestore (with `data/site.js` as the fallback), enquiries, uploads |
 | `firebase-config.js`, `firebase.json`, `.firebaserc` | Firebase project `wanderlust-e4b8b` |
 | `firestore.rules` | Who can read and write what (see below) |
+| `data/itineraries/` | Day-by-day itineraries for 43 packages, imported from the client's current site. Used until the admin saves an edit |
 | `policies.html` | Terms & conditions, cancellation, refund and privacy policies (text copied from the current site, linked from the footer; `policies.html#refund` opens one directly) |
 | `admin.html`, `admin.js` | Admin panel: packages and prices, hero slides, music, partners, popular searches, policies, customers (wallet, trips, visas), enquiries, publish. Firebase email sign-in |
 | `assets/audio/` | Licensed music files per place (see the README inside) |
@@ -47,6 +48,7 @@ Project `wanderlust-e4b8b`, on the free Spark plan. Nothing here needs Blaze.
 | What | Where in Firestore | Who writes it |
 |---|---|---|
 | Live site content | `site/live` (one JSON string) | Admins, with Publish |
+| Itineraries | `itineraries/{packageId}` (one JSON string) | Admins, from Packages → list icon. Saved live straight away; anyone can read |
 | Enquiries | `enquiries/{id}` | A signed-in customer sends one (it carries their uid); they see their own in My trips; admins read and update all |
 | Customer profile | `users/{uid}` | The customer (created on first Google sign-in) |
 | Saved travellers | `users/{uid}/travellers/{id}` | The customer |
@@ -74,6 +76,14 @@ Open `admin.html` and sign in with an admin account. Save keeps your edits in th
 ## Search and enquiries
 
 The hero search box has two modes, Holidays and Visa. The search (top bar, the hero search box, or press `/`) matches package names, destinations, routes and trip types, understands budgets like "under ₹20,000" or "under 2 lac", and suggests popular searches. Every package has Enquire now and Call. Visitors browse without an account; Enquire now, Plan my journey and the visa search ask them to sign in with Google first, then show the form with their name and number filled in, save the enquiry and open WhatsApp. Firebase only loads at that moment (or quietly after the intro for someone who signed in before). If the browser blocks the sign-in pop-up, as Instagram's and Facebook's in-app browsers do, sign-in continues on a full page and the enquiry reopens when they come back. Enquiries are listed in the admin panel and in the customer's account.
+
+## Packages and itineraries
+
+Clicking a journey (its photo, name or "See the day-by-day itinerary") opens its details over the page: photos, overview, highlights, the day-by-day plan, what's included and not, the payment schedule and links to the policies, with a sticky price card and Enquire now. Each package has its own address (`index.html?trip=ladakh`), so it can be shared on WhatsApp and the back button closes it.
+
+All 43 packages on the client's current site were imported: 10 are matched to the journeys on the homepage (their nights, prices and route lines now follow the client's real packages), and 33 more are in the admin, hidden, ready to switch on. Kumaon Hills has no package on the client's site, so it has no itinerary until one is added in the admin.
+
+Cleaned up on import: sentences naming other travel companies (flyshop.in, Thrillophilia) were removed and "a Yatra representative" became "a Wanderlust representative". Worth checking with the client: Ladakh's Day 6 repeats Day 2 on their own site, and three packages (Cambodia, Cultural Triangle, Elegant Europe) have no inclusions listed.
 
 ## Policies
 

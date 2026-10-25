@@ -20,6 +20,7 @@ SiteData.ready.then(() => {
     stop: '<svg viewBox="0 0 16 16" fill="currentColor"><rect x="4" y="4" width="8" height="8" rx="1"/></svg>',
     info: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v5M10 6.2v.3"/></svg>',
     alert: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3 18 16.5H2Z"/><path d="M10 8v4M10 14.2v.3"/></svg>',
+    itin: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="3.5" cy="3.5" r="1.5"/><circle cx="3.5" cy="12.5" r="1.5"/><path d="M3.5 5v6M7 3.5h6M7 8h6M7 12.5h6"/></svg>',
     down2: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg>',
   };
 
@@ -109,13 +110,14 @@ SiteData.ready.then(() => {
   /* ---------- drawer ---------- */
   let drawerReturn;
   function openDrawer(html, onReady) { drawerReturn = document.activeElement; $("drawerPanel").innerHTML = html; $("drawer").classList.add("open"); document.body.style.overflow = "hidden"; onReady && onReady(); setTimeout(() => ($("drawerPanel").querySelector("input,select,textarea") || {}).focus?.(), 60); }
+  function fillDrawer(html, onReady) { $("drawerPanel").innerHTML = html; onReady && onReady(); setTimeout(() => ($("drawerPanel").querySelector("input,select,textarea") || {}).focus?.(), 60); }
   function closeDrawer() { if (!$("drawer").classList.contains("open")) return; $("drawer").classList.remove("open"); document.body.style.overflow = ""; drawerReturn?.focus?.(); }
   $("drawer").addEventListener("click", e => { if (e.target === $("drawer")) closeDrawer(); });
 
   /* =================== packages =================== */
   function vPackages(m) {
     m.innerHTML = `
-      <div class="head"><div style="display:grid;gap:6px"><h1>Packages</h1><p class="muted">Edit prices right in the table. Open a package to change its photo, route, music and local notes. Hidden packages stay saved but don't show on the site.</p></div>
+      <div class="head"><div style="display:grid;gap:6px"><h1>Packages</h1><p class="muted">Edit prices right in the table. Open a package to change its photo, route, music and local notes; the list icon edits its day-by-day itinerary. Hidden packages stay saved but don't show on the site.</p></div>
         <button class="btn btn-primary" id="addPkg">${I.plus} Add package</button></div>
       <div class="card table-wrap"><table>
         <thead><tr><th></th><th>Package</th><th class="hide-sm">Nights</th><th>Price from</th><th class="hide-sm">Music</th><th>On site</th><th></th></tr></thead>
@@ -127,13 +129,14 @@ SiteData.ready.then(() => {
             <td><input class="input price" type="number" min="0" step="500" value="${p.price}" data-price="${i}" aria-label="Price for ${esc(p.name)}"></td>
             <td class="hide-sm">${site.sounds[p.sound] ? `<span class="pill ${site.sounds[p.sound].file ? "ok" : "mute"}">${esc(site.sounds[p.sound].place)}</span>` : `<span class="pill mute">None</span>`}</td>
             <td><input type="checkbox" class="switch" data-vis="${i}" ${p.visible !== false ? "checked" : ""} aria-label="Show ${esc(p.name)} on the site"></td>
-            <td><div class="acts"><button class="icon-btn" data-up="${i}" ${i ? "" : "disabled"} aria-label="Move up">${I.up}</button><button class="icon-btn" data-down="${i}" ${i < site.packages.length - 1 ? "" : "disabled"} aria-label="Move down">${I.down}</button><button class="icon-btn" data-edit="${i}" aria-label="Edit ${esc(p.name)}">${I.edit}</button></div></td>
+            <td><div class="acts"><button class="icon-btn" data-up="${i}" ${i ? "" : "disabled"} aria-label="Move up">${I.up}</button><button class="icon-btn" data-down="${i}" ${i < site.packages.length - 1 ? "" : "disabled"} aria-label="Move down">${I.down}</button><button class="icon-btn" data-itin="${i}" aria-label="Itinerary for ${esc(p.name)}" title="Day-by-day itinerary">${I.itin}</button><button class="icon-btn" data-edit="${i}" aria-label="Edit ${esc(p.name)}">${I.edit}</button></div></td>
           </tr>`).join("")}</tbody></table></div>`;
     m.querySelectorAll("[data-price]").forEach(inp => inp.addEventListener("input", () => { const v = Math.max(0, Math.round(+inp.value || 0)); site.packages[+inp.dataset.price].price = v; markDirty(); }));
     m.querySelectorAll("[data-vis]").forEach(c => c.addEventListener("change", () => { site.packages[+c.dataset.vis].visible = c.checked; markDirty(); vPackages(m); }));
     m.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => { move(site.packages, +b.dataset.up, -1); markDirty(); vPackages(m); }));
     m.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => { move(site.packages, +b.dataset.down, 1); markDirty(); vPackages(m); }));
     m.querySelectorAll("[data-edit]").forEach(b => b.addEventListener("click", () => editPackage(+b.dataset.edit)));
+    m.querySelectorAll("[data-itin]").forEach(b => b.addEventListener("click", () => editItinerary(site.packages[+b.dataset.itin])));
     $("addPkg").addEventListener("click", () => editPackage(-1));
   }
   function editPackage(i) {
@@ -257,6 +260,63 @@ SiteData.ready.then(() => {
     m.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => { move(site.partners, +b.dataset.down, 1); markDirty(); vPartners(m); }));
     m.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => { site.partners.splice(+b.dataset.del, 1); markDirty(); vPartners(m); }));
     $("addPartner").addEventListener("click", () => { site.partners.push({ name: "New partner", logo: "", type: "hotel" }); markDirty(); vPartners(m); });
+  }
+
+  /* =================== itinerary: one per package, saved straight to the live site =================== */
+  async function editItinerary(p) {
+    if (!p.id) return toast("Save the package first, then add its itinerary.");
+    openDrawer(`<div class="drawer-head"><h2 id="drawerTitle">Itinerary · ${esc(p.name)}</h2><button class="icon-btn" id="dClose" aria-label="Close">${I.x}</button></div><div class="drawer-body"><p class="muted">Loading…</p></div>`, () => { $("dClose").onclick = closeDrawer; });
+    const d = JSON.parse(JSON.stringify((await SiteData.itinerary(p.id)) || {}));
+    const days = (d.days || []).map(x => ({ title: x.title || "", body: x.body || "", img: x.img || "" }));
+    const lines = a => (a || []).join("\n"), split = v => v.split("\n").map(x => x.trim()).filter(Boolean);
+    const render = () => {
+      const want = (+p.nights || 0) + 1;
+      $("itDays").innerHTML = days.map((x, k) => `<div class="card pad" style="display:grid;gap:10px">
+          <div class="row"><b>Day ${k + 1}</b><div class="acts"><button class="icon-btn" type="button" data-dup="${k}" ${k ? "" : "disabled"} aria-label="Move day up">${I.up}</button><button class="icon-btn" type="button" data-ddown="${k}" ${k < days.length - 1 ? "" : "disabled"} aria-label="Move day down">${I.down}</button><button class="icon-btn" type="button" data-ddel="${k}" aria-label="Remove day ${k + 1}">${I.trash}</button></div></div>
+          <div class="field"><label for="dT${k}">Title</label><input class="input" id="dT${k}" data-dk="title" data-di="${k}" value="${esc(x.title)}" placeholder="Arrival in Leh · City tour"></div>
+          <div class="field"><label for="dB${k}">What happens</label><textarea class="textarea" id="dB${k}" data-dk="body" data-di="${k}" rows="4">${esc(x.body)}</textarea><span class="hint">Each line becomes a paragraph.</span></div>
+          <div class="field"><label for="dI${k}">Photo link</label><input class="input" id="dI${k}" data-dk="img" data-di="${k}" value="${esc(x.img)}" placeholder="Optional. https://…"></div>
+        </div>`).join("") || `<p class="muted">No days yet.</p>`;
+      $("itDaysNote").innerHTML = days.length && days.length !== want ? `<div class="note warn">${I.alert}<span>${days.length} days here, but the package is ${p.nights} nights (${want} days). Add or remove a day, or change the nights on the package.</span></div>` : "";
+      $("itDays").querySelectorAll("[data-dk]").forEach(el => el.addEventListener("input", () => { days[+el.dataset.di][el.dataset.dk] = el.value; }));
+      $("itDays").querySelectorAll("[data-dup]").forEach(b => b.onclick = () => { move(days, +b.dataset.dup, -1); render(); });
+      $("itDays").querySelectorAll("[data-ddown]").forEach(b => b.onclick = () => { move(days, +b.dataset.ddown, 1); render(); });
+      $("itDays").querySelectorAll("[data-ddel]").forEach(b => b.onclick = () => confirmBtn(b, () => { days.splice(+b.dataset.ddel, 1); render(); }));
+    };
+    if (!$("drawer").classList.contains("open")) return;          // closed while loading
+    fillDrawer(`
+      <div class="drawer-head"><h2 id="drawerTitle">Itinerary · ${esc(p.name)}</h2><button class="icon-btn" id="dClose" aria-label="Close">${I.x}</button></div>
+      <div class="drawer-body">
+        <div class="note info">${I.info}<span>${d.edited ? "Edited in the admin. " : d.source ? "Imported from your current website. " : ""}Saving publishes this itinerary to the live site straight away; it doesn't need Publish.</span></div>
+        <div class="field"><label for="itOv">Overview</label><textarea class="textarea" id="itOv" rows="5">${esc((d.overview || []).join("\n\n"))}</textarea><span class="hint">Leave a blank line between paragraphs.</span></div>
+        <div class="field"><label for="itHl">Highlights</label><textarea class="textarea" id="itHl" rows="4" placeholder="One per line">${esc(lines(d.highlights))}</textarea></div>
+        <div class="row"><h3>Day by day</h3><button class="btn btn-quiet" type="button" id="itAdd">${I.plus} Add day</button></div>
+        <div id="itDaysNote"></div>
+        <div id="itDays" style="display:grid;gap:12px"></div>
+        <div class="field"><label for="itInc">Included</label><textarea class="textarea" id="itInc" rows="5" placeholder="One per line">${esc(lines(d.inclusions))}</textarea></div>
+        <div class="field"><label for="itExc">Not included</label><textarea class="textarea" id="itExc" rows="5" placeholder="One per line">${esc(lines(d.exclusions))}</textarea></div>
+        <div class="field"><label for="itPay">Payment schedule</label><textarea class="textarea" id="itPay" rows="4" placeholder="30 days or more before departure : 25% of total cost">${esc(lines(d.payment))}</textarea><span class="hint">One per line. Write "when : how much" to show it as a row; other lines show as a heading.</span></div>
+        <div class="field"><label for="itGal">Gallery photos</label><textarea class="textarea" id="itGal" rows="3" placeholder="One image link per line">${esc(lines(d.gallery))}</textarea><span class="hint">Shown next to the package photo at the top. Up to 4 are shown.</span></div>
+        <p class="err" id="itErr" role="alert"></p>
+      </div>
+      <div class="drawer-foot">${d.edited && d.source ? `<button class="btn btn-danger" type="button" id="itReset">Restore original</button>` : "<span></span>"}<div style="display:flex;gap:8px"><a class="btn btn-quiet" href="index.html?trip=${encodeURIComponent(p.id)}" target="_blank" rel="noopener">View</a><button class="btn btn-primary" type="button" id="itSave">Save to live site</button></div></div>`, () => {
+      $("dClose").onclick = closeDrawer;
+      render();
+      $("itAdd").onclick = () => { days.push({ title: "", body: "", img: "" }); render(); $(`dT${days.length - 1}`).focus(); };
+      $("itSave").onclick = async e => {
+        const b = e.currentTarget; $("itErr").textContent = "";
+        const out = { source: d.source || "", overview: $("itOv").value.split(/\n\s*\n/).map(x => x.replace(/\s+/g, " ").trim()).filter(Boolean), highlights: split($("itHl").value),
+          days: days.map(x => ({ title: x.title.trim(), body: x.body.trim(), img: x.img.trim() })).filter(x => x.title || x.body),
+          inclusions: split($("itInc").value), exclusions: split($("itExc").value), payment: split($("itPay").value), gallery: split($("itGal").value) };
+        if (out.days.some(x => !x.title)) return $("itErr").textContent = "Every day needs a title.";
+        b.disabled = true; b.textContent = "Saving…";
+        try { await SiteData.saveItinerary(p.id, out); toast(`Itinerary for ${p.name} is live.`); closeDrawer(); }
+        catch (err) { $("itErr").textContent = err.code === "permission-denied" ? "This account can't save itineraries. Check it's listed in the admin collection." : err.message; b.disabled = false; b.textContent = "Save to live site"; }
+      };
+      const r = $("itReset"); if (r) r.onclick = ev => confirmBtn(ev.currentTarget, async () => {
+        try { await SiteData.resetItinerary(p.id); toast("Original itinerary restored."); closeDrawer(); } catch (err) { $("itErr").textContent = err.message; }
+      });
+    });
   }
 
   /* =================== popular searches =================== */
