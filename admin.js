@@ -295,7 +295,7 @@ SiteData.ready.then(() => {
         <div id="itDays" style="display:grid;gap:12px"></div>
         <div class="field"><label for="itInc">Included</label><textarea class="textarea" id="itInc" rows="5" placeholder="One per line">${esc(lines(d.inclusions))}</textarea></div>
         <div class="field"><label for="itExc">Not included</label><textarea class="textarea" id="itExc" rows="5" placeholder="One per line">${esc(lines(d.exclusions))}</textarea></div>
-        <div class="field"><label for="itPay">Payment schedule</label><textarea class="textarea" id="itPay" rows="4" placeholder="30 days or more before departure : 25% of total cost">${esc(lines(d.payment))}</textarea><span class="hint">One per line. Write "when : how much" to show it as a row; other lines show as a heading.</span></div>
+        <div class="field"><label for="itPay">Payment schedule</label><textarea class="textarea" id="itPay" rows="4" placeholder="30 days or more before departure : 30% of total cost">${esc(lines(d.payment))}</textarea><span class="hint">One per line. Write "when : how much" to show it as a row; other lines show as a heading.</span></div>
         <div class="field"><label for="itGal">Gallery photos</label><textarea class="textarea" id="itGal" rows="3" placeholder="One image link per line">${esc(lines(d.gallery))}</textarea><span class="hint">Shown next to the package photo at the top. Up to 4 are shown.</span></div>
         <p class="err" id="itErr" role="alert"></p>
       </div>

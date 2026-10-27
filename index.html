@@ -230,6 +230,8 @@ figcaption{margin-top:12px;font-size:.78rem;color:var(--ink-3);display:flex;just
 .journey-head h2{font-size:clamp(2.2rem,4.4vw,4.2rem);max-width:13ch}
 .journey-km{text-align:right;display:grid;gap:8px;justify-items:end}
 .j-skip{display:inline-flex;align-items:center;gap:8px;min-height:40px;margin-top:6px;padding:0 14px 0 16px;border-radius:999px;background:rgba(252,251,249,.9);box-shadow:inset 0 0 0 1px var(--line);font-size:.84rem;font-weight:600;color:var(--ink);transition:box-shadow .3s var(--ease),opacity .4s var(--ease)}
+.journey-km .j-skip{pointer-events:auto}   /* the heading block lets clicks through to the map; its buttons take them */
+.j-plan{background:var(--teal,#0E6B70);color:#fff;box-shadow:none;margin-right:8px;padding:0 16px}
 .j-skip:hover{box-shadow:inset 0 0 0 1px var(--ink-3)}
 .j-skip svg{width:14px;height:14px}
 .j-skip.gone{opacity:0;pointer-events:none}
@@ -949,7 +951,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
     <div class="journey-fade"></div>
     <div class="journey-head">
       <div style="display:grid;gap:18px"><span class="label">Signature journey · 14 nights</span><h2>The Asia loop, <em>in one ticket.</em></h2></div>
-      <div class="journey-km"><span class="label">Distance flown</span><b id="km">0 km</b><button type="button" class="j-skip" id="jSkip">Skip the journey<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg></button></div>
+      <div class="journey-km"><span class="label">Distance flown</span><b id="km">0 km</b><button type="button" class="j-skip j-plan" id="jPlan">Plan the Asia loop</button><button type="button" class="j-skip" id="jSkip">Skip the journey<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg></button></div>
     </div>
     <div class="pwin-line" id="pwinLine" aria-hidden="true"></div>
     <div class="pwin" id="pwin" aria-hidden="true"><div class="pwin-frame"><div class="pwin-glass"><img id="pwinImg" alt=""><i class="pwin-cloud" id="pwinCloud"></i><div class="pwin-shade" id="pwinShade"></div></div></div></div>
@@ -986,7 +988,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
         <p>Most travellers come to us for one thing and stay for the rest: visa paperwork, a group of thirty, a missed connection in Doha.</p>
       </div>
       <ul class="svc-list" id="svcList">
-        <li class="svc" data-img="0"><h3>Visa desk</h3><span>25% off this month</span><p>Dubai, Singapore, Schengen, the UK and the US. We check every document before the embassy sees it.</p></li>
+        <li class="svc" data-img="0"><h3>Visa desk</h3><span>Every document checked</span><p>Dubai, Singapore, Schengen, the UK and the US. We check every document before the embassy sees it.</p></li>
         <li class="svc" data-img="1"><h3>Flights</h3><span>Domestic &amp; international</span><p>Fares on IndiGo, Emirates, British Airways and more, including student and senior citizen fares.</p></li>
         <li class="svc" data-img="2"><h3>Group travel</h3><span>9 or more travellers</span><p>Weddings, college trips and company offsites, on one invoice with one planner.</p></li>
         <li class="svc" data-img="3"><h3>Hotels</h3><span>60+ cities</span><p>Rates on partner hotels you will not find on the hotel's own website.</p></li>
@@ -1534,6 +1536,7 @@ setView(cam.x, cam.y); drawJourney();
 const jPin = gsap.to(jp, { p: 1, ease: "none", scrollTrigger: { trigger: "#journey", start: "top top", end: () => "+=" + innerHeight * 7, pin: true, scrub: 1.2, anticipatePin: 1,
   onUpdate: st => $("jSkip").classList.toggle("gone", st.progress > .96) } }).scrollTrigger;
 // the loop is seven screens of scrolling; let people jump straight past it
+$("jPlan").addEventListener("click", () => openEnquiry("custom", "The Asia loop, 14 nights", { title: "The Asia loop", sub: "Signature journey · 14 nights, five stops in one ticket" }));
 $("jSkip").addEventListener("click", () => {
   const to = jPin.end + 2;
   lenis ? lenis.scrollTo(to, { immediate: true }) : scrollTo({ top: to });
