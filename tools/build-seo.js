@@ -112,7 +112,7 @@ ${body}
 <footer><div class="wrap">
 <p><b>Journeys from Delhi</b></p>
 <nav class="others" aria-label="All journeys">${visible.map(o => `<a href="/journeys/${o.id}">${esc(o.name)}, ${o.nights} nights</a>`).join("")}</nav>
-<p>The Wanderlust Explorers · Office 501, 5th floor, R-Tech Capital Highstreet, Mahal Road, Jaipur, Rajasthan 302017 · <a href="tel:${C.phone.replace(/\s/g, "")}">${esc(C.phone)}</a> · <a href="mailto:${C.email}">${esc(C.email)}</a></p>
+<p>The Wanderlust Explorers · Office 501, 5th floor, R-Tech Capital Mall, Mahal Road, Jaipur, Rajasthan 302017 · <a href="tel:${C.phone.replace(/\s/g, "")}">${esc(C.phone)}</a> · <a href="mailto:${C.email}">${esc(C.email)}</a></p>
 <p><a href="https://www.instagram.com/thewanderlustexplorers/" rel="noopener me">Instagram @thewanderlustexplorers</a> · Rated ${esc(REV.rating)}: <a href="${esc(REV.source)}">read the reviews on Google</a>. Prices are indicative. <a href="/policies">Terms, cancellation, refund and privacy policies</a>.</p>
 </div></footer>
 </body>
@@ -267,7 +267,7 @@ A travel agency based in Jaipur, Rajasthan, that arranges holiday packages, flig
 - Email: ${C.email}
 - Instagram: https://www.instagram.com/thewanderlustexplorers/
 - Planning desk: 09:00–19:00 IST. Travel support: 24 hours a day during your trip.
-- Office: Office 501, 5th floor, R-Tech Capital Highstreet, Mahal Road, Jaipur, Rajasthan 302017, India.
+- Office: Office 501, 5th floor, R-Tech Capital Mall, Mahal Road, Jaipur, Rajasthan 302017, India.
 
 ## What does the agency arrange?
 

@@ -8,7 +8,7 @@ Purpose: Every journey with its duration, route and starting price, grouped into
 
 Content updated: 2026-10-27
 
-Source revision: bfc6c58+build-2026-10-27
+Source revision: 84ad9e3+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
