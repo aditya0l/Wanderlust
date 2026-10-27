@@ -8,7 +8,7 @@ Purpose: Who the agency is, what it arranges, how to contact and pay, and every 
 
 Content updated: 2026-10-27
 
-Source revision: a1e766f+build-2026-10-27
+Source revision: f406bf6+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
@@ -16,7 +16,7 @@ Maintenance owner: The Wanderlust Explorers website owner
 
 ## What is The Wanderlust Explorers?
 
-A travel agency that arranges holiday packages, flights and visas for travellers departing from Delhi. One planner handles the flights, visa and hotels for a trip.
+A travel agency based in Jaipur, Rajasthan, that arranges holiday packages, flights and visas for travellers departing from Delhi. One planner handles the flights, visa and hotels for a trip.
 
 ## How do I contact the team?
 

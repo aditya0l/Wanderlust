@@ -8,7 +8,7 @@ Purpose: The agency's terms and conditions, cancellation policy, refund policy a
 
 Content updated: 2026-10-27
 
-Source revision: a1e766f+build-2026-10-27
+Source revision: f406bf6+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 

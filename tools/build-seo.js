@@ -213,7 +213,7 @@ if (MD_SRC) {
   add("home", BASE + "/", "The Wanderlust Explorers: holiday packages from Delhi", "Who the agency is, what it arranges, how to contact and pay, and every journey on offer", "company", `
 ## What is The Wanderlust Explorers?
 
-A travel agency that arranges holiday packages, flights and visas for travellers departing from Delhi. One planner handles the flights, visa and hotels for a trip.
+A travel agency based in Jaipur, Rajasthan, that arranges holiday packages, flights and visas for travellers departing from Delhi. One planner handles the flights, visa and hotels for a trip.
 
 ## How do I contact the team?
 

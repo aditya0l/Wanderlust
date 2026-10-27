@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Jaipur & 
 
 Content updated: 2026-10-27
 
-Source revision: a1e766f+build-2026-10-27
+Source revision: f406bf6+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
