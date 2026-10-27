@@ -245,6 +245,8 @@ fs.writeFileSync(path.join(ROOT, "vercel.json"), JSON.stringify({
       { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
     ] },
     { source: "/(admin|account)(.*)", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }, { key: "Cache-Control", value: "no-store" }] },
+    // the site's own images and icons: a week in the browser cache (file names aren't versioned, so not longer)
+    { source: "/assets/(.*)", headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" }] },
     ...mdHeaders, ...canon,
   ],
 }, null, 2) + "\n");

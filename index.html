@@ -24,10 +24,8 @@
 <link rel="alternate" type="text/markdown" href="/home.md">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <script>try { if (sessionStorage.getItem("wle-intro-seen") || /[?&]trip=/.test(location.search)) document.documentElement.classList.add("intro-seen"); } catch (e) {}</script>
-<link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-<link rel="preconnect" href="https://unpkg.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Big+Shoulders+Stencil+Display:wght@700;800;900&family=Hanken+Grotesk:wght@400;500;600&display=swap" media="print" onload="this.media='all'">   <!-- fonts don't hold up the first paint -->
@@ -105,7 +103,7 @@ em{font-style:italic;font-weight:500}
 .seal .tick{stroke:rgba(244,241,236,.35);stroke-width:1}
 .seal .seal-words{animation:sealSpin 70s linear infinite;will-change:transform}
 @keyframes sealSpin{to{transform:rotate(360deg)}}
-.seal-mark{position:relative;width:52%;aspect-ratio:704/556;-webkit-mask:url(assets/logo-mark-light.webp) center/contain no-repeat;mask:url(assets/logo-mark-light.webp) center/contain no-repeat}
+.seal-mark{position:relative;width:52%;aspect-ratio:704/556;-webkit-mask:url(assets/logo-mark-light-360.webp) center/contain no-repeat;mask:url(assets/logo-mark-light-360.webp) center/contain no-repeat}
 .seal-mark img{width:100%;height:100%;display:block}
 .seal-mark .sheen{position:absolute;inset:-20% -60%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.0) 42%,rgba(255,255,255,.85) 50%,rgba(255,255,255,0) 58%,transparent 60%);transform:translateX(-120%);will-change:transform}
 .loader-wordmark{position:relative;z-index:2;width:min(230px,52vw);height:auto;will-change:transform,opacity}
@@ -845,15 +843,15 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
       <g id="sealTicks"></g>
     </svg>
     <svg class="seal-words" id="sealText" viewBox="0 0 400 400"><defs><path id="sealPath2" d="M200,200 m-147,0 a147,147 0 1,1 294,0 a147,147 0 1,1 -294,0"/></defs><text><textPath href="#sealPath2" textLength="900" lengthAdjust="spacing">The Wanderlust Explorers · Flights · Visas · Holidays · </textPath></text></svg>
-    <div class="seal-mark" id="sealMark"><img src="assets/logo-mark-light.webp" alt="" width="704" height="556"><i class="sheen" id="sheen"></i></div>
+    <div class="seal-mark" id="sealMark"><img src="assets/logo-mark-light-360.webp" alt="" width="360" height="284"><i class="sheen" id="sheen"></i></div>
   </div>
-  <img class="loader-wordmark" id="loaderWordmark" src="assets/logo-wordmark-light.webp" alt="" width="841" height="372">
+  <img class="loader-wordmark" id="loaderWordmark" src="assets/logo-wordmark-light-440.webp" alt="" width="440" height="195">
 </div>
 
 <!-- NAV -->
 <header class="nav" id="nav">
-  <div><div class="island"><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span class="burger"><span></span><span></span></span><span id="menuLabel">Menu</span></button><button class="dest-btn" id="destBtn" type="button" aria-expanded="false" aria-controls="dest">Journeys<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button><button class="sound-btn" id="soundBtn" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="soundLabel">Sound</span></button><button class="sound-btn search-btn" id="searchBtn" aria-haspopup="dialog" aria-controls="ss"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg><span class="search-label">Search</span></button></div></div>
-  <a class="brand" href="#top" aria-label="The Wanderlust Explorers, home"><img class="on-dark" src="assets/logo-wordmark-light.webp" alt="" width="841" height="372"><img class="on-paper" src="assets/logo-wordmark-ink.webp" alt="" width="841" height="372"></a>
+  <div><div class="island"><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span class="burger"><span></span><span></span></span><span id="menuLabel">Menu</span></button><button class="dest-btn" id="destBtn" type="button" aria-expanded="false" aria-controls="dest">Journeys<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button><button class="sound-btn" id="soundBtn" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="soundLabel">Sound</span></button><button class="sound-btn search-btn" id="searchBtn" aria-label="Search" aria-haspopup="dialog" aria-controls="ss"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg><span class="search-label">Search</span></button></div></div>
+  <a class="brand" href="#top" aria-label="The Wanderlust Explorers, home"><img class="on-dark" src="assets/logo-wordmark-light-440.webp" alt="" width="440" height="195"><img class="on-paper" src="assets/logo-wordmark-ink-440.webp" alt="" width="440" height="195"></a>
   <div class="nav-right"><div class="island"><span class="nav-phone">+91 77379 30736</span><a class="acct-link" href="account.html" aria-label="My account"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3.2"/><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6"/></svg></a><a class="btn btn-light" href="#final">Plan a journey <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></i></a></div></div>
 </header>
 
@@ -1239,7 +1237,7 @@ addEventListener("keydown", e => { if (e.key === "Escape" && menuOpen) toggleMen
 /* ---------- hero slideshow: slow clip wipe ---------- */
 {
   const S = window.SITE.slides, img = SiteData.img;
-  $("slides").innerHTML = S.map((x, i) => { const ss = SiteData.srcset(x.img, [900, 1600, 2400]); const src = i ? "data-src" : "src", set = i ? "data-srcset" : "srcset"; return `<figure class="slide${i ? "" : " is-active"}" data-scape="${esc(x.sound)}" data-name="${esc(x.name)}" data-coord="${esc(x.coord)}"><img decoding="async" fetchpriority="${i ? "low" : "high"}" ${src}="${img(x.img, 1600)}"${ss ? ` ${set}="${ss}" sizes="100vw"` : ""} alt="${esc(x.alt || x.name)}"></figure>`; }).join("");
+  $("slides").innerHTML = S.map((x, i) => { const ss = SiteData.srcset(x.img, [750, 1100, 1600, 2400]); const src = i ? "data-src" : "src", set = i ? "data-srcset" : "srcset"; return `<figure class="slide${i ? "" : " is-active"}" data-scape="${esc(x.sound)}" data-name="${esc(x.name)}" data-coord="${esc(x.coord)}"><img decoding="async" fetchpriority="${i ? "low" : "high"}" ${src}="${img(x.img, 1600)}"${ss ? ` ${set}="${ss}" sizes="100vw"` : ""} alt="${esc(x.alt || x.name)}"></figure>`; }).join("");
   $("slideBars").innerHTML = S.map((x, i) => `<button aria-label="Show slide ${i + 1}"><b></b></button>`).join("");
   $("slideTotal").textContent = String(S.length).padStart(2, "0");
   $("slideName").textContent = S[0].name; $("slideCoord").textContent = S[0].coord;
@@ -1719,7 +1717,7 @@ $("qbarClear").addEventListener("click", () => { clearQuery(); filterGrid(() => 
   const isHotel = p => p.type ? p.type === "hotel" : !p.logo;
   const air = P.filter(p => !isHotel(p)), hot = P.filter(isHotel);
   const fill = (list, min) => { let out = list.slice(); while (out.length && out.length < min) out = out.concat(list); return out; };
-  const airHTML = fill(air, 8).map(p => `<div class="air">${p.logo ? `<img src="${esc(p.logo)}" alt="" loading="lazy">` : ""}<span>${esc(p.name)}</span></div>`).join("");
+  const airHTML = fill(air, 8).map(p => `<div class="air">${p.logo ? `<img src="${esc(p.logo)}" alt="" width="30" height="30" loading="lazy">` : ""}<span>${esc(p.name)}</span></div>`).join("");
   const hotHTML = fill(hot, 8).map(p => `<div class="htl"><span>${esc(p.name)}</span><i aria-hidden="true"></i></div>`).join("");
   $("railAir").innerHTML = airHTML + `<div style="display:contents" aria-hidden="true">${airHTML}</div>`;
   $("railHotel").innerHTML = hotHTML + `<div style="display:contents" aria-hidden="true">${hotHTML}</div>`;
@@ -1843,7 +1841,7 @@ function pkgShell(t) {
   const imgs = [SiteData.img(t.img, 1600)].filter(Boolean);
   const days = t.nights + 1;
   return `
-  <div class="pkg-top"><button type="button" class="pkg-back" id="pkgBack">${ICO.back}All journeys</button><img src="assets/logo-wordmark-ink.webp" alt="" width="841" height="372"><button type="button" class="pkg-x" id="pkgClose" aria-label="Close">${ICON_X}</button></div>
+  <div class="pkg-top"><button type="button" class="pkg-back" id="pkgBack">${ICO.back}All journeys</button><img src="assets/logo-wordmark-ink-440.webp" alt="" width="440" height="195"><button type="button" class="pkg-x" id="pkgClose" aria-label="Close">${ICON_X}</button></div>
   <div class="pkg-gallery n1" id="pkgGallery">${imgs.map(src => `<figure><img src="${esc(src)}" alt="${esc(t.name)}"></figure>`).join("")}</div>
   <div class="pkg-wrap">
     <article>

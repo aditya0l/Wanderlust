@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Kumaon Hi
 
 Content updated: 2026-10-27
 
-Source revision: d2da1f7+build-2026-10-27
+Source revision: 85b8134+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
