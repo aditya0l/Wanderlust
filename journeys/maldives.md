@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Maldives 
 
 Content updated: 2026-10-27
 
-Source revision: f3814b9+build-2026-10-27
+Source revision: bfc6c58+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
@@ -104,7 +104,7 @@ In three parts. At booking, 30 days or more before departure: 30% of total cost.
 
 ### How do I book the Maldives journey?
 
-Call or WhatsApp +91 77379 30736, or email info@thewanderlustexplorers.com. The planning desk is open 10:00–19:00 IST, and travel support answers 24 hours a day during your trip.
+Call or WhatsApp +91 77379 30736, or email info@thewanderlustexplorers.com. The planning desk is open 09:00–19:00 IST, and travel support answers 24 hours a day during your trip.
 
 ## How to book
 

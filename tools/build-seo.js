@@ -42,7 +42,7 @@ function faqs(p, d) {
   ];
   if (d && d.inclusions && d.inclusions.length) q.push([`What is included in the ${p.name} package?`, d.inclusions.map(clean).join(" ")]);
   q.push([`How do I pay for the ${p.name} package?`, `In three parts. ${payLines(d).join(". ")}.`]);
-  q.push([`How do I book the ${p.name} journey?`, `Call or WhatsApp ${C.phone}, or email ${C.email}. The planning desk is open 10:00–19:00 IST, and travel support answers 24 hours a day during your trip.`]);
+  q.push([`How do I book the ${p.name} journey?`, `Call or WhatsApp ${C.phone}, or email ${C.email}. The planning desk is open 09:00–19:00 IST, and travel support answers 24 hours a day during your trip.`]);
   return q;
 }
 
@@ -113,7 +113,7 @@ ${body}
 <p><b>Journeys from Delhi</b></p>
 <nav class="others" aria-label="All journeys">${visible.map(o => `<a href="/journeys/${o.id}">${esc(o.name)}, ${o.nights} nights</a>`).join("")}</nav>
 <p>The Wanderlust Explorers · Office 501, 5th floor, R-Tech Capital Highstreet, Mahal Road, Jaipur, Rajasthan 302017 · <a href="tel:${C.phone.replace(/\s/g, "")}">${esc(C.phone)}</a> · <a href="mailto:${C.email}">${esc(C.email)}</a></p>
-<p>Rated ${esc(REV.rating)}: <a href="${esc(REV.source)}">read the reviews on Google</a>. Prices are indicative. <a href="/policies">Terms, cancellation, refund and privacy policies</a>.</p>
+<p><a href="https://www.instagram.com/thewanderlustexplorers/" rel="noopener me">Instagram @thewanderlustexplorers</a> · Rated ${esc(REV.rating)}: <a href="${esc(REV.source)}">read the reviews on Google</a>. Prices are indicative. <a href="/policies">Terms, cancellation, refund and privacy policies</a>.</p>
 </div></footer>
 </body>
 </html>
@@ -265,7 +265,8 @@ A travel agency based in Jaipur, Rajasthan, that arranges holiday packages, flig
 
 - Phone and WhatsApp: ${C.phone}
 - Email: ${C.email}
-- Planning desk: 10:00–19:00 IST. Travel support: 24 hours a day during your trip.
+- Instagram: https://www.instagram.com/thewanderlustexplorers/
+- Planning desk: 09:00–19:00 IST. Travel support: 24 hours a day during your trip.
 - Office: Office 501, 5th floor, R-Tech Capital Highstreet, Mahal Road, Jaipur, Rajasthan 302017, India.
 
 ## What does the agency arrange?

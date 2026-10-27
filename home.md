@@ -8,7 +8,7 @@ Purpose: Who the agency is, what it arranges, how to contact and pay, and every 
 
 Content updated: 2026-10-27
 
-Source revision: f3814b9+build-2026-10-27
+Source revision: bfc6c58+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
@@ -22,7 +22,8 @@ A travel agency based in Jaipur, Rajasthan, that arranges holiday packages, flig
 
 - Phone and WhatsApp: +91 77379 30736
 - Email: info@thewanderlustexplorers.com
-- Planning desk: 10:00–19:00 IST. Travel support: 24 hours a day during your trip.
+- Instagram: https://www.instagram.com/thewanderlustexplorers/
+- Planning desk: 09:00–19:00 IST. Travel support: 24 hours a day during your trip.
 - Office: Office 501, 5th floor, R-Tech Capital Highstreet, Mahal Road, Jaipur, Rajasthan 302017, India.
 
 ## What does the agency arrange?
