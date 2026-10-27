@@ -261,6 +261,10 @@ if (MD_SRC) {
 
 A travel agency based in Jaipur, Rajasthan, that arranges holiday packages, flights and visas for travellers departing from Delhi. One planner handles the flights, visa and hotels for a trip.
 
+## Who runs the agency?
+
+The Wanderlust Explorers was co-founded by Tanushka Jain and Prateek Singh.
+
 ## How do I contact the team?
 
 - Phone and WhatsApp: ${C.phone}
