@@ -1590,11 +1590,11 @@ const jPin = gsap.to(jp, { p: 1, ease: "none", scrollTrigger: { trigger: "#journ
   onUpdate: st => $("jSkip").classList.toggle("gone", st.progress > .96) } }).scrollTrigger;
 // the loop is seven screens of scrolling; let people jump straight past it
 $("jPlan").addEventListener("click", () => openEnquiry("custom", "The Asia loop, 14 nights", { title: "The Asia loop", sub: "Signature journey · 14 nights, five stops in one ticket" }));
-$("jSkip").addEventListener("click", () => {
-  const to = jPin.end + 2;
+$("jSkip").addEventListener("click", () => {        // straight to the journeys ("Places we know by heart"), past the end of the loop
+  const col = $("collections"), to = col.getBoundingClientRect().top + scrollY;
   lenis ? lenis.scrollTo(to, { immediate: true }) : scrollTo({ top: to });
   ScrollTrigger.update();
-  const next = $("journey").closest(".pin-spacer")?.nextElementSibling; next && next.focus?.({ preventScroll: true });
+  col.setAttribute("tabindex", "-1"); col.focus({ preventScroll: true });
 });
 let journeyLive = false;
 new IntersectionObserver(([en]) => { journeyLive = en.isIntersecting; }).observe($("journey"));
