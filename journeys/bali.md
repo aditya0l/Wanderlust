@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Bali jour
 
 Content updated: 2026-10-27
 
-Source revision: 23160c6+build-2026-10-27
+Source revision: d2da1f7+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 

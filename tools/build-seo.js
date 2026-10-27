@@ -113,7 +113,7 @@ ${body}
 <p><b>Journeys from Delhi</b></p>
 <nav class="others" aria-label="All journeys">${visible.map(o => `<a href="/journeys/${o.id}">${esc(o.name)}, ${o.nights} nights</a>`).join("")}</nav>
 <p>The Wanderlust Explorers · Office 501, 5th floor, R-Tech Capital Mall, Mahal Road, Jaipur, Rajasthan 302017 · <a href="tel:${C.phone.replace(/\s/g, "")}">${esc(C.phone)}</a> · <a href="mailto:${C.email}">${esc(C.email)}</a></p>
-<p><a href="https://www.instagram.com/thewanderlustexplorers/" rel="noopener me">Instagram @thewanderlustexplorers</a> · Rated ${esc(REV.rating)}: <a href="${esc(REV.source)}">read the reviews on Google</a>. Prices are indicative. <a href="/policies">Terms, cancellation, refund and privacy policies</a>.</p>
+<p><a href="/#about">About us</a> · <a href="https://www.instagram.com/thewanderlustexplorers/" rel="noopener me">Instagram @thewanderlustexplorers</a> · Rated ${esc(REV.rating)}: <a href="${esc(REV.source)}">read the reviews on Google</a>. Prices are indicative. <a href="/policies">Terms, cancellation, refund and privacy policies</a>.</p>
 </div></footer>
 </body>
 </html>

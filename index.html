@@ -200,7 +200,7 @@ em{font-style:italic;font-weight:500}
 /* ---------- statement ---------- */
 .statement{padding-block:clamp(110px,16vw,220px) clamp(90px,12vw,170px)}
 .statement-grid{display:grid;grid-template-columns:200px 1fr;gap:40px}
-.team{display:flex;flex-wrap:wrap;align-items:center;gap:18px 40px;margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}
+.team{display:flex;flex-wrap:wrap;align-items:center;gap:18px 40px;margin-top:clamp(36px,5vw,56px)}
 .team ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:18px 36px}
 .team li{display:flex;align-items:center;gap:14px}
 .team i{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-family:var(--serif);font-size:1.05rem;color:var(--teal-ink);box-shadow:inset 0 0 0 1px var(--line);background:var(--cream)}
@@ -864,9 +864,10 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
     <li><a href="#journey"><span class="mask"><span><small>02</small>The <em>Asia</em> loop</span></span></a></li>
     <li><a href="#services"><span class="mask"><span><small>03</small>Visas &amp; flights</span></span></a></li>
     <li><a href="#voices"><span class="mask"><span><small>04</small>Travellers</span></span></a></li>
-    <li><a href="#final"><span class="mask"><span><small>05</small><em>Contact</em></span></span></a></li>
+    <li><a href="#about"><span class="mask"><span><small>05</small>About us</span></span></a></li>
+    <li><a href="#final"><span class="mask"><span><small>06</small><em>Contact</em></span></span></a></li>
     <li><a href="#collections" id="menuSearch"><span class="mask"><span><small>00</small>Search</span></span></a></li>
-    <li><a href="account.html" data-external><span class="mask"><span><small>06</small>My account</span></span></a></li>
+    <li><a href="account.html" data-external><span class="mask"><span><small>07</small>My account</span></span></a></li>
   </ol>
   <div class="menu-side">
     <div><span class="label">Journeys by place</span><div class="menu-places" id="menuPlaces"></div></div>
@@ -922,22 +923,22 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
   </div>
 
   <!-- STATEMENT -->
-  <section class="statement wrap" aria-label="About us">
+  <section class="statement wrap" id="about" aria-label="About us">
     <div class="statement-grid">
       <span class="label">The studio</span>
       <div>
         <p class="big" id="statement">We are a small team in Jaipur who plan journeys the way we would plan them for our own families. One person handles your flights, your visa and your hotels, and answers when you call at two in the morning.</p>
-        <div class="statement-foot">
-          <div class="fact reveal"><b>24 hrs</b><span>Travel support on the phone, every day of your trip.</span></div>
-          <div class="fact reveal"><b>60+</b><span>Cities with partner hotels, including 100+ Radisson properties in India.</span></div>
-          <div class="fact reveal"><b>9+</b><span>Travellers in your group? We negotiate group fares directly with airlines.</span></div>
-        </div>
         <div class="team reveal" id="team">
           <span class="label">The founders</span>
           <ul>
             <li><i aria-hidden="true">TJ</i><div><b>Tanushka Jain</b><span>Co-founder</span></div></li>
             <li><i aria-hidden="true">PS</i><div><b>Prateek Singh</b><span>Co-founder</span></div></li>
           </ul>
+        </div>
+        <div class="statement-foot">
+          <div class="fact reveal"><b>24 hrs</b><span>Travel support on the phone, every day of your trip.</span></div>
+          <div class="fact reveal"><b>60+</b><span>Cities with partner hotels, including 100+ Radisson properties in India.</span></div>
+          <div class="fact reveal"><b>9+</b><span>Travellers in your group? We negotiate group fares directly with airlines.</span></div>
         </div>
       </div>
     </div>
@@ -1085,7 +1086,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
     <div class="foot-top">
       <div><span class="label">The Wanderlust Explorers</span><p style="color:rgba(242,237,230,.7);max-width:34ch;font-size:.94rem">Making the world reachable for everyone, with flights, visas and holidays arranged by people you can call.</p><p style="margin-top:14px;font-size:.94rem"><a href="https://www.instagram.com/thewanderlustexplorers/" target="_blank" rel="noopener me">Instagram @thewanderlustexplorers</a></p></div>
       <div><span class="label">Plan</span><ul><li><a href="#collections">Holidays</a></li><li><a href="#services">Flights</a></li><li><a href="#services">Visa desk</a></li><li><a href="#services">Group travel</a></li></ul></div>
-      <div><span class="label">Help</span><ul><li><a href="account.html#trips">Find my booking</a></li><li><a href="account.html#trips">Web check-in</a></li><li><a href="account.html#trips">Flight status</a></li><li><a href="#final">Contact</a></li></ul></div>
+      <div><span class="label">Help</span><ul><li><a href="#about">About us</a></li><li><a href="account.html#trips">Find my booking</a></li><li><a href="account.html#trips">Web check-in</a></li><li><a href="account.html#trips">Flight status</a></li><li><a href="#final">Contact</a></li></ul></div>
       <!-- seo:journeys --><div><span class="label">Journeys</span><ul><li><a href="/journeys">All journeys</a></li><li><a href="/journeys/ladakh">Ladakh</a></li><li><a href="/journeys/maldives">Maldives</a></li><li><a href="/journeys/jaipur">Jaipur &amp; Ranthambore</a></li><li><a href="/journeys/dubai">Dubai</a></li><li><a href="/journeys/kerala">Kerala</a></li><li><a href="/journeys/manali">Manali</a></li><li><a href="/journeys/kumaon">Kumaon Hills</a></li><li><a href="/journeys/singapore">Singapore</a></li><li><a href="/journeys/golden">The Golden Triangle</a></li><li><a href="/journeys/bali">Bali</a></li><li><a href="/journeys/swiss">Switzerland &amp; Paris</a></li></ul></div><!-- /seo:journeys -->
     </div>
     <div class="foot-word"><img src="assets/logo-full-light.webp" alt="The Wanderlust Explorers" width="841" height="952" loading="lazy"><p>Flights, visas and holidays from Delhi. Call or WhatsApp +91 77379 30736.</p></div>
@@ -1189,7 +1190,15 @@ if (!reduce) {
   gsap.ticker.add(t => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
 }
-const goTo = sel => { const t = document.querySelector(sel); if (!t) return; lenis ? lenis.scrollTo(t, { duration: 1.8 }) : t.scrollIntoView({ behavior: "smooth" }); };
+const goTo = sel => {
+  const t = document.querySelector(sel); if (!t) return;
+  const top = () => t.getBoundingClientRect().top + scrollY;
+  if (lenis) return lenis.scrollTo(top(), { duration: 1.8 });   // a page position: Lenis's own idea of the scroll can lag after native scrolling
+  // native smooth scrolling stops short over long distances on phones: jump to a screen away, then glide in
+  const d = top() - scrollY;
+  if (Math.abs(d) > innerHeight * 2) scrollTo(0, top() - Math.sign(d) * innerHeight);
+  requestAnimationFrame(() => scrollTo({ top: top(), behavior: "smooth" }));
+};
 let menuOpen = false;
 document.addEventListener("click", e => {
   const a = e.target.closest('a[href^="#"]'); if (!a || a.getAttribute("href").length < 2) return;
