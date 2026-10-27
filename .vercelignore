@@ -1,0 +1,11 @@
+# not part of the public site
+versions/
+tools/
+README.md
+firebase.json
+firestore.rules
+firestore.indexes.json
+.firebaserc
+assets/logo-source.jpg
+assets/audio/README.md
+.claude/

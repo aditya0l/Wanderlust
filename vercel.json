@@ -1,0 +1,422 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/package-details/andaman/67065100e754697e700f0b52",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/wonders-of-australia/67124182d718108c030ccb72",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/bali/670371105de7f8222903b562",
+      "destination": "/journeys/bali",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/cambodia-temple-tour/670f9b3008861be8e4004072",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/chardham-yatra/670cf85280c9e46a000fcf42",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/chardham-yatra/670d107f3aa04bd4990a54b2",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/darjeeling/67064c78e0140e8c530f2972",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/dubai-with-abu-dhabi/670cc63ce7a670cbb50a98f2",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/dubai/670d0b5cf44f5b1d61076552",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/magical-dubai/67010a8b787d0660650f5052",
+      "destination": "/journeys/dubai",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/elegant-europe/6708fdc08d44ae7db70ba582",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/finland-winter-fairy-tale/670767bc7a2767ce9106f3b2",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/gems-of-south/6706564f46af1c970b094462",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/goa/67065d234720e9b52909bd52",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/cultural-triangle-delights-jaipur-delhi-agra/670e3725e0bee2a5ab0da6b2",
+      "destination": "/journeys/golden",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/himachal/670f57ea825506db930a5852",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/hyderabad/6710a81e37e60941ff031922",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/jaipur-ranthambore/6710abe5a52d047aea0d3982",
+      "destination": "/journeys/jaipur",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/delightful-kashmir/6704ddabc5f36e5dbf079b72",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/kerala/670627d8fb8be0792000c532",
+      "destination": "/journeys/kerala",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/krabi-phuket/68a46f12250c7323170c28d2",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/amazing-ladakh-with-nubra-and-pangong/67066dd573a8879e9a06c7f2",
+      "destination": "/journeys/ladakh",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/exotic-getaway-to-the-islands-of-lakshadweep/670e636b564e0ceb0d05b222",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/maldives/67062f461f35e034380ee8e2",
+      "destination": "/journeys/maldives",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/mesmerizing-manali/670122c9e7356892d50779e2",
+      "destination": "/journeys/manali",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/mussoorie-weekend-tour-from-delhi/670e6c60c65446176e09b652",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/nainital-weekend-tour/670e676b19d1d53541021352",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/new-zealand-north-south-island/67061192c8af4030c9049412",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/pattaya-bangkok/68a6e608e2cda9a1fa02fd12",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/golden-triangle-of-rajasthan/6710eeed5c5c9ee7510dfa12",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/shimla-manali/6708c41c18fb3d0fe00eb082",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/discover-the-magic-of-sikkim-and-darjeeling/671203919032416d1a0640d2",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/singapore-with-cruise/67061dee1c6a2605720299d2",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/amazing-singapore/67062224248482a10c056fa2",
+      "destination": "/journeys/singapore",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/sri-lanka/6705096cd672317b96015682",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/ahmedabad-statue-of-unity/67109e7265fa70ffb3067be2",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/sundarban/670f85f8dc4ee0bf1f0944f2",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/swiss-paris-at-a-glance/67124837d8402145810ee602",
+      "destination": "/journeys/swiss",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/romantic-switzerland-and-paris/6710fdd6be7f377e7c032212",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/amazing-thailand/68a6f1c3c20932aaf7008f82",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/tirupati-balaji/6710bb731c1f5fdbd2078112",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/exclusive-turkey-honeymoon/670e58da7f798f7bc20fad42",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/escape-to-vietnam-with-boat-ride-to-tam-coc-caves/670f8c38e7287a5fe90ccc82",
+      "destination": "/#collections",
+      "permanent": true
+    },
+    {
+      "source": "/package-details/:path*",
+      "destination": "/#collections",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": {
+            "suf": ".vercel.app"
+          }
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        }
+      ]
+    },
+    {
+      "source": "/(admin|account)(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/llms.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/journeys/ladakh.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/ladakh>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/maldives.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/maldives>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/jaipur.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/jaipur>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/dubai.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/dubai>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/kerala.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/kerala>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/manali.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/manali>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/kumaon.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/kumaon>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/singapore.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/singapore>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/golden.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/golden>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/bali.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/bali>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/journeys/swiss.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/journeys/swiss>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/policies.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/policies>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/home.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://thewanderlustexplorers.com/>; rel=\"canonical\""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+# The Wanderlust Explorers
+
+> Holiday packages, flights and visas from Delhi: every journey's price, route, day-by-day itinerary, inclusions and payment schedule, plus the agency's contact details and policies.
+
+Inventory scope: complete. Content is maintained by The Wanderlust Explorers website owner.
+
+If you are an LLM looking for site information, use the [content map](https://thewanderlustexplorers.com/sitemap.md) to locate the relevant topic and its linked Markdown answer.
+Use that document's cited sources and canonical page; if the requested information is absent, report that gap.
+
+## Content map
+
+- [Site content map](https://thewanderlustexplorers.com/sitemap.md): All public document destinations within the declared inventory.
+
+## Topics
+
+- [company](https://thewanderlustexplorers.com/llm/topics/company.md): All public company documents in this inventory.
+- [journeys](https://thewanderlustexplorers.com/llm/topics/journeys.md): All public journeys documents in this inventory.

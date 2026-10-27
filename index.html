@@ -1,17 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The Wanderlust Explorers — Journeys from Delhi</title>
-<meta name="description" content="Flights, visas and holidays from Delhi, arranged by a small team who pick up the phone.">
-<meta property="og:title" content="The Wanderlust Explorers">
-<meta property="og:description" content="Flights, visas and holidays from Delhi, arranged by a small team who pick up the phone.">
-<meta property="og:image" content="assets/logo-full-ink.png">
+<title>Holiday Packages from Delhi | The Wanderlust Explorers</title>
+<meta name="description" content="Tour packages from Delhi to Ladakh, Kerala, Rajasthan, Dubai, Singapore, Bali, the Maldives and Europe, with day-by-day itineraries, visas and one person to call.">
+<link rel="canonical" href="https://thewanderlustexplorers.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Wanderlust Explorers">
+<meta property="og:url" content="https://thewanderlustexplorers.com/">
+<meta property="og:title" content="Holiday Packages from Delhi | The Wanderlust Explorers">
+<meta property="og:description" content="Day-by-day itineraries for Ladakh, Kerala, Dubai, Bali, the Maldives and more. Plan on WhatsApp with a team you can call by name.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1609601546193-f558f1ebb385?w=1200&h=630&q=80&auto=format&fit=crop">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_IN">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1609601546193-f558f1ebb385?w=1200&h=630&q=80&auto=format&fit=crop">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TravelAgency", "@id": "https://thewanderlustexplorers.com/#agency", "name": "The Wanderlust Explorers", "url": "https://thewanderlustexplorers.com/", "logo": "https://thewanderlustexplorers.com/assets/logo-full-ink.png", "image": "https://images.unsplash.com/photo-1609601546193-f558f1ebb385?w=1200&h=630&q=80&auto=format&fit=crop", "description": "Holiday packages, visas and tours from Delhi to Ladakh, Kerala, Rajasthan, Dubai, Singapore, Bali, the Maldives and Europe.", "telephone": "+91-77379-30736", "email": "info@thewanderlustexplorers.com", "priceRange": "₹₹", "address": {"@type": "PostalAddress", "streetAddress": "Office 501, 5th floor, R-Tech Capital Highstreet, Mahal Road", "addressLocality": "Jaipur", "addressRegion": "Rajasthan", "postalCode": "302017", "addressCountry": "IN"}, "areaServed": "IN", "contactPoint": {"@type": "ContactPoint", "telephone": "+91-77379-30736", "contactType": "customer service", "areaServed": "IN", "availableLanguage": ["English", "Hindi"]}}, {"@type": "WebSite", "@id": "https://thewanderlustexplorers.com/#website", "url": "https://thewanderlustexplorers.com/", "name": "The Wanderlust Explorers", "publisher": {"@id": "https://thewanderlustexplorers.com/#agency"}, "inLanguage": "en-IN"}]}</script>
 <meta name="theme-color" content="#0F1A1C">
-<link rel="icon" type="image/png" href="assets/logo-mark-ink.png">
-<link rel="apple-touch-icon" href="assets/logo-mark-ink.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link rel="alternate" type="text/markdown" href="/home.md">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <script>try { if (sessionStorage.getItem("wle-intro-seen") || /[?&]trip=/.test(location.search)) document.documentElement.classList.add("intro-seen"); } catch (e) {}</script>
 <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
@@ -73,6 +83,7 @@ em{font-style:italic;font-weight:500}
 .btn-glass i{background:rgba(242,237,230,.16)}
 .btn-glass:hover{background:rgba(242,237,230,.24)}
 
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 /* ---------- loader: the royal seal and the palace doors ---------- */
 .intro-seen .loader{display:none}
 .intro-seen body::before{content:"";position:fixed;inset:0;z-index:99;background:var(--stone);pointer-events:none;transition:opacity .45s var(--ease)}
@@ -92,7 +103,7 @@ em{font-style:italic;font-weight:500}
 .seal .tick{stroke:rgba(244,241,236,.35);stroke-width:1}
 .seal .seal-words{animation:sealSpin 70s linear infinite;will-change:transform}
 @keyframes sealSpin{to{transform:rotate(360deg)}}
-.seal-mark{position:relative;width:52%;aspect-ratio:704/556;-webkit-mask:url(assets/logo-mark-light.png) center/contain no-repeat;mask:url(assets/logo-mark-light.png) center/contain no-repeat}
+.seal-mark{position:relative;width:52%;aspect-ratio:704/556;-webkit-mask:url(assets/logo-mark-light.webp) center/contain no-repeat;mask:url(assets/logo-mark-light.webp) center/contain no-repeat}
 .seal-mark img{width:100%;height:100%;display:block}
 .seal-mark .sheen{position:absolute;inset:-20% -60%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.0) 42%,rgba(255,255,255,.85) 50%,rgba(255,255,255,0) 58%,transparent 60%);transform:translateX(-120%);will-change:transform}
 .loader-wordmark{position:relative;z-index:2;width:min(230px,52vw);height:auto;will-change:transform,opacity}
@@ -217,7 +228,11 @@ figcaption{margin-top:12px;font-size:.78rem;color:var(--ink-3);display:flex;just
 .journey-fade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(80% 75% at 50% 50%,transparent 45%,var(--paper) 100%)}
 .journey-head{position:absolute;z-index:2;top:calc(110px + env(safe-area-inset-top,0px));left:var(--gutter);right:var(--gutter);display:flex;justify-content:space-between;align-items:start;gap:20px;pointer-events:none}
 .journey-head h2{font-size:clamp(2.2rem,4.4vw,4.2rem);max-width:13ch}
-.journey-km{text-align:right;display:grid;gap:8px}
+.journey-km{text-align:right;display:grid;gap:8px;justify-items:end}
+.j-skip{display:inline-flex;align-items:center;gap:8px;min-height:40px;margin-top:6px;padding:0 14px 0 16px;border-radius:999px;background:rgba(252,251,249,.9);box-shadow:inset 0 0 0 1px var(--line);font-size:.84rem;font-weight:600;color:var(--ink);transition:box-shadow .3s var(--ease),opacity .4s var(--ease)}
+.j-skip:hover{box-shadow:inset 0 0 0 1px var(--ink-3)}
+.j-skip svg{width:14px;height:14px}
+.j-skip.gone{opacity:0;pointer-events:none}
 .journey-km b{font-family:var(--sans);font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums lining-nums;font-size:clamp(1.8rem,3vw,2.8rem);font-variant-numeric:tabular-nums;line-height:1}
 .stopcard{position:absolute;z-index:3;right:var(--gutter);bottom:clamp(24px,6vh,64px);width:min(370px,calc(100% - 2*var(--gutter)));padding:6px;border-radius:24px;background:rgba(242,237,230,.65);box-shadow:inset 0 0 0 1px var(--line),0 30px 70px -40px rgba(34,30,32,.5)}
 .stopcard-core{background:var(--paper);border-radius:18px;overflow:hidden;box-shadow:inset 0 1px 0 #fff}
@@ -228,7 +243,7 @@ figcaption{margin-top:12px;font-size:.78rem;color:var(--ink-3);display:flex;just
 .stopcard-body p{font-size:.88rem;color:var(--ink-2)}
 .stopcard-row{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding-top:12px;border-top:1px solid var(--line-2);font-size:.82rem;color:var(--ink-2)}
 .stopcard-row b{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--ink)}
-@media (max-width:620px){.journey-head{flex-direction:column;gap:10px}.journey-km{text-align:left}}
+@media (max-width:620px){.journey-head{flex-direction:column;gap:10px}.journey-km{text-align:left;justify-items:start}}
 
 /* ---------- collections ---------- */
 .collections{padding-block:clamp(110px,14vw,200px)}
@@ -330,7 +345,7 @@ figcaption{margin-top:12px;font-size:.78rem;color:var(--ink-3);display:flex;just
 
 /* ---------- footer ---------- */
 footer.site{background:var(--espresso);color:var(--cream);padding-block:80px calc(36px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(242,237,230,.1)}
-.foot-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px;padding-bottom:70px}
+.foot-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;padding-bottom:70px}
 .foot-top .label{color:rgba(242,237,230,.45);margin-bottom:16px;display:block}
 .foot-top ul{list-style:none;display:grid;gap:8px;color:rgba(242,237,230,.8);font-size:.92rem}
 .foot-top a:hover{color:var(--aqua)}
@@ -473,12 +488,14 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 .rail{display:grid;grid-template-columns:clamp(96px,11vw,150px) 1fr;align-items:center;min-height:clamp(92px,9vw,120px)}
 .rail + .rail{border-top:1px solid var(--line)}
 .rail-tag{padding-left:var(--gutter);font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);align-self:stretch;display:flex;align-items:center;border-right:1px solid var(--line)}
-.rail-view{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.rail-track{display:flex;align-items:center;width:max-content;animation:railL 70s linear infinite}
-.rail.hotels .rail-track{animation:railR 80s linear infinite}
-.rail:hover .rail-track{animation-play-state:paused}
-@keyframes railL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes railR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+/* soft edges painted over the rail, not a CSS mask: iOS WebKit (Safari and Chrome on iPhone) stops drawing a masked box whose content is a long animated strip */
+.rail-view{position:relative;overflow:hidden}
+.rail-view::before,.rail-view::after{content:"";position:absolute;z-index:1;top:0;bottom:0;width:6%;min-width:28px;pointer-events:none}
+.rail-view::before{left:0;background:linear-gradient(90deg,var(--stone),rgba(245,244,241,0))}
+.rail-view::after{right:0;background:linear-gradient(270deg,var(--stone),rgba(245,244,241,0))}
+/* moved by script (see "partners" in the main script), not a CSS animation: iOS WebKit only draws the part of an
+   animated strip that is visible when the animation starts, so CSS-animated rails go blank on iPhones */
+.rail-track{display:flex;align-items:center;width:max-content;will-change:transform}
 .air{display:flex;align-items:center;gap:14px;padding:0 clamp(26px,3vw,44px);border-right:1px solid var(--line-2);height:56px}
 .air img{height:30px;width:auto;max-width:72px;object-fit:contain;transition:transform .5s var(--ease)}
 .air span{font-size:.92rem;font-weight:600;color:var(--ink-2);white-space:nowrap}
@@ -546,6 +563,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 .field select{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%23625C5F' stroke-width='1.4'/%3E%3C/svg%3E") right 2px center no-repeat;padding-right:20px}
 .field .fpick.empty{color:var(--ink-3);font-weight:500}
 .field input[type="date"]::-webkit-calendar-picker-indicator{opacity:.55;cursor:pointer}
+.field input[type="date"]::-webkit-date-and-time-value{text-align:left;margin:0}   /* iOS centres dates by default */
 .field{position:relative}
 .paxpop{position:absolute;z-index:20;top:calc(100% + 8px);right:0;width:min(300px,86vw);background:var(--paper);border-radius:18px;box-shadow:0 30px 60px -24px rgba(15,26,28,.45),inset 0 0 0 1px var(--line-2);padding:10px 16px;display:grid}
 .paxpop .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line-2)}
@@ -560,7 +578,6 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 @media (pointer:coarse){.step button{width:44px;height:44px}}
 
 /* ---------- package details: opens over the page, its own address (?trip=id) ---------- */
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .pkg{position:fixed;inset:0;z-index:70;background:var(--stone);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;opacity:0;transform:translateY(28px);transition:opacity .45s var(--ease),transform .7s var(--ease)}
 .pkg.open{opacity:1;transform:none}
 .pkg[hidden]{display:none}
@@ -586,7 +603,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 
 .pkg-wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:clamp(28px,4vw,64px);max-width:1400px;margin:0 auto;padding:clamp(28px,4vw,48px) var(--gutter) clamp(90px,10vw,140px);align-items:start}
 .pkg-head{display:grid;gap:12px;margin-bottom:8px}
-.pkg-head h1{font-family:var(--serif);font-weight:500;font-variation-settings:"opsz" 72;font-size:clamp(2.4rem,5vw,4rem);line-height:1.02;letter-spacing:-.025em}
+.pkg-head h2{font-family:var(--serif);font-weight:500;font-variation-settings:"opsz" 72;font-size:clamp(2.4rem,5vw,4rem);line-height:1.02;letter-spacing:-.025em}
 .pkg-head .sub{font-size:1.08rem;color:var(--ink-2)}
 .pkg-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .pkg-facts span{display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:0 14px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2);font-size:.86rem;font-weight:500;color:var(--ink-2)}
@@ -690,6 +707,16 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
 }
 @media (prefers-reduced-motion:reduce){.pkg{transition:none;transform:none}.pkg-day-body{transition:none}}
 
+/* phones and tablets: frosted glass is expensive to redraw while scrolling, so the fixed bars use a lighter blur
+   with a more solid background, and the full-screen menu uses a solid colour */
+@media (hover: none), (pointer: coarse), (max-width: 760px) {
+  .island{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .nav:not(.on-light) .island{background:rgba(15,26,28,.42)}
+  .nav.on-light .island{background:rgba(250,247,242,.9)}
+  .menu{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(15,26,28,.97)}
+  .pkg-top,.enq{backdrop-filter:none;-webkit-backdrop-filter:none}
+  .pkg-top{background:rgba(245,244,241,.97)}
+}
 /* ================= mobile ================= */
 .mbar{display:none}
 .svc-thumb{display:none}
@@ -800,15 +827,15 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
       <g id="sealTicks"></g>
     </svg>
     <svg class="seal-words" id="sealText" viewBox="0 0 400 400"><defs><path id="sealPath2" d="M200,200 m-147,0 a147,147 0 1,1 294,0 a147,147 0 1,1 -294,0"/></defs><text><textPath href="#sealPath2" textLength="900" lengthAdjust="spacing">The Wanderlust Explorers · Flights · Visas · Holidays · </textPath></text></svg>
-    <div class="seal-mark" id="sealMark"><img src="assets/logo-mark-light.png" alt="" width="704" height="556"><i class="sheen" id="sheen"></i></div>
+    <div class="seal-mark" id="sealMark"><img src="assets/logo-mark-light.webp" alt="" width="704" height="556"><i class="sheen" id="sheen"></i></div>
   </div>
-  <img class="loader-wordmark" id="loaderWordmark" src="assets/logo-wordmark-light.png" alt="" width="841" height="372">
+  <img class="loader-wordmark" id="loaderWordmark" src="assets/logo-wordmark-light.webp" alt="" width="841" height="372">
 </div>
 
 <!-- NAV -->
 <header class="nav" id="nav">
   <div><div class="island"><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span class="burger"><span></span><span></span></span><span id="menuLabel">Menu</span></button><button class="dest-btn" id="destBtn" type="button" aria-expanded="false" aria-controls="dest">Journeys<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button><button class="sound-btn" id="soundBtn" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="soundLabel">Sound</span></button><button class="sound-btn search-btn" id="searchBtn" aria-haspopup="dialog" aria-controls="ss"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.6 3.6"/></svg><span class="search-label">Search</span></button></div></div>
-  <a class="brand" href="#top" aria-label="The Wanderlust Explorers, home"><img class="on-dark" src="assets/logo-wordmark-light.png" alt="" width="841" height="372"><img class="on-paper" src="assets/logo-wordmark-ink.png" alt="" width="841" height="372"></a>
+  <a class="brand" href="#top" aria-label="The Wanderlust Explorers, home"><img class="on-dark" src="assets/logo-wordmark-light.webp" alt="" width="841" height="372"><img class="on-paper" src="assets/logo-wordmark-ink.webp" alt="" width="841" height="372"></a>
   <div class="nav-right"><div class="island"><span class="nav-phone">+91 77379 30736</span><a class="acct-link" href="account.html" aria-label="My account"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3.2"/><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6"/></svg></a><a class="btn btn-light" href="#final">Plan a journey <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></i></a></div></div>
 </header>
 
@@ -848,7 +875,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
     <div class="hero-inner">
       <div class="hero-copy">
         <span class="label hero-in" style="color:rgba(242,237,230,.72)">Journeys from Delhi</span>
-        <h1><span class="mask"><span>Go where</span></span><span class="mask"><span>the map <em>ends.</em></span></span></h1>
+        <h1><span class="sr-only">Holiday packages from Delhi: </span><span class="mask"><span>Go where</span></span><span class="mask"><span>the map <em>ends.</em></span></span></h1>
         <div class="hero-sub hero-in">
           <p>Flights, visas and whole holidays, arranged by a small team you can call by name.</p>
           <a class="btn btn-glass" href="#collections">See the journeys <i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"/></svg></i></a>
@@ -922,7 +949,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
     <div class="journey-fade"></div>
     <div class="journey-head">
       <div style="display:grid;gap:18px"><span class="label">Signature journey · 14 nights</span><h2>The Asia loop, <em>in one ticket.</em></h2></div>
-      <div class="journey-km"><span class="label">Distance flown</span><b id="km">0 km</b></div>
+      <div class="journey-km"><span class="label">Distance flown</span><b id="km">0 km</b><button type="button" class="j-skip" id="jSkip">Skip the journey<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg></button></div>
     </div>
     <div class="pwin-line" id="pwinLine" aria-hidden="true"></div>
     <div class="pwin" id="pwin" aria-hidden="true"><div class="pwin-frame"><div class="pwin-glass"><img id="pwinImg" alt=""><i class="pwin-cloud" id="pwinCloud"></i><div class="pwin-shade" id="pwinShade"></div></div></div></div>
@@ -1029,13 +1056,14 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
       <div><span class="label">The Wanderlust Explorers</span><p style="color:rgba(242,237,230,.7);max-width:34ch;font-size:.94rem">Making the world reachable for everyone, with flights, visas and holidays arranged by people you can call.</p></div>
       <div><span class="label">Plan</span><ul><li><a href="#collections">Holidays</a></li><li><a href="#services">Flights</a></li><li><a href="#services">Visa desk</a></li><li><a href="#services">Group travel</a></li></ul></div>
       <div><span class="label">Help</span><ul><li><a href="account.html#trips">Find my booking</a></li><li><a href="account.html#trips">Web check-in</a></li><li><a href="account.html#trips">Flight status</a></li><li><a href="#final">Contact</a></li></ul></div>
+      <!-- seo:journeys --><div><span class="label">Journeys</span><ul><li><a href="/journeys/ladakh">Ladakh</a></li><li><a href="/journeys/maldives">Maldives</a></li><li><a href="/journeys/jaipur">Jaipur &amp; Ranthambore</a></li><li><a href="/journeys/dubai">Dubai</a></li><li><a href="/journeys/kerala">Kerala</a></li><li><a href="/journeys/manali">Manali</a></li><li><a href="/journeys/kumaon">Kumaon Hills</a></li><li><a href="/journeys/singapore">Singapore</a></li><li><a href="/journeys/golden">The Golden Triangle</a></li><li><a href="/journeys/bali">Bali</a></li><li><a href="/journeys/swiss">Switzerland &amp; Paris</a></li></ul></div><!-- /seo:journeys -->
     </div>
-    <div class="foot-word"><img src="assets/logo-full-light.png" alt="The Wanderlust Explorers" width="841" height="952" loading="lazy"><p>Flights, visas and holidays from Delhi. Call or WhatsApp +91 77379 30736.</p></div>
+    <div class="foot-word"><img src="assets/logo-full-light.webp" alt="The Wanderlust Explorers" width="841" height="952" loading="lazy"><p>Flights, visas and holidays from Delhi. Call or WhatsApp +91 77379 30736.</p></div>
     <div class="foot-base"><span>© 2026 The Wanderlust Explorers. Prices are indicative.</span><nav aria-label="Legal"><a href="policies.html#terms">Terms &amp; conditions</a><a href="policies.html#cancellation">Cancellation</a><a href="policies.html#refund">Refunds</a><a href="policies.html#privacy">Privacy</a></nav></div>
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
 <script>
 /* The seal animates as soon as GSAP is here, before the rest of the scripts and the content; the logo itself
    fades in with CSS. The doors open once the content and the first hero photo are ready (endLoad). */
@@ -1053,9 +1081,9 @@ window.__seal = (() => {
     .fromTo("#sheen", { xPercent: -120 }, { xPercent: 120, duration: 1, ease: "power2.inOut" }, .7));
 })();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js" integrity="sha384-CHvG5TSBYWY4gs18D+se5IrGOZ6r8JlhAWob7LbkaUcfqD8PWzaYz2pqZdH7LsXQ" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" integrity="sha384-B2WBjDzEjJpYvhmi2UyEn7rektqkf5suS6sNoyyrf0EBAwBHdkiXxIlU0V5Ru2ed" crossorigin="anonymous"></script>
 <script src="data/site.js?v=4"></script>
 <script src="firebase-config.js?v=1"></script>
 <script src="site-data.js?v=7"></script>
@@ -1083,6 +1111,7 @@ function contactBtn(about, phoneLabel) {
 }
 
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const touch = matchMedia("(hover: none), (pointer: coarse)").matches, phone = innerWidth < 760;   // lighter effects on phones and tablets
 const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
 const U = (id, w = 1200) => `https://images.unsplash.com/${id}?w=${w}&q=78&auto=format&fit=crop`;
 const inr = n => "₹" + Number(n || 0).toLocaleString("en-IN");
@@ -1403,9 +1432,10 @@ function buildDots() {
     const c = document.createElement("canvas"); c.width = 720; c.height = 360;
     const x = c.getContext("2d"); x.drawImage(img, 0, 0, 720, 360);
     const data = x.getImageData(0, 0, 720, 360).data; let h = "";
-    for (let lat = LAT0 + 8; lat >= LAT1 - 8; lat -= .75) for (let lon = LON0 - 10; lon <= LON1 + 10; lon += .75) {
+    const step = phone ? 1.2 : .75;                    // the map redraws every dot as the camera moves; fewer on phones
+    for (let lat = LAT0 + 8; lat >= LAT1 - 8; lat -= step) for (let lon = LON0 - 10; lon <= LON1 + 10; lon += step) {
       const i = (Math.floor((90 - lat) * 2) * 720 + Math.floor((lon + 180) * 2)) * 4;
-      if (data[i] < 128) { const [sx, sy] = px(lat, lon); h += `<circle class="dot" cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="2.2"/>`; }
+      if (data[i] < 128) { const [sx, sy] = px(lat, lon); h += `<circle class="dot" cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${phone ? 2.9 : 2.2}"/>`; }
     }
     $("dots").innerHTML = h;
   };
@@ -1502,7 +1532,15 @@ function swapStop(i) {
 }
 window.__preloadStops = () => STOPS.forEach(s => { new Image().src = U(s.img, 900); new Image().src = U(s.img, 800); });   // called when the loop is near (loadLater)
 setView(cam.x, cam.y); drawJourney();
-gsap.to(jp, { p: 1, ease: "none", scrollTrigger: { trigger: "#journey", start: "top top", end: () => "+=" + innerHeight * 7, pin: true, scrub: 1.2, anticipatePin: 1 } });
+const jPin = gsap.to(jp, { p: 1, ease: "none", scrollTrigger: { trigger: "#journey", start: "top top", end: () => "+=" + innerHeight * 7, pin: true, scrub: 1.2, anticipatePin: 1,
+  onUpdate: st => $("jSkip").classList.toggle("gone", st.progress > .96) } }).scrollTrigger;
+// the loop is seven screens of scrolling; let people jump straight past it
+$("jSkip").addEventListener("click", () => {
+  const to = jPin.end + 2;
+  lenis ? lenis.scrollTo(to, { immediate: true }) : scrollTo({ top: to });
+  ScrollTrigger.update();
+  const next = $("journey").closest(".pin-spacer")?.nextElementSibling; next && next.focus?.({ preventScroll: true });
+});
 let journeyLive = false;
 new IntersectionObserver(([en]) => { journeyLive = en.isIntersecting; }).observe($("journey"));
 gsap.ticker.add(() => { if (journeyLive) drawJourney(); });
@@ -1519,7 +1557,7 @@ grid.innerHTML = TRIPS.map(t => `
       <span class="sub">${esc(t.sub)}</span>
       ${t.route ? `<span class="route">${esc(t.route)}</span>` : ""}
       ${proofLine(t)}
-      <a class="see" href="?trip=${encodeURIComponent(t.id)}">See the day-by-day itinerary <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="see" href="/journeys/${encodeURIComponent(t.id)}">See the day-by-day itinerary <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
       ${t.say || t.taste || t.take ? `<dl class="local">
         ${t.say ? `<dt>Say</dt><dd><em>${esc(t.say)}</em>${esc(t.means)}</dd>` : ""}
         ${t.taste ? `<dt>Taste</dt><dd>${esc(t.taste)}</dd>` : ""}
@@ -1532,7 +1570,7 @@ const trips = [...grid.children], tripIntros = [];
 trips.forEach(t => {
   tripIntros.push(...revealImg(t.querySelector(".frame")));
   tripIntros.push(gsap.from(t.querySelector(".trip-meta"), { y: 24, opacity: 0, duration: 1.5, delay: .3, scrollTrigger: { trigger: t, start: "top 90%" } }));
-  gsap.fromTo(t.querySelector("img"), { yPercent: -4 }, { yPercent: 4, ease: "none", scrollTrigger: { trigger: t, start: "top bottom", end: "bottom top", scrub: true } });
+  if (!touch) gsap.fromTo(t.querySelector("img"), { yPercent: -4 }, { yPercent: 4, ease: "none", scrollTrigger: { trigger: t, start: "top bottom", end: "bottom top", scrub: true } });
 });
 /* social proof, only from real numbers: "booked" is entered by the client from their records;
    enquiry counts are tallied from Firestore each time the admin publishes (SITE.stats) */
@@ -1630,6 +1668,27 @@ $("qbarClear").addEventListener("click", () => { clearQuery(); filterGrid(() => 
   $("railHotel").innerHTML = hotHTML + `<div style="display:contents" aria-hidden="true">${hotHTML}</div>`;
   if (!air.length) document.querySelector(".rail.airlines").hidden = true;
   if (!hot.length) document.querySelector(".rail.hotels").hidden = true;
+  // the rails drift sideways (airlines left, hotels right), only while on screen and not under the pointer
+  if (!reduce) {
+    const rails = [[$("railAir"), -1, 70], [$("railHotel"), 1, 80]].map(([el, dir, secs]) => ({ el, dir, secs, x: 0, half: 0, hover: false }));
+    rails.forEach(r => { r.el.closest(".rail").addEventListener("mouseenter", () => r.hover = true); r.el.closest(".rail").addEventListener("mouseleave", () => r.hover = false); });
+    const measure = () => rails.forEach(r => { const old = r.half; r.half = r.el.scrollWidth / 2; r.x = old ? r.x * r.half / old : (r.dir > 0 ? -r.half : 0); });   // keep the position as logos arrive
+    rails.forEach(r => r.el.querySelectorAll("img").forEach(im => im.addEventListener("load", measure)));
+    let on = false, last = 0;
+    const tick = t => {
+      if (!on) return;
+      const dt = Math.min(64, t - (last || t)); last = t;
+      rails.forEach(r => {
+        if (!r.half || r.hover) return;
+        r.x += r.dir * r.half / (r.secs * 1000) * dt;
+        if (r.x <= -r.half) r.x += r.half; if (r.x > 0) r.x -= r.half;          // seamless: the second half repeats the first
+        r.el.style.transform = `translate3d(${r.x.toFixed(1)}px,0,0)`;
+      });
+      requestAnimationFrame(tick);
+    };
+    measure(); addEventListener("resize", measure); addEventListener("load", measure);
+    new IntersectionObserver(es => es.forEach(e => { const was = on; on = e.isIntersecting; if (on && !was) { last = 0; requestAnimationFrame(tick); } }), { rootMargin: "100px 0px" }).observe($("partners"));
+  }
 }
 
 /* ---------- search: destinations and packages ---------- */
@@ -1689,6 +1748,27 @@ function openSearch(q = "", pick = null) {
 }
 function closeSearch() { ss.classList.remove("open"); lenis?.start(); document.body.style.overflow = ""; ssReturn?.focus?.(); }
 function viewTrip(id) { closeSearch(); openTrip(id); }
+/* ---------- search engines: title, description, canonical and structured data follow the open package ---------- */
+const SITE_URL = "https://thewanderlustexplorers.com";
+const HOME_META = { title: document.title, desc: document.querySelector('meta[name="description"]').content };
+function ld(id, data) { let el = document.getElementById(id); if (!data) { el && el.remove(); return; } if (!el) { el = document.createElement("script"); el.type = "application/ld+json"; el.id = id; document.head.appendChild(el); } el.textContent = JSON.stringify(data); }
+function setMeta(t, d) {
+  const set = (sel, attr, v) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, v); };
+  const url = t ? `${SITE_URL}/journeys/${encodeURIComponent(t.id)}` : SITE_URL + "/";   // each package has its own crawlable page (tools/build-seo.js)
+  const title = t ? `${t.name} Tour Package, ${t.nights}N/${t.nights + 1}D | Wanderlust` : HOME_META.title;   // under 60 characters
+  const desc = t ? `${t.name} tour package from Delhi: ${t.nights} nights${t.route ? ", " + t.route : ""}${t.sub ? ". " + t.sub : ""}. From ${inr(t.price)} per person, with a day-by-day itinerary.`.slice(0, 158) : HOME_META.desc;
+  document.title = title;
+  set('meta[name="description"]', "content", desc); set('link[rel="canonical"]', "href", url);
+  set('meta[property="og:url"]', "content", url); set('meta[property="og:title"]', "content", title); set('meta[property="og:description"]', "content", desc);
+  ld("ldTrip", t ? { "@context": "https://schema.org", "@type": "TouristTrip", name: `${t.name} tour package`, description: desc, url, image: SiteData.img(t.img, 1200),
+    touristType: t.tags && t.tags.includes("romantic") ? "Couples" : "Leisure",
+    provider: { "@id": SITE_URL + "/#agency" },
+    offers: { "@type": "Offer", price: t.price, priceCurrency: "INR", availability: "https://schema.org/InStock", url },
+    ...(d && d.days && d.days.length ? { itinerary: { "@type": "ItemList", numberOfItems: d.days.length, itemListElement: d.days.map((x, i) => ({ "@type": "ListItem", position: i + 1, item: { "@type": "TouristAttraction", name: `Day ${i + 1}: ${x.title}`, description: String(x.body || "").split("\n")[0].slice(0, 300) } })) } } : {}) } : null);
+}
+// every journey on the page, as a list search engines can read
+ld("ldTrips", { "@context": "https://schema.org", "@type": "ItemList", name: "Holiday packages from Delhi", itemListElement: TRIPS.map((t, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE_URL}/journeys/${encodeURIComponent(t.id)}`, name: `${t.name}, ${t.nights} nights` })) });
+
 /* ---------- package details: photos, overview, day-by-day itinerary, inclusions, policies ---------- */
 const pkgEl = $("pkg");
 let pkgOpenId = null, pkgReturn = null, pkgSpy = null, pkgPushed = false;
@@ -1706,13 +1786,13 @@ function pkgShell(t) {
   const imgs = [SiteData.img(t.img, 1600)].filter(Boolean);
   const days = t.nights + 1;
   return `
-  <div class="pkg-top"><button type="button" class="pkg-back" id="pkgBack">${ICO.back}All journeys</button><img src="assets/logo-wordmark-ink.png" alt="" width="841" height="372"><button type="button" class="pkg-x" id="pkgClose" aria-label="Close">${ICON_X}</button></div>
+  <div class="pkg-top"><button type="button" class="pkg-back" id="pkgBack">${ICO.back}All journeys</button><img src="assets/logo-wordmark-ink.webp" alt="" width="841" height="372"><button type="button" class="pkg-x" id="pkgClose" aria-label="Close">${ICON_X}</button></div>
   <div class="pkg-gallery n1" id="pkgGallery">${imgs.map(src => `<figure><img src="${esc(src)}" alt="${esc(t.name)}"></figure>`).join("")}</div>
   <div class="pkg-wrap">
     <article>
       <header class="pkg-head">
         <span class="label">${esc(t.country && t.country !== placeOf(t) ? t.country : placeOf(t))}${t.badge ? ` · ${esc(t.badge)}` : ""}</span>
-        <h1 id="pkgTitle">${esc(t.name)}</h1>
+        <h2 id="pkgTitle">${esc(t.name)}</h2>
         ${t.sub ? `<p class="sub">${esc(t.sub)}</p>` : ""}
         <div class="pkg-facts"><span>${ICO.moon}${t.nights} nights · ${days} days</span>${t.region ? `<span>${ICO.pin}${esc(t.region)}</span>` : ""}${t.route ? `<span>${ICO.route}${esc(t.route)}</span>` : ""}</div>
         ${proofLine(t).replace('class="proof"', 'class="proof" style="margin-top:6px"')}
@@ -1778,11 +1858,12 @@ async function openTrip(id, push = true) {
   pkgEl.innerHTML = pkgShell(t); pkgEl.hidden = false; pkgEl.scrollTop = 0;
   requestAnimationFrame(() => pkgEl.classList.add("open"));
   lenis?.stop(); document.body.style.overflow = "hidden";
-  document.title = `${t.name} · ${t.nights} nights — The Wanderlust Explorers`;
+  setMeta(t);
   $("pkgClose").focus({ preventScroll: true });
 
   const d = await SiteData.itinerary(id);
   if (pkgOpenId !== id) return;
+  setMeta(t, d);
   const gal = [SiteData.img(t.img, 1600), ...((d && d.gallery) || [])].filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 5);
   if (gal.length > 1) {
     const g = $("pkgGallery"), n = Math.min(gal.length, 5);
@@ -1806,7 +1887,7 @@ function closeTrip(fromPop = false) {
   pkgEl.classList.remove("open");
   setTimeout(() => { if (!pkgOpenId) { pkgEl.hidden = true; pkgEl.innerHTML = ""; } }, 450);
   lenis?.start(); document.body.style.overflow = "";
-  document.title = "The Wanderlust Explorers — Journeys from Delhi";
+  setMeta(null);
   if (!fromPop) { if (pkgPushed) history.back(); else history.replaceState(null, "", location.pathname); }   // a shared link has no page of ours behind it
   pkgPushed = false;
   pkgReturn?.focus?.({ preventScroll: true });
@@ -2117,7 +2198,7 @@ $("grid").addEventListener("click", e => {
     drawA.style.strokeDasharray = LA; drawB.style.strokeDasharray = LB;
     const L = trail.getTotalLength(), samples = [];
     for (let l = 0; l <= L; l += 6) { const q = trail.getPointAtLength(l); samples.push({ l, y: q.y }); }
-    F = { L, LA, LB, samples, y0: A[0][1], gapTop: j.top + vh * .02, gapBot: j.bottom - vh * .02, vh, dock };
+    F = { L, LA, LB, samples, y0: A[0][1], gapTop: j.top + vh * .02, gapBot: j.bottom - vh * .02, vh, dock, dark: DARK.filter(Boolean).map(abs) };
     curL = lenAt(scrollY + innerHeight * .42);
   }
   function lenAt(y) {                                   // first point on the flight path at this page height
@@ -2125,9 +2206,12 @@ $("grid").addEventListener("click", e => {
     while (lo < hi) { const m = (lo + hi) >> 1; if (s[m].y < y) lo = m + 1; else hi = m; }
     return s[lo].l;
   }
+  let lastY = -1, darkOn = null;
   function frame() {
     if (!F) return;
     const vh = innerHeight, targetY = scrollY + vh * .42;
+    if (scrollY === lastY && Math.abs(lenAt(scrollY + vh * .42) - curL) < .3 && Math.abs(bank) < .002) return;   // nothing moved: skip the frame
+    lastY = scrollY;
     world.setAttribute("transform", `translate(0,${-scrollY})`);   // a screen-sized layer: the path moves, the canvas doesn't
     // over the last screen of the page, pull the plane ahead so it can land on the footer logo
     const maxS = document.documentElement.scrollHeight - vh, k = gsap.utils.clamp(0, 1, (scrollY - (maxS - vh)) / vh);
@@ -2155,10 +2239,11 @@ $("grid").addEventListener("click", e => {
     drawA.style.strokeDashoffset = Math.max(0, F.LA - curL);
     drawB.style.strokeDashoffset = F.LB - Math.max(0, Math.min(F.LB, curL - F.LA));
     grad.setAttribute("y1", a.y - vh * .6); grad.setAttribute("y2", a.y);   // a short tail that dissolves quickly
-    const sy = a.y - scrollY;
-    flight.classList.toggle("on-dark", DARK.some(el => { const r = el.getBoundingClientRect(); return r.top <= sy && r.bottom > sy; }));
+    const dark = F.dark.some(r => r.top <= a.y && r.bottom > a.y);          // section positions measured in build(), not every frame
+    if (dark !== darkOn) { darkOn = dark; flight.classList.toggle("on-dark", dark); }
   }
-  if (!reduce) {
+  if (phone) flight.remove();                           // in a 10px margin it's barely visible on a phone, and it repaints a full-screen layer
+  else if (!reduce) {
     let t, started = false; const rebuild = () => { if (!started) return; clearTimeout(t); t = setTimeout(build, 120); };
     const begin = () => { started = true; build(); };
     ScrollTrigger.addEventListener("refresh", rebuild);

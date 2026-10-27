@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Admin — The Wanderlust Explorers</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" type="image/png" href="assets/logo-mark-ink.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
@@ -175,7 +175,7 @@ button.chip[aria-selected="true"]{background:var(--ink);color:var(--paper);box-s
 <!-- passcode gate (replaced by Firebase Auth with an admin role later) -->
 <div class="gate" id="gate">
   <form id="gateForm" novalidate>
-    <img src="assets/logo-full-ink.png" alt="The Wanderlust Explorers" width="841" height="952">
+    <img src="assets/logo-full-ink.webp" alt="The Wanderlust Explorers" width="841" height="952">
     <h1>Site admin</h1>
     <p class="muted small">Manage packages, prices, photos, music and enquiries.</p>
     <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" autocomplete="username"></div>
@@ -188,7 +188,7 @@ button.chip[aria-selected="true"]{background:var(--ink);color:var(--paper);box-s
 
 <div id="admin" hidden>
   <header class="top">
-    <div class="top-left"><img src="assets/logo-wordmark-ink.png" alt="The Wanderlust Explorers" width="841" height="372"><span class="tag">Admin</span></div>
+    <div class="top-left"><img src="assets/logo-wordmark-ink.webp" alt="The Wanderlust Explorers" width="841" height="372"><span class="tag">Admin</span></div>
     <div class="top-right">
       <span class="status" id="status"><i></i><span id="statusText">All changes saved</span></span>
       <a class="btn btn-quiet" href="index.html" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3v10h10v-3M9 3h4v4M13 3 7 9"/></svg><span>View site</span></a>
@@ -217,9 +217,9 @@ button.chip[aria-selected="true"]{background:var(--ink);color:var(--paper);box-s
 </div>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js" integrity="sha384-ZaR6mWzmJtrRibZ1Vm7SoHFr8OXjyAuGAXalGDKqbxFT18oi/z+oZLIRFkpeNor1" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js" integrity="sha384-I1LYojsZ5RM1cOda44Z2h42Qa6YfsQ1XkXxREnhp4ueYBR/4d1pG1K+NZM537Vsj" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js" integrity="sha384-Ke0FJhH7LyRqDxZ0wt+/OXV38yfQVu7g9VPEEGjYmB4RVOY/ta04uecRhsMwT7V3" crossorigin="anonymous"></script>
 <script src="firebase-config.js?v=1"></script>
 <script>firebase.initializeApp(window.FIREBASE_CONFIG);</script>
 <script src="data/site.js?v=4"></script>

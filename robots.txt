@@ -1,0 +1,8 @@
+# Markdown guide to this site for readers and language models: https://thewanderlustexplorers.com/llms.txt
+# Every public page as Markdown: https://thewanderlustexplorers.com/sitemap.md
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /account
+
+Sitemap: https://thewanderlustexplorers.com/sitemap.xml

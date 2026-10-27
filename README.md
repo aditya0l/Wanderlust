@@ -85,6 +85,34 @@ All 43 packages on the client's current site were imported: 10 are matched to th
 
 Cleaned up on import: sentences naming other travel companies (flyshop.in, Thrillophilia) were removed and "a Yatra representative" became "a Wanderlust representative". Worth checking with the client: Ladakh's Day 6 repeats Day 2 on their own site, and three packages (Cambodia, Cultural Triangle, Elegant Europe) have no inclusions listed.
 
+## SEO, AEO and GEO
+
+The site's interactive parts are drawn by JavaScript, which most AI crawlers don't run. So everything a search engine or AI assistant needs also exists as plain files, generated from the same data:
+
+- `journeys/<id>.html`: one page per visible package (title "<Place> Tour Package from Delhi, NN/ND", day-by-day plan, inclusions, payment, Q&A, TouristTrip / BreadcrumbList / FAQPage data). The homepage cards and footer link to them; clicking a card still opens the dialog.
+- The policies are written into `policies.html` as static text.
+- `llms.txt`, `sitemap.md`, `llm/topics/*.md`, `home.md`, `policies.md`, `journeys/<id>.md`: the same content as Markdown, for AI assistants.
+- `sitemap.xml`, `robots.txt` (keeps /admin and /account out of search).
+- `vercel.json`: clean URLs (`/journeys/ladakh`), 301 redirects from the old site's `/package-details/...` URLs, and `noindex` on the `*.vercel.app` preview so it doesn't compete with thewanderlustexplorers.com.
+
+**Rebuild after changing packages, itineraries or policies** (including admin edits: the static pages read `data/`, not Firestore):
+
+```
+node tools/build-seo.js ../seo-build/markdown-source
+python3 <seo-suite>/scripts/manage_markdown_site.py build --inventory ../seo-build/markdown-source/inventory.json --output ../seo-build/public-md
+cp -R ../seo-build/public-md/. .
+```
+
+(`../seo-build` must not exist before the second command; delete it first.) The production domain is set in `tools/build-seo.js` (`BASE`), `index.html` and `policies.html`.
+
+At domain cutover: point thewanderlustexplorers.com at this Vercel project, verify it in Google Search Console, submit `sitemap.xml`, and spot-check a few old `/package-details/...` URLs redirect.
+
+## Phones
+
+- The partner rails are moved by script, not CSS animation, and have painted edge fades instead of a CSS mask: iOS WebKit (Safari and Chrome on iPhone) fails to draw either.
+- On phones the contrail plane is off, the map has fewer dots and the frosted-glass blur is lighter; the card photos don't drift on touch screens. Elsewhere the contrail skips frames when nothing has moved.
+- The Asia loop has a "Skip the journey" button that jumps past the pinned section.
+
 ## Policies
 
 The four policies were copied word for word from the current thewanderlustexplorers.com. They still describe flight, hotel and bus bookings, so the client should review them before launch. Edit them in the admin under Policies: a line starting with `## ` is a heading, `- ` is a bullet, and emails and 10-digit phone numbers become links.

@@ -7,7 +7,7 @@
 <meta name="description" content="Your trips, wallet credits, visa applications and saved travellers.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#F5F4F1">
-<link rel="icon" type="image/png" href="assets/logo-mark-ink.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
@@ -169,7 +169,7 @@ main.view{min-width:0;display:grid;gap:28px;align-content:start}
 /* wallet */
 .wallet-top{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
 .balance{background:var(--espresso);color:var(--cream);border-radius:24px;padding:clamp(22px,3vw,32px);display:grid;gap:14px;position:relative;overflow:hidden}
-.balance::before{content:"";position:absolute;right:-60px;top:-40px;width:240px;height:240px;background:url(assets/logo-mark-light.png) center/contain no-repeat;opacity:.09}
+.balance::before{content:"";position:absolute;right:-60px;top:-40px;width:240px;height:240px;background:url(assets/logo-mark-light.webp) center/contain no-repeat;opacity:.09}
 .balance .label{color:rgba(244,241,236,.7)}
 .balance .num{font-size:clamp(3rem,7vw,4.6rem);line-height:.9;color:var(--cream)}
 .balance .num small{font-size:.5em;color:var(--aqua);margin-right:4px}
@@ -257,7 +257,7 @@ main.view{min-width:0;display:grid;gap:28px;align-content:start}
 <div class="demo" role="note" id="demoBar" hidden><span><b>Demo account.</b> Sample data stored in this browser only. Sign-in and the wallet go live once Firebase is connected.</span><button type="button" id="resetDemo">Reset demo data</button></div>
 
 <header class="top">
-  <a class="logo" href="index.html" aria-label="The Wanderlust Explorers, home"><img src="assets/logo-wordmark-ink.png" alt="" width="841" height="372"></a>
+  <a class="logo" href="index.html" aria-label="The Wanderlust Explorers, home"><img src="assets/logo-wordmark-ink.webp" alt="" width="841" height="372"></a>
   <div class="top-right">
     <a class="back" href="index.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 8H3M7 4 3 8l4 4"/></svg><span>Back to journeys</span></a>
     <span class="avatar" id="topAvatar" hidden aria-hidden="true"></span>
@@ -269,7 +269,7 @@ main.view{min-width:0;display:grid;gap:28px;align-content:start}
   <div class="signin-art">
     <img class="photo" src="https://images.unsplash.com/photo-1598563262148-0a9496712b44?w=1400&q=80&auto=format&fit=crop" alt="Pangong lake under the mountains of Ladakh">
     <div class="copy">
-      <img src="assets/logo-mark-light.png" alt="" width="704" height="556">
+      <img src="assets/logo-mark-light.webp" alt="" width="704" height="556">
       <h2>Every trip, <em>in one place.</em></h2>
       <ul>
         <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m3 8.5 3 3 7-7"/></svg>Tickets, vouchers and invoices for every booking</li>
@@ -314,9 +314,9 @@ main.view{min-width:0;display:grid;gap:28px;align-content:start}
 
 <div class="toast" id="toast" role="status"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js" integrity="sha384-ZaR6mWzmJtrRibZ1Vm7SoHFr8OXjyAuGAXalGDKqbxFT18oi/z+oZLIRFkpeNor1" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js" integrity="sha384-I1LYojsZ5RM1cOda44Z2h42Qa6YfsQ1XkXxREnhp4ueYBR/4d1pG1K+NZM537Vsj" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js" integrity="sha384-Ke0FJhH7LyRqDxZ0wt+/OXV38yfQVu7g9VPEEGjYmB4RVOY/ta04uecRhsMwT7V3" crossorigin="anonymous"></script>
 <script src="firebase-config.js?v=1"></script>
 <script src="account-data.js?v=3"></script>
 <script src="account-firebase.js?v=3"></script>
