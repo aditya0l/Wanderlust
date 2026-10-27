@@ -92,12 +92,21 @@
     async resetItinerary(id) { await fs().doc("itineraries/" + id).delete(); delete itinCache[id]; },
 
     /* media */
+    // photos listed in data/photos.js are served from assets/photos (tools/build-photos.js); anything else
+    // (a photo added in the admin since the last build) still comes from Unsplash
     img(ref, w = 1200) {
       if (!ref) return "";
+      const local = window.PHOTOS && window.PHOTOS[ref];
+      if (local) { const pw = local.w.find(x => x >= w) || local.w[local.w.length - 1]; return `/assets/photos/${ref}-${pw}.webp`; }
       if (/^photo-/.test(ref)) return `https://images.unsplash.com/${ref}?w=${w}&q=78&auto=format&fit=crop`;
       return ref; // full URL or data: URL
     },
-    srcset(ref, widths = [700, 1200, 1800]) { return /^photo-/.test(ref || "") ? widths.map(w => `${SiteData.img(ref, w)} ${w}w`).join(", ") : ""; },
+    srcset(ref, widths = [700, 1200, 1800]) {
+      const local = window.PHOTOS && window.PHOTOS[ref];
+      if (local) return local.w.map(w => `/assets/photos/${ref}-${w}.webp ${w}w`).join(", ");
+      return /^photo-/.test(ref || "") ? widths.map(w => `${SiteData.img(ref, w)} ${w}w`).join(", ") : "";
+    },
+    preview(ref) { const local = window.PHOTOS && window.PHOTOS[ref]; return local ? local.blur : ""; },   // tiny blurred version, inline
     async putAudio(key, blob) { await idbDo("readwrite", s => s.put(blob, key)); delete urlCache[key]; return "idb:" + key; },
     async deleteAudio(key) { await idbDo("readwrite", s => s.delete(key)); delete urlCache[key]; },
     async audioURL(ref) {

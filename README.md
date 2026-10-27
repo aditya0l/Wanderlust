@@ -107,6 +107,18 @@ cp -R ../seo-build/public-md/. .
 
 At domain cutover: point thewanderlustexplorers.com at this Vercel project, verify it in Google Search Console, submit `sitemap.xml`, and spot-check a few old `/package-details/...` URLs redirect.
 
+## Photos
+
+Every photo on the site is self-hosted in `assets/photos` (WebP at 640, 1080 and 1600px, cached for a year), not loaded from Unsplash. `data/photos.js` lists them with a tiny blurred preview each; `SiteData.img` uses the local copy and falls back to Unsplash only for a photo that hasn't been built yet (for example one just added in the admin).
+
+**After adding or changing a photo** (in `data/site.js` or `index.html`), run, then rebuild the SEO pages and push:
+
+```
+node tools/build-photos.js
+```
+
+It needs `curl`, `sips` (built into macOS) and `cwebp` (`brew install webp`). Originals are kept in `tools/.photo-cache` (not uploaded) so reruns only fetch new photos.
+
 ## Phones
 
 - The partner rails are moved by script, not CSS animation, and have painted edge fades instead of a CSS mask: iOS WebKit (Safari and Chrome on iPhone) fails to draw either.

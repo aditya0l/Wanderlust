@@ -26,7 +26,12 @@ const itin = id => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, "da
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const clean = s => String(s ?? "").replace(/<[^>]*>?/g, "").replace(/\s+/g, " ").trim();   // a few itinerary lines carry stray HTML
 const inr = n => "₹" + Number(n).toLocaleString("en-IN");
-const img = (ref, w) => /^photo-/.test(ref || "") ? `https://images.unsplash.com/${ref}?w=${w}&q=78&auto=format&fit=crop` : ref;
+// photos: the self-hosted copies from tools/build-photos.js (data/photos.js), the same choice SiteData.img makes
+try { require(path.join(ROOT, "data/photos.js")); } catch (e) { window.PHOTOS = {}; }
+const local = ref => (window.PHOTOS || {})[ref];
+const img = (ref, w) => { const l = local(ref); if (l) return `/assets/photos/${ref}-${l.w.find(x => x >= w) || l.w[l.w.length - 1]}.webp`; return /^photo-/.test(ref || "") ? `https://images.unsplash.com/${ref}?w=${w}&q=78&auto=format&fit=crop` : ref; };
+const abs = u => (u && u.startsWith("/") ? BASE + u : u);   // link previews and structured data need full addresses
+const srcset = ref => { const l = local(ref); return l ? l.w.map(w => `/assets/photos/${ref}-${w}.webp ${w}w`).join(", ") : [480, 900, 1200].map(w => `${img(ref, w)} ${w}w`).join(", "); };
 const days = p => `${p.nights} nights / ${p.nights + 1} days`;
 const url = p => `${BASE}/journeys/${p.id}`;
 const paras = s => String(s || "").split(/\n+/).map(clean).filter(Boolean);
@@ -95,7 +100,6 @@ function shell({ title, desc, canonical, image, md, ld, preload, body }) {
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="alternate" type="text/markdown" href="${md}">
-<link rel="preconnect" href="https://images.unsplash.com">
 ${preload || ""}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Hanken+Grotesk:wght@400;600&display=swap" media="print" onload="this.media='all'">
@@ -119,7 +123,7 @@ ${body}
 </html>
 `;
 }
-const heroSet = p => [480, 900, 1200].map(w => `${img(p.img, w)} ${w}w`).join(", ");
+const heroSet = p => srcset(p.img);
 
 function journeyPage(p, d) {
   const others = visible.filter(o => o.id !== p.id);
@@ -128,7 +132,7 @@ function journeyPage(p, d) {
   if (title.length > 60) title = title.replace(" from Delhi", "");   // long names: keep it inside what Google shows
   const desc = clean(`${p.name} tour package: ${days(p)}, ${p.route}. ${p.sub}. From ${inr(p.price)} per person, with a day-by-day itinerary.`).slice(0, 158);
   const ld = [
-    { "@context": "https://schema.org", "@type": "TouristTrip", "@id": url(p) + "#trip", name: `${p.name} tour package`, description: desc, url: url(p), image: img(p.img, 1200),
+    { "@context": "https://schema.org", "@type": "TouristTrip", "@id": url(p) + "#trip", name: `${p.name} tour package`, description: desc, url: url(p), image: abs(img(p.img, 1080)),
       provider: { "@id": BASE + "/#agency" },
       offers: { "@type": "Offer", price: p.price, priceCurrency: "INR", url: url(p), availability: "https://schema.org/InStock" },
       ...(d && d.days && d.days.length ? { itinerary: { "@type": "ItemList", numberOfItems: d.days.length, itemListElement: d.days.map((x, i) => ({ "@type": "ListItem", position: i + 1, item: { "@type": "TouristAttraction", name: `Day ${i + 1}: ${clean(x.title)}` } })) } } : {}) },
@@ -140,7 +144,7 @@ function journeyPage(p, d) {
   ];
   const sec = (h, items) => items && items.length ? `<h2>${h}</h2><ul class="list">${items.map(x => `<li>${esc(clean(x))}</li>`).join("")}</ul>` : "";
   const revs = revFor(p.id);
-  return shell({ title, desc, canonical: url(p), image: img(p.img, 1200), md: `/journeys/${p.id}.md`, ld,
+  return shell({ title, desc, canonical: url(p), image: abs(img(p.img, 1080)), md: `/journeys/${p.id}.md`, ld,
     preload: `<link rel="preload" as="image" imagesrcset="${esc(heroSet(p))}" imagesizes="(max-width:860px) calc(100vw - 40px), 820px" fetchpriority="high">`,
     body: `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/journeys">Journeys</a> › ${esc(p.name)}</nav>
 <h1>${esc(p.name)} tour package from Delhi</h1>
@@ -176,7 +180,7 @@ function hubPage() {
       { "@type": "ListItem", position: 1, name: "Home", item: BASE + "/" }, { "@type": "ListItem", position: 2, name: "Journeys", item: BASE + "/journeys" }] },
   ];
   const cheapest = visible.reduce((a, b) => (a.price <= b.price ? a : b)), longest = visible.reduce((a, b) => (a.nights >= b.nights ? a : b));
-  return shell({ title, desc, canonical: BASE + "/journeys", image: img(visible[0].img, 1200), md: "/journeys/index.md", ld,
+  return shell({ title, desc, canonical: BASE + "/journeys", image: abs(img(visible[0].img, 1080)), md: "/journeys/index.md", ld,
     body: `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Journeys</nav>
 <h1>Tour packages from Delhi</h1>
 <p class="lede">${visible.length} journeys in India and abroad, each with a day-by-day plan and one person to call.</p>
@@ -199,8 +203,7 @@ function between(file, tag, html) {
 }
 // the first hero photo starts downloading from the head, before the scripts that build the slideshow
 { const h = (S.slides || [])[0];
-  const hq = w => img(h.img, w);   // must match the slideshow (index.html)
-  between("index.html", "hero", h && /^photo-/.test(h.img) ? `<link rel="preload" as="image" fetchpriority="high" href="${hq(1600)}" imagesrcset="${[750, 1100, 1600].map(w => `${hq(w)} ${w}w`).join(", ")}" imagesizes="100vw">` : ""); }
+  between("index.html", "hero", h && /^photo-/.test(h.img) ? `<link rel="preload" as="image" fetchpriority="high" href="${img(h.img, 1600)}" imagesrcset="${srcset(h.img)}" imagesizes="100vw">` : ""); }   // must match the slideshow (SiteData.srcset)
 between("index.html", "journeys", `<div><span class="label">Journeys</span><ul><li><a href="/journeys">All journeys</a></li>${visible.map(p => `<li><a href="/journeys/${p.id}">${esc(p.name)}</a></li>`).join("")}</ul></div>`);
 const mdLite = body => String(body || "").split("\n").map(l => l.trim()).filter(Boolean).map(l => /^#{2,3}\s/.test(l) ? `<h2>${esc(l.replace(/^#+\s*/, ""))}</h2>` : /^[-*]\s/.test(l) ? `<p>• ${esc(l.slice(2))}</p>` : `<p>${esc(l)}</p>`).join("");
 between("policies.html", "policies", Object.entries(S.legal).map(([k, d]) => `<section id="${k}"><h1>${esc(d.title)}</h1>${mdLite(d.body)}</section>`).join(""));
@@ -250,7 +253,9 @@ fs.writeFileSync(path.join(ROOT, "vercel.json"), JSON.stringify({
     ] },
     { source: "/(admin|account)(.*)", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }, { key: "Cache-Control", value: "no-store" }] },
     // the site's own images and icons: a week in the browser cache (file names aren't versioned, so not longer)
-    { source: "/assets/(.*)", headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" }] },
+    { source: "/assets/((?!photos/).*)", headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" }] },
+    // self-hosted photos: the file name includes the photo id and width and never changes, so a year
+    { source: "/assets/photos/(.*)", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
     ...mdHeaders, ...canon,
   ],
 }, null, 2) + "\n");

@@ -3,7 +3,12 @@
   const $ = id => document.getElementById(id);
   const D = window.AccountData;
   const WA = "917737930736";
-  const U = (id, w = 900) => /^https?:/.test(id || "") ? id : `https://images.unsplash.com/${id || "photo-1598563262148-0a9496712b44"}?w=${w}&q=78&auto=format&fit=crop`;
+  const U = (id, w = 900) => {                     // self-hosted copy when there is one (data/photos.js), else Unsplash
+    if (/^https?:/.test(id || "")) return id;
+    id = id || "photo-1598563262148-0a9496712b44";
+    const l = window.PHOTOS && window.PHOTOS[id];
+    return l ? `/assets/photos/${id}-${l.w.find(x => x >= w) || l.w[l.w.length - 1]}.webp` : `https://images.unsplash.com/${id}?w=${w}&q=78&auto=format&fit=crop`;
+  };
   const inr = n => "₹" + Number(n).toLocaleString("en-IN");
   const cr = n => `${Number(n || 0).toLocaleString("en-IN")} credit${Number(n) === 1 ? "" : "s"}`;   // the wallet holds credits, not rupees
   const fmt = d => new Date(d + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
