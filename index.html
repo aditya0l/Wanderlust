@@ -1238,7 +1238,7 @@ addEventListener("keydown", e => { if (e.key === "Escape" && menuOpen) toggleMen
 /* ---------- hero slideshow: slow clip wipe ---------- */
 {
   const S = window.SITE.slides, img = SiteData.img;   // standard quality: Unsplash serves it from cache, other settings are rendered on first request
-  $("slides").innerHTML = S.map((x, i) => { const ss = /^photo-/.test(x.img || "") ? [750, 1100, 1600].map(w => `${img(x.img, w)} ${w}w`).join(", ") : ""; /* 2400px versions weighed up to 1.3 MB each */ const src = i ? "data-src" : "src", set = i ? "data-srcset" : "srcset"; return `<figure class="slide${i ? "" : " is-active"}"${/^photo-/.test(x.img || "") ? ` style="background:url(https://images.unsplash.com/${x.img}?w=32&q=40&blur=30&auto=format&fit=crop) center/cover"` : ""} data-scape="${esc(x.sound)}" data-name="${esc(x.name)}" data-coord="${esc(x.coord)}"><img decoding="async" fetchpriority="${i ? "low" : "high"}" ${src}="${img(x.img, 1600)}"${ss ? ` ${set}="${ss}" sizes="100vw"` : ""} alt="${esc(x.alt || x.name)}"></figure>`; }).join("");
+  $("slides").innerHTML = S.map((x, i) => { const ss = /^photo-/.test(x.img || "") ? [750, 1100, 1600].map(w => `${img(x.img, w)} ${w}w`).join(", ") : ""; /* 2400px versions weighed up to 1.3 MB each */ const src = i ? "data-src" : "src", set = i ? "data-srcset" : "srcset"; return `<figure class="slide${i ? "" : " is-active"}" data-scape="${esc(x.sound)}" data-name="${esc(x.name)}" data-coord="${esc(x.coord)}"><img decoding="async" fetchpriority="${i ? "low" : "high"}" ${src}="${img(x.img, 1600)}"${ss ? ` ${set}="${ss}" sizes="100vw"` : ""} alt="${esc(x.alt || x.name)}"></figure>`; }).join("");
   $("slideBars").innerHTML = S.map((x, i) => `<button aria-label="Show slide ${i + 1}"><b></b></button>`).join("");
   $("slideTotal").textContent = String(S.length).padStart(2, "0");
   $("slideName").textContent = S[0].name; $("slideCoord").textContent = S[0].coord;
@@ -1247,12 +1247,14 @@ const slides = [...document.querySelectorAll(".slide")];
 const bars = [...document.querySelectorAll("#slideBars b")];
 let cur = 0, barTween;
 const DUR = 7;
+// a slide is shown only once its photo has arrived (or after a few seconds, so the show never stalls)
+const slideReady = (k, max = 10000) => { loadSlide(k); const im = slides[k] && slides[k].querySelector("img"); if (!im || (im.complete && im.naturalWidth)) return Promise.resolve(); return Promise.race([im.decode ? im.decode().catch(() => {}) : new Promise(r => im.addEventListener("load", r, { once: true })), new Promise(r => setTimeout(r, max))]); };
 const loadSlide = k => { const im = slides[k] && slides[k].querySelector("img[data-src]"); if (!im) return; if (im.dataset.srcset) im.srcset = im.dataset.srcset; im.src = im.dataset.src; im.removeAttribute("data-src"); };
 function runBar(i) {
   loadSlide(i); loadSlide((i + 1) % slides.length);   // this slide and the next, during its 7 seconds
   bars.forEach((b, j) => gsap.set(b, { scaleX: j < i ? 1 : 0 }));
   barTween?.kill();
-  barTween = gsap.fromTo(bars[i], { scaleX: 0 }, { scaleX: 1, duration: DUR, ease: "none", onComplete: () => show((cur + 1) % slides.length) });
+  barTween = gsap.fromTo(bars[i], { scaleX: 0 }, { scaleX: 1, duration: DUR, ease: "none", onComplete: () => { const n = (cur + 1) % slides.length; slideReady(n).then(() => show(n)); } });
 }
 /* clouds: a soft cloud bank generated once on a canvas (no image download) */
 const cloudsEl = $("clouds"); let cloudsReady = false, slideBusy = false;
@@ -1309,7 +1311,7 @@ function show(n) {
   cur = n; runBar(n);
   if (soundSource === "hero") Soundscape.play(next.dataset.scape);
 }
-document.querySelectorAll("#slideBars button").forEach((b, i) => b.addEventListener("click", () => show(i)));
+document.querySelectorAll("#slideBars button").forEach((b, i) => b.addEventListener("click", () => slideReady(i, 3000).then(() => show(i))));
 gsap.to("#slides", { yPercent: 16, ease: "none", scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: true } });
 gsap.to(".hero-inner", { y: -60, opacity: 0, ease: "none", scrollTrigger: { trigger: "#hero", start: "35% top", end: "bottom top", scrub: true } });
 
