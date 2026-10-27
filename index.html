@@ -1105,15 +1105,14 @@ window.__seal = (() => {
   const ring = $("ringProg"), RL = 2 * Math.PI * 182;
   ring.style.strokeDasharray = RL; ring.style.strokeDashoffset = RL;
   return new Promise(res => gsap.timeline({ onComplete: res })
-    .from(".seal .ring-base, .seal .ring-inner", { opacity: 0, scale: .96, svgOrigin: "200 200", duration: 1, ease: "power2.out" }, 0)
-    .from("#sealTicks", { opacity: 0, duration: .9 }, .1)
-    .from("#sealText", { opacity: 0, duration: 1.1, ease: "power1.out" }, .2)
-    .to(ring, { strokeDashoffset: RL * .18, duration: 1.4, ease: "power2.inOut" }, .05)
-    .fromTo("#sheen", { xPercent: -120 }, { xPercent: 120, duration: 1, ease: "power2.inOut" }, .7));
+    .from(".seal .ring-base, .seal .ring-inner", { opacity: 0, scale: .96, svgOrigin: "200 200", duration: .7, ease: "power2.out" }, 0)
+    .from("#sealTicks", { opacity: 0, duration: .6 }, .05)
+    .from("#sealText", { opacity: 0, duration: .75, ease: "power1.out" }, .1)
+    .to(ring, { strokeDashoffset: RL * .18, duration: .95, ease: "power2.inOut" }, .05)
+    .fromTo("#sheen", { xPercent: -120 }, { xPercent: 120, duration: .7, ease: "power2.inOut" }, .4));
 })();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js" integrity="sha384-CHvG5TSBYWY4gs18D+se5IrGOZ6r8JlhAWob7LbkaUcfqD8PWzaYz2pqZdH7LsXQ" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" integrity="sha384-B2WBjDzEjJpYvhmi2UyEn7rektqkf5suS6sNoyyrf0EBAwBHdkiXxIlU0V5Ru2ed" crossorigin="anonymous"></script>
 <script src="data/site.js?v=4"></script>
 <script src="firebase-config.js?v=1"></script>
@@ -1123,7 +1122,7 @@ window.__seal = (() => {
 /* starts once the live content has arrived (or the 2.5 s fallback kicks in), under the loader */
 SiteData.ready.then(() => {
 const pageLoaded = document.readyState === "complete";
-gsap.registerPlugin(ScrollTrigger, Flip);
+gsap.registerPlugin(ScrollTrigger);
 const $ = id => document.getElementById(id);
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 /* ---------- talk to us: phones dial the office; computers and tablets have nothing to dial, so they open WhatsApp ---------- */
@@ -1324,13 +1323,13 @@ if (INTRO_SEEN) { $("loader").style.display = "none"; setTimeout(quickStart, 60)
 else Promise.all([window.__seal, heroReady()]).then(endLoad);
 function endLoad() {
   gsap.timeline()
-    .to(ring, { strokeDashoffset: 0, duration: .45, ease: "power2.out" })
-    .to("#seal, #loaderWordmark", { scale: .92, opacity: 0, duration: .6, ease: "expo.in", stagger: .04 }, "-=.15")
-    .to(".door.l", { xPercent: -101, duration: 1.25, ease: "expo.inOut" }, "-=.25")
-    .to(".door.r", { xPercent: 101, duration: 1.25, ease: "expo.inOut" }, "<")
+    .to(ring, { strokeDashoffset: 0, duration: .3, ease: "power2.out" })
+    .to("#seal, #loaderWordmark", { scale: .92, opacity: 0, duration: .45, ease: "expo.in", stagger: .03 }, "-=.1")
+    .to(".door.l", { xPercent: -101, duration: .95, ease: "expo.inOut" }, "-=.2")
+    .to(".door.r", { xPercent: 101, duration: .95, ease: "expo.inOut" }, "<")
     .set("#loader", { display: "none" })
     .add(() => { try { sessionStorage.setItem("wle-intro-seen", "1"); } catch (e) {} })
-    .add(intro, "-=1");
+    .add(intro, "-=.8");
 }
 function loadLater() {                          // hero slides 2+ and the Asia loop photos, once the first screen is up
   document.querySelectorAll(".slide img[data-src]").forEach(im => { if (im.dataset.srcset) im.srcset = im.dataset.srcset; im.src = im.dataset.src; im.removeAttribute("data-src"); });
@@ -1349,7 +1348,7 @@ function quickStart() {                         // the page as it is, with only 
 function intro() {
   lenis?.start();
   gsap.timeline()
-    .fromTo(slides[0].querySelector("img"), { scale: 1.3 }, { scale: 1.08, duration: 2.8 }, 0)
+    .fromTo(slides[0].querySelector("img"), { scale: 1.3 }, { scale: 1.08, duration: 2.2 }, 0)
     .from(".hero h1 .mask > span", { yPercent: 110, duration: 1.7, stagger: .12 }, .25)
     .from(".hero-in", { y: 24, opacity: 0, duration: 1.5, stagger: .1 }, .6)
     .from("#search", { y: 70, opacity: 0, duration: 1.7 }, .75)
