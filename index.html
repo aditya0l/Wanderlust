@@ -328,6 +328,7 @@ figcaption{margin-top:12px;font-size:.78rem;color:var(--ink-3);display:flex;just
 .voice-nav{display:flex;gap:12px;align-items:center;margin-top:30px}
 .voice-nav button{width:46px;height:46px;border-radius:50%;box-shadow:inset 0 0 0 1px var(--line);display:grid;place-items:center;transition:background .5s var(--ease)}
 .voice-nav button:hover{background:var(--paper)}
+.voice-wrap .note a{text-decoration:underline;text-underline-offset:3px}
 .voice-nav .count{font-family:var(--sans);font-weight:600;font-size:.95rem;letter-spacing:.08em;font-variant-numeric:tabular-nums lining-nums;color:var(--ink-2);margin-left:10px}
 .note{font-size:.8rem;color:var(--ink-3);margin-top:22px}
 @media (max-width:820px){.voice-wrap{grid-template-columns:1fr;gap:20px}.voice-stage{min-height:300px}}
@@ -1013,9 +1014,9 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
         <div class="voice-nav">
           <button type="button" id="vPrev" aria-label="Previous review"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M13 8H3M7 4 3 8l4 4"/></svg></button>
           <button type="button" id="vNext" aria-label="Next review"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
-          <span class="count" id="vCount">01 / 04</span>
+          <span class="count" id="vCount">01 / 20</span>
         </div>
-        <p class="note">Layout sample. Connect live Google reviews before launch.</p>
+        <p class="note">Rated 4.7 on Google from 82 reviews. <a href="https://www.google.com/search?kgmid=/g/11xf_t500s&amp;q=The+Wanderlust+Explorers" target="_blank" rel="noopener">Read them on Google</a></p>
       </div>
     </div>
   </section>
@@ -1129,10 +1130,28 @@ const CONTINENTS = ["India", "Asia", "Middle East", "Europe", "Africa", "America
 const placeOf = t => t.continent || (t.tags.includes("india") ? "India" : "Asia");
 const slugP = v => String(v).toLowerCase().replace(/[^a-z]+/g, "-");
 const FILTERS = [["all", "All"], ...CONTINENTS.concat([...new Set(TRIPS.map(placeOf))].filter(c => !CONTINENTS.includes(c))).filter(c => TRIPS.some(t => placeOf(t) === c)).map(c => [slugP(c), c])];
+// five-star Google reviews, quoted word for word (… marks a cut); collected from the Google listing in October 2026. Add real reviews only.
 const VOICES = [
-  // verbatim from reviews on the client's previous site; add real reviews here, never invented ones
-  { q:"I had a smooth experience booking my flight to New York. The price was reasonable, and the confirmation email came through quickly.", n:"Neha Jha", t:"Flight to New York" },
-  { q:"Great offers on flight tickets! I got a discount on my Goa trip.", n:"Pooja Kumari", t:"Goa trip" },
+  { q:"…Khushi did a wonderful job organizing our entire trip. She took care of everything — hotels, itinerary, transportation and all the reservations.", n:"Jai Bhai", t:"Ladakh" },
+  { q:"Huge shoutout to The Wanderlust for making our 6 Nights / 7 Days Uttarakhand tour absolutely unforgettable! … The entire circuit was planned flawlessly.", n:"Tarun Parwani", t:"Uttarakhand, 6 nights" },
+  { q:"Your expertise and attention to detail made our journey truly unforgettable.", n:"Achla Jain", t:"Kashmir, 4 days" },
+  { q:"From the moment we landed in Phuket to our very last sunset by the beach, The Wanderlust Explorers curated an experience that was nothing short of magical.", n:"Sujal Jain", t:"Phuket" },
+  { q:"Our Dubai honeymoon trip was beautifully planned by the team. The itinerary, bookings, and arrangements were handled very well.", n:"Pravesh Vj", t:"Dubai honeymoon" },
+  { q:"The trip has been just fantabulastic. It was organized and managed by Khushi and I must say that it was really well structured.", n:"Ananya Mukherjee", t:"Uttarakhand, 8 nights" },
+  { q:"Khushy gave me best package and tolerated my unending questions. It was my first tour through them but there was no discomfort at all.", n:"Ashish Doshi", t:"Himachal Pradesh" },
+  { q:"Our family tour was really enjoyable and well-organized. The driver cum guide was friendly and made sure everyone, including the kids, felt comfortable.", n:"Asmita Mehta", t:"Family tour" },
+  { q:"From start to finish, everything was perfectly organized. The guides were knowledgeable and friendly, and the trip was truly unforgettable.", n:"Aakansha Jingar", t:"Uttarakhand" },
+  { q:"I had visited Nainital with my pet and they arranged very well trip with car and hotels which was pet friendly", n:"Karan Singh", t:"Nainital, with a pet" },
+  { q:"I booked my visit to Himachal through this agency and my visit was very good. The stay was very comfortable and above all the host was super friendly and super fun.", n:"Aazam Friscon Solutions", t:"Himachal" },
+  { q:"It was wonderful experience with The Wanderlust Explorers. Entire team is really friendly and supportive. Will definitely recommend.", n:"Rishabh Mukesh", t:"Google review" },
+  { q:"This is my first trip with an agency and I would say that I completed enjoyed the tour, everything was hassle free and ready without any problems.", n:"omeshp13", t:"First trip with an agency" },
+  { q:"I booked Uttrakhand tour with wanderlust explorers all process are smooth and hassle free our family enjoyed very much", n:"Gaurav Kundra", t:"Uttarakhand, family" },
+  { q:"I visited himachal - Manali with them the tour was awesome and the hotels + driver was very good highly recommend them.", n:"Sadhana Meena", t:"Manali" },
+  { q:"Visited North East with the Wanderlust, the staff was very helpful … I will repeat more trips with them for sure 👍", n:"Shree Munisuvratnath Foundation", t:"North East" },
+  { q:"The company is very good i will recommend more with every one visited bali with them", n:"Stack Tribe", t:"Bali" },
+  { q:"I visited kashmir with them, the tour was fabulous", n:"Sunny Yadav", t:"Kashmir" },
+  { q:"I visited vietnam with them. Good co ordination will prefer", n:"Nimesh Ranjan", t:"Vietnam" },
+  { q:"I visited vietnam with them good services", n:"Sup Narpat Singh Singh Shekhawat", t:"Vietnam" },
 ];
 
 /* ---------- smooth scroll ---------- */
@@ -2093,8 +2112,11 @@ gsap.from(".svc", { y: 40, opacity: 0, duration: 1.4, stagger: .08, scrollTrigge
 /* ---------- voices ---------- */
 {
   const stage = $("voiceStage");
-  stage.innerHTML = VOICES.map(v => `<figure class="voice"><blockquote>“${v.q}”</blockquote><footer><b>${v.n}</b><span>${v.t}</span></footer></figure>`).join("");
+  stage.innerHTML = VOICES.map(v => `<figure class="voice"><blockquote>“${esc(v.q)}”</blockquote><footer><b>${esc(v.n)}</b><span>${esc(v.t)} · ★★★★★ on Google</span></footer></figure>`).join("");
   const vs = [...stage.children]; let vi = 0;
+  const fit = () => { stage.style.minHeight = Math.max(...vs.map(v => v.lastElementChild.getBoundingClientRect().bottom - v.getBoundingClientRect().top)) + "px"; };   // reviews vary in length: the stage fits the longest
+  fit(); addEventListener("resize", fit); document.fonts && document.fonts.ready.then(fit);
+  $("vCount").textContent = "01 / " + String(vs.length).padStart(2, "0");
   gsap.set(vs[0], { autoAlpha: 1 });
   function go(n) {
     n = (n + vs.length) % vs.length; if (n === vi) return;
