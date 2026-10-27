@@ -2168,8 +2168,10 @@ gsap.from(".svc", { y: 40, opacity: 0, duration: 1.4, stagger: .08, scrollTrigge
   gsap.set(vs[0], { autoAlpha: 1 });
   function go(n) {
     n = (n + vs.length) % vs.length; if (n === vi) return;
-    gsap.to(vs[vi], { autoAlpha: 0, y: -20, duration: .6, ease: "power2.in" });
-    gsap.fromTo(vs[n], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 1.5, delay: .35 });
+    gsap.killTweensOf(vs);                          // fast clicks: stop any fade still running, so only one review is ever readable
+    vs.forEach((v, k) => { if (k !== vi) gsap.set(v, { autoAlpha: 0, y: 0 }); });
+    gsap.to(vs[vi], { autoAlpha: 0, y: -20, duration: .35, ease: "power2.in" });
+    gsap.fromTo(vs[n], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: .9, delay: .3, ease: "power3.out" });
     vi = n; $("vCount").textContent = String(n + 1).padStart(2, "0") + " / " + String(vs.length).padStart(2, "0");
   }
   $("vPrev").addEventListener("click", () => go(vi - 1)); $("vNext").addEventListener("click", () => go(vi + 1));
