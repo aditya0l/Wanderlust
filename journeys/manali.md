@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Manali jo
 
 Content updated: 2026-10-27
 
-Source revision: 6368408+build-2026-10-27
+Source revision: f3814b9+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
@@ -82,6 +82,18 @@ After Breakfast Check out the Hotel you are free to roam around in evening back 
 - At booking, 30 days or more before departure: 30% of total cost
 - 29 – 20 days before departure: 30% of total cost
 - 19 days or less before departure: 40% (the balance)
+
+## What travellers say
+
+> I visited himachal - Manali with them the tour was awesome and the hotels + driver was very good highly recommend them.
+>
+> Sadhana Meena, Manali, five-star Google review
+
+> I booked my visit to Himachal through this agency and my visit was very good. The stay was very comfortable and above all the host was super friendly and super fun.
+>
+> Aazam Friscon Solutions, Himachal, five-star Google review
+
+The agency is rated 4.7 on Google from 82 reviews (October 2026): https://www.google.com/search?kgmid=/g/11xf_t500s&q=The+Wanderlust+Explorers
 
 ## Questions
 

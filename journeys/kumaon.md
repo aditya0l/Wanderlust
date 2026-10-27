@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Kumaon Hi
 
 Content updated: 2026-10-27
 
-Source revision: 6368408+build-2026-10-27
+Source revision: f3814b9+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
@@ -27,6 +27,18 @@ The day-by-day plan is shared when you plan your dates with the team.
 - At booking, 30 days or more before departure: 30% of total cost
 - 29 – 20 days before departure: 30% of total cost
 - 19 days or less before departure: 40% (the balance)
+
+## What travellers say
+
+> I had visited Nainital with my pet and they arranged very well trip with car and hotels which was pet friendly
+>
+> Karan Singh, Nainital, with a pet, five-star Google review
+
+> We covered the best of Uttarakhand including Nainital , Corbett , Haridwar, Rishikesh, Mussorie and Dehradun, a total of 8N9D trip. … Khushi just did a job that was just perfect.
+>
+> Ananya Mukherjee, Uttarakhand, 8 nights, including Nainital, five-star Google review
+
+The agency is rated 4.7 on Google from 82 reviews (October 2026): https://www.google.com/search?kgmid=/g/11xf_t500s&q=The+Wanderlust+Explorers
 
 ## Questions
 

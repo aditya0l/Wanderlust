@@ -20,6 +20,8 @@ const TODAY = new Date().toISOString().slice(0, 10);
 global.window = {}; require(path.join(ROOT, "data/site.js"));
 const S = window.SITE_DEFAULT, C = S.contact;
 const visible = S.packages.filter(p => p.visible !== false);
+const REV = JSON.parse(fs.readFileSync(path.join(ROOT, "data/reviews.json"), "utf8"));
+const revFor = id => { const own = REV.reviews.filter(r => r.journeys.includes(id)); return own.length ? own : REV.reviews.filter(r => r.journeys.includes("*")); };
 const itin = id => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, "data/itineraries", id + ".json"), "utf8")); } catch (e) { return null; } };
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const clean = s => String(s ?? "").replace(/<[^>]*>?/g, "").replace(/\s+/g, " ").trim();   // a few itinerary lines carry stray HTML
@@ -64,7 +66,60 @@ dl.facts div{background:var(--paper);padding:14px 16px}dt{font-size:.75rem;lette
 ul.list{padding-left:20px}ul.list li{margin:4px 0}
 details{border-top:1px solid var(--line);padding:12px 0}details summary{cursor:pointer;font-weight:600}
 footer{margin-top:64px;background:var(--ink);color:rgba(242,237,230,.8);padding:36px 0;font-size:.92rem}footer a{color:#cfe9e8}
-footer .others{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 18px}`;
+footer .others{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 18px}
+blockquote.rev{margin:0 0 18px;padding:18px 20px;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+blockquote.rev p{margin:0 0 8px}blockquote.rev footer{all:unset;display:block;font-size:.9rem;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:16px 0 8px}
+.card{display:block;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;text-decoration:none;color:var(--ink)}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover}.card div{padding:12px 14px}.card b{display:block;font-size:1.05rem}.card span{color:var(--muted);font-size:.92rem}`;
+
+// one page shell for the journey pages and the journeys hub
+function shell({ title, desc, canonical, image, md, ld, preload, body }) {
+  return `<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${canonical}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Wanderlust Explorers">
+<meta property="og:url" content="${canonical}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:image" content="${esc(image)}">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0F1A1C">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="alternate" type="text/markdown" href="${md}">
+<link rel="preconnect" href="https://images.unsplash.com">
+${preload || ""}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Hanken+Grotesk:wght@400;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Hanken+Grotesk:wght@400;600&display=swap"></noscript>
+<style>${CSS}</style>
+${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join("\n")}
+</head>
+<body>
+<header class="top"><a href="/" aria-label="The Wanderlust Explorers, home"><img src="/assets/logo-wordmark-ink-240.webp" alt="The Wanderlust Explorers" width="240" height="106" style="height:42px;width:auto"></a>
+<nav aria-label="Main"><a href="/journeys">All journeys</a><a href="tel:${C.phone.replace(/\s/g, "")}">${esc(C.phone)}</a></nav></header>
+<main class="wrap">
+${body}
+</main>
+<footer><div class="wrap">
+<p><b>Journeys from Delhi</b></p>
+<nav class="others" aria-label="All journeys">${visible.map(o => `<a href="/journeys/${o.id}">${esc(o.name)}, ${o.nights} nights</a>`).join("")}</nav>
+<p>The Wanderlust Explorers · Office 501, 5th floor, R-Tech Capital Highstreet, Mahal Road, Jaipur, Rajasthan 302017 · <a href="tel:${C.phone.replace(/\s/g, "")}">${esc(C.phone)}</a> · <a href="mailto:${C.email}">${esc(C.email)}</a></p>
+<p>Rated ${esc(REV.rating)}: <a href="${esc(REV.source)}">read the reviews on Google</a>. Prices are indicative. <a href="/policies">Terms, cancellation, refund and privacy policies</a>.</p>
+</div></footer>
+</body>
+</html>
+`;
+}
+const heroSet = p => [480, 900, 1200].map(w => `${img(p.img, w)} ${w}w`).join(", ");
 
 function journeyPage(p, d) {
   const others = visible.filter(o => o.id !== p.id);
@@ -79,44 +134,18 @@ function journeyPage(p, d) {
       ...(d && d.days && d.days.length ? { itinerary: { "@type": "ItemList", numberOfItems: d.days.length, itemListElement: d.days.map((x, i) => ({ "@type": "ListItem", position: i + 1, item: { "@type": "TouristAttraction", name: `Day ${i + 1}: ${clean(x.title)}` } })) } } : {}) },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: BASE + "/" },
-      { "@type": "ListItem", position: 2, name: "Journeys", item: BASE + "/#collections" },
+      { "@type": "ListItem", position: 2, name: "Journeys", item: BASE + "/journeys" },
       { "@type": "ListItem", position: 3, name: p.name, item: url(p) }] },
     { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: q.map(([a, b]) => ({ "@type": "Question", name: a, acceptedAnswer: { "@type": "Answer", text: b } })) },
   ];
   const sec = (h, items) => items && items.length ? `<h2>${h}</h2><ul class="list">${items.map(x => `<li>${esc(clean(x))}</li>`).join("")}</ul>` : "";
-  return `<!doctype html>
-<html lang="en-IN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(title)}</title>
-<meta name="description" content="${esc(desc)}">
-<link rel="canonical" href="${url(p)}">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="The Wanderlust Explorers">
-<meta property="og:url" content="${url(p)}">
-<meta property="og:title" content="${esc(title)}">
-<meta property="og:description" content="${esc(desc)}">
-<meta property="og:image" content="${esc(img(p.img, 1200))}">
-<meta property="og:locale" content="en_IN">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0F1A1C">
-<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
-<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="alternate" type="text/markdown" href="/journeys/${p.id}.md">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Hanken+Grotesk:wght@400;600&display=swap">
-<style>${CSS}</style>
-${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join("\n")}
-</head>
-<body>
-<header class="top"><a href="/" aria-label="The Wanderlust Explorers, home"><img src="/assets/logo-wordmark-ink.webp" alt="The Wanderlust Explorers" width="520" height="230"></a>
-<nav aria-label="Main"><a href="/#collections">All journeys</a><a href="tel:${C.phone.replace(/\s/g, "")}">${esc(C.phone)}</a></nav></header>
-<main class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/#collections">Journeys</a> › ${esc(p.name)}</nav>
+  const revs = revFor(p.id);
+  return shell({ title, desc, canonical: url(p), image: img(p.img, 1200), md: `/journeys/${p.id}.md`, ld,
+    preload: `<link rel="preload" as="image" imagesrcset="${esc(heroSet(p))}" imagesizes="(max-width:860px) calc(100vw - 40px), 820px" fetchpriority="high">`,
+    body: `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/journeys">Journeys</a> › ${esc(p.name)}</nav>
 <h1>${esc(p.name)} tour package from Delhi</h1>
 <p class="lede">${esc(days(p))} · ${esc(p.sub)} · from ${inr(p.price)} per person</p>
-<figure class="hero"><img src="${esc(img(p.img, 1200))}" srcset="${esc(img(p.img, 700))} 700w, ${esc(img(p.img, 1200))} 1200w" sizes="(max-width:860px) 100vw, 820px" alt="${esc(p.name)}, ${esc(p.region)}" width="1200" height="675" fetchpriority="high"></figure>
+<figure class="hero"><img src="${esc(img(p.img, 1200))}" srcset="${esc(heroSet(p))}" sizes="(max-width:860px) calc(100vw - 40px), 820px" alt="${esc(p.name)}, ${esc(p.region)}" width="1200" height="675" fetchpriority="high"></figure>
 <p>The ${esc(p.name)} journey from The Wanderlust Explorers is ${esc(days(p))} (${esc(p.route)}), starting at ${inr(p.price)} per person. One planner arranges what the package includes (listed below) and can add flights from Delhi and visas on request; travel support answers 24 hours a day during the trip.</p>
 <dl class="facts"><div><dt>Duration</dt><dd>${esc(days(p))}</dd></div><div><dt>Route</dt><dd>${esc(p.route)}</dd></div><div><dt>From</dt><dd>${inr(p.price)} per person</dd></div><div><dt>Region</dt><dd>${esc(p.region)}</dd></div></dl>
 <div class="cta"><a class="wa" href="${esc(wa(p))}">Plan on WhatsApp</a><a class="tel" href="tel:${C.phone.replace(/\s/g, "")}">Call ${esc(C.phone)}</a><a class="site" href="/?trip=${encodeURIComponent(p.id)}">Open the interactive itinerary</a></div>
@@ -127,24 +156,40 @@ ${sec("What's included", d && d.inclusions)}
 ${sec("Not included", d && d.exclusions)}
 <h2>Payment schedule</h2><ul class="list">${payLines(d).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
 <p>Cancellation and refund terms are in the <a href="/policies#cancellation">policies</a>.</p>
+<h2>What travellers say</h2>
+${revs.map(r => `<blockquote class="rev"><p>“${esc(r.text)}”</p><footer>${esc(r.name)} · ${esc(r.trip)} · ★★★★★ Google review</footer></blockquote>`).join("")}
+<p><a href="${esc(REV.source)}">Rated ${esc(REV.rating)}</a></p>
 <h2>Questions about the ${esc(p.name)} package</h2>
 ${q.map(([a, b]) => `<details><summary>${esc(a)}</summary><p>${esc(b)}</p></details>`).join("")}
-<div class="cta"><a class="wa" href="${esc(wa(p))}">Plan the ${esc(p.name)} journey</a></div>
-</main>
-<footer><div class="wrap">
-<p><b>More journeys from Delhi</b></p>
-<nav class="others" aria-label="More journeys">${others.map(o => `<a href="/journeys/${o.id}">${esc(o.name)}, ${o.nights} nights</a>`).join("")}</nav>
-<p>The Wanderlust Explorers · Office 501, 5th floor, R-Tech Capital Highstreet, Mahal Road, Jaipur, Rajasthan 302017 · <a href="tel:${C.phone.replace(/\s/g, "")}">${esc(C.phone)}</a> · <a href="mailto:${C.email}">${esc(C.email)}</a></p>
-<p>Prices are indicative. <a href="/policies">Terms, cancellation, refund and privacy policies</a>.</p>
-</div></footer>
-</body>
-</html>
-`;
+<div class="cta"><a class="wa" href="${esc(wa(p))}">Plan the ${esc(p.name)} journey</a></div>` });
+}
+
+// the journeys hub: every visible package, India first, aimed at "holiday packages from Delhi"
+function hubPage() {
+  const groups = [["Journeys in India", visible.filter(p => p.country === "India")], ["Journeys abroad", visible.filter(p => p.country !== "India")]];
+  const title = "Tour Packages from Delhi: India & Abroad | Wanderlust";   // the homepage owns "holiday packages from Delhi"
+  const desc = `${visible.length} tour packages from Delhi: ${visible.map(p => p.name).join(", ")}. Prices, routes and day-by-day itineraries.`.slice(0, 158);
+  const ld = [
+    { "@context": "https://schema.org", "@type": "CollectionPage", name: "Tour packages from Delhi", url: BASE + "/journeys", description: desc, isPartOf: { "@id": BASE + "/#website" },
+      mainEntity: { "@type": "ItemList", itemListElement: visible.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: url(p), name: `${p.name}, ${days(p)}` })) } },
+    { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE + "/" }, { "@type": "ListItem", position: 2, name: "Journeys", item: BASE + "/journeys" }] },
+  ];
+  const cheapest = visible.reduce((a, b) => (a.price <= b.price ? a : b)), longest = visible.reduce((a, b) => (a.nights >= b.nights ? a : b));
+  return shell({ title, desc, canonical: BASE + "/journeys", image: img(visible[0].img, 1200), md: "/journeys/index.md", ld,
+    body: `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Journeys</nav>
+<h1>Tour packages from Delhi</h1>
+<p class="lede">${visible.length} journeys in India and abroad, each with a day-by-day plan and one person to call.</p>
+<p>The Wanderlust Explorers, a travel agency in Jaipur, arranges ${visible.length} holiday packages from Delhi, from ${days(cheapest).split(" / ")[0]} in ${esc(cheapest.name)} at ${inr(cheapest.price)} per person to ${days(longest).split(" / ")[0]} in ${esc(longest.name)}. Each package lists its route, price, what is included and a three-part payment schedule; flights from Delhi and visas can be added.</p>
+${groups.filter(([, l]) => l.length).map(([h, l]) => `<h2>${h}</h2><div class="cards">${l.map(p => `<a class="card" href="/journeys/${p.id}"><img src="${esc(img(p.img, 600))}" alt="${esc(p.name)}, ${esc(p.region)}" width="600" height="450" loading="lazy"><div><b>${esc(p.name)} tour package</b><span>${esc(days(p))} · ${esc(p.route)} · from ${inr(p.price)}</span></div></a>`).join("")}</div>`).join("\n")}
+<h2>How booking works</h2>
+<p>Call or WhatsApp ${esc(C.phone)}, or email ${esc(C.email)}. Payment is in three parts: 30% at booking, 30% between 29 and 20 days before departure, and the 40% balance 19 days or less before departure. <a href="/policies#cancellation">Cancellation and refund terms</a>.</p>` });
 }
 
 fs.mkdirSync(path.join(ROOT, "journeys"), { recursive: true });
 for (const f of fs.readdirSync(path.join(ROOT, "journeys"))) if (f.endsWith(".html")) fs.unlinkSync(path.join(ROOT, "journeys", f));   // removed packages disappear
 visible.forEach(p => fs.writeFileSync(path.join(ROOT, "journeys", p.id + ".html"), journeyPage(p, itin(p.id))));
+fs.writeFileSync(path.join(ROOT, "journeys", "index.html"), hubPage());
 
 /* ---------------- homepage footer links and static policies ---------------- */
 function between(file, tag, html) {
@@ -152,12 +197,12 @@ function between(file, tag, html) {
   if (!s.includes(a) || !s.includes(b)) throw new Error(`${file}: missing ${a} … ${b} markers`);
   fs.writeFileSync(f, s.slice(0, s.indexOf(a) + a.length) + html + s.slice(s.indexOf(b)));
 }
-between("index.html", "journeys", `<div><span class="label">Journeys</span><ul>${visible.map(p => `<li><a href="/journeys/${p.id}">${esc(p.name)}</a></li>`).join("")}</ul></div>`);
+between("index.html", "journeys", `<div><span class="label">Journeys</span><ul><li><a href="/journeys">All journeys</a></li>${visible.map(p => `<li><a href="/journeys/${p.id}">${esc(p.name)}</a></li>`).join("")}</ul></div>`);
 const mdLite = body => String(body || "").split("\n").map(l => l.trim()).filter(Boolean).map(l => /^#{2,3}\s/.test(l) ? `<h2>${esc(l.replace(/^#+\s*/, ""))}</h2>` : /^[-*]\s/.test(l) ? `<p>• ${esc(l.slice(2))}</p>` : `<p>${esc(l)}</p>`).join("");
 between("policies.html", "policies", Object.entries(S.legal).map(([k, d]) => `<section id="${k}"><h1>${esc(d.title)}</h1>${mdLite(d.body)}</section>`).join(""));
 
 /* ---------------- sitemap.xml and robots.txt ---------------- */
-const urls = [[BASE + "/", "1.0"], ...visible.map(p => [url(p), "0.8"]), [BASE + "/policies", "0.3"]];
+const urls = [[BASE + "/", "1.0"], [BASE + "/journeys", "0.9"], ...visible.map(p => [url(p), "0.8"]), [BASE + "/policies", "0.3"]];
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <!-- Readable Markdown versions of these pages: ${BASE}/llms.txt and ${BASE}/sitemap.md -->
@@ -183,7 +228,7 @@ const redirects = fs.readdirSync(path.join(ROOT, "data/itineraries")).filter(f =
 }).filter(Boolean);
 redirects.push({ source: "/package-details/:path*", destination: "/#collections", permanent: true });   // any other old package URL
 const mdHeaders = [["/llms.txt", "text/plain; charset=utf-8"], ["/(.*)\\.md", "text/markdown; charset=utf-8"]].map(([source, v]) => ({ source, headers: [{ key: "Content-Type", value: v }, { key: "Cache-Control", value: "public, max-age=0, must-revalidate" }] }));
-const canon = [...visible.map(p => [`/journeys/${p.id}.md`, url(p)]), ["/policies.md", BASE + "/policies"], ["/home.md", BASE + "/"]]
+const canon = [...visible.map(p => [`/journeys/${p.id}.md`, url(p)]), ["/policies.md", BASE + "/policies"], ["/home.md", BASE + "/"], ["/journeys/index.md", BASE + "/journeys"]]
   .map(([source, u]) => ({ source, headers: [{ key: "Link", value: `<${u}>; rel="canonical"` }] }));
 fs.writeFileSync(path.join(ROOT, "vercel.json"), JSON.stringify({
   $schema: "https://openapi.vercel.sh/vercel.json",
@@ -253,6 +298,12 @@ ${d && d.inclusions ? `\n## What is included\n\n${list(d.inclusions)}\n` : ""}${
 
 ${payLines(d).map(l => "- " + l).join("\n")}
 
+## What travellers say
+
+${revFor(p.id).map(r => `> ${r.text}\n>\n> ${r.name}, ${r.trip}, five-star Google review`).join("\n\n")}
+
+The agency is rated ${REV.rating}: ${REV.source}
+
 ## Questions
 
 ${faqs(p, d).map(([a, b]) => `### ${a}\n\n${b}`).join("\n\n")}
@@ -261,6 +312,17 @@ ${faqs(p, d).map(([a, b]) => `### ${a}\n\n${b}`).join("\n\n")}
 
 Call or WhatsApp ${C.phone}, or email ${C.email}. Cancellation and refund terms: ${BASE}/policies.md
 `, `journeys/${p.id}.md`); });
+  add("journeys-index", BASE + "/journeys", "Tour packages from Delhi: all journeys", "Every journey with its duration, route and starting price, grouped into India and abroad", "journeys", `
+## Which tour packages are available from Delhi?
+
+${[["In India", visible.filter(p => p.country === "India")], ["Abroad", visible.filter(p => p.country !== "India")]].filter(([, l]) => l.length).map(([h, l]) => `### ${h}\n\n${l.map(p => `- [${p.name}](${BASE}/journeys/${p.id}.md): ${days(p)}, ${p.route}, from ${inr(p.price)} per person.`).join("\n")}`).join("\n\n")}
+
+Prices are indicative and confirmed when dates are planned. Flights from Delhi and visas can be added to any journey.
+
+## What do travellers say?
+
+The agency is rated ${REV.rating}. Reviews: ${REV.source}
+`, "journeys/index.md");
   add("policies", BASE + "/policies", "Terms, cancellation, refund and privacy policies", "The agency's terms and conditions, cancellation policy, refund policy and privacy policy", "company",
     Object.entries(S.legal).map(([k, d]) => `## ${d.title}\n\n${String(d.body || "").split("\n").map(l => l.trim()).filter(Boolean).map(l => l.replace(/^#{2,3}\s+/, "### ")).join("\n\n")}`).join("\n\n"), "policies.md");
   pages.push({ id: "account", url: BASE + "/account", disposition: "exclude", reason: "Signed-in customer area; not public content." });

@@ -1,0 +1,16 @@
+{
+  "_note": "Five-star Google reviews, quoted word for word (… marks a cut), collected from the Google listing in October 2026. 'journeys' lists the package pages a review is shown on. Add real reviews only.",
+  "source": "https://www.google.com/search?kgmid=/g/11xf_t500s&q=The+Wanderlust+Explorers",
+  "rating": "4.7 on Google from 82 reviews (October 2026)",
+  "reviews": [
+    { "name": "Jai Bhai", "trip": "Ladakh", "journeys": ["ladakh"], "text": "We recently traveled to Ladakh with Wanderlust, and Khushi did a wonderful job organizing our entire trip. She took care of everything — hotels, itinerary, transportation and all the reservations. … Even on some of the more challenging roads in Ladakh, we always felt we were in safe hands." },
+    { "name": "Pravesh Vj", "trip": "Dubai honeymoon", "journeys": ["dubai"], "text": "Our Dubai honeymoon trip was beautifully planned by the team. The itinerary, bookings, and arrangements were handled very well." },
+    { "name": "Stack Tribe", "trip": "Bali", "journeys": ["bali"], "text": "The company is very good i will recommend more with every one visited bali with them" },
+    { "name": "Sadhana Meena", "trip": "Manali", "journeys": ["manali"], "text": "I visited himachal - Manali with them the tour was awesome and the hotels + driver was very good highly recommend them." },
+    { "name": "Aazam Friscon Solutions", "trip": "Himachal", "journeys": ["manali"], "text": "I booked my visit to Himachal through this agency and my visit was very good. The stay was very comfortable and above all the host was super friendly and super fun." },
+    { "name": "Karan Singh", "trip": "Nainital, with a pet", "journeys": ["kumaon"], "text": "I had visited Nainital with my pet and they arranged very well trip with car and hotels which was pet friendly" },
+    { "name": "Ananya Mukherjee", "trip": "Uttarakhand, 8 nights, including Nainital", "journeys": ["kumaon"], "text": "We covered the best of Uttarakhand including Nainital , Corbett , Haridwar, Rishikesh, Mussorie and Dehradun, a total of 8N9D trip. … Khushi just did a job that was just perfect." },
+    { "name": "Rishabh Mukesh", "trip": "Google review", "journeys": ["*"], "text": "It was wonderful experience with The Wanderlust Explorers. Entire team is really friendly and supportive. Will definitely recommend." },
+    { "name": "Asmita Mehta", "trip": "Family tour", "journeys": ["*"], "text": "Our family tour was really enjoyable and well-organized. The driver cum guide was friendly and made sure everyone, including the kids, felt comfortable." }
+  ]
+}

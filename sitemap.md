@@ -1,6 +1,6 @@
 # The Wanderlust Explorers content map
 
-Inventory scope: complete. Public documents: 13.
+Inventory scope: complete. Public documents: 14.
 
 Holiday packages, flights and visas from Delhi: every journey's price, route, day-by-day itinerary, inclusions and payment schedule, plus the agency's contact details and policies.
 
@@ -23,4 +23,5 @@ Holiday packages, flights and visas from Delhi: every journey's price, route, da
 - [The Golden Triangle tour package from Delhi, 5 nights / 6 days](https://thewanderlustexplorers.com/journeys/golden.md): Price, route, day-by-day plan, inclusions and payment for the The Golden Triangle journey (en-IN); [canonical page](https://thewanderlustexplorers.com/journeys/golden).
 - [Bali tour package from Delhi, 5 nights / 6 days](https://thewanderlustexplorers.com/journeys/bali.md): Price, route, day-by-day plan, inclusions and payment for the Bali journey (en-IN); [canonical page](https://thewanderlustexplorers.com/journeys/bali).
 - [Switzerland & Paris tour package from Delhi, 6 nights / 7 days](https://thewanderlustexplorers.com/journeys/swiss.md): Price, route, day-by-day plan, inclusions and payment for the Switzerland & Paris journey (en-IN); [canonical page](https://thewanderlustexplorers.com/journeys/swiss).
+- [Tour packages from Delhi: all journeys](https://thewanderlustexplorers.com/journeys/index.md): Every journey with its duration, route and starting price, grouped into India and abroad (en-IN); [canonical page](https://thewanderlustexplorers.com/journeys).
 - [Terms, cancellation, refund and privacy policies](https://thewanderlustexplorers.com/policies.md): The agency's terms and conditions, cancellation policy, refund policy and privacy policy (en-IN); [canonical page](https://thewanderlustexplorers.com/policies).

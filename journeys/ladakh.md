@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Ladakh jo
 
 Content updated: 2026-10-27
 
-Source revision: 6368408+build-2026-10-27
+Source revision: f3814b9+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
@@ -110,6 +110,14 @@ After freshening up today, start off on your sightseeing tour.
 - At booking, 30 days or more before departure: 30% of total cost
 - 29 – 20 days before departure: 30% of total cost
 - 19 days or less before departure: 40% (the balance)
+
+## What travellers say
+
+> We recently traveled to Ladakh with Wanderlust, and Khushi did a wonderful job organizing our entire trip. She took care of everything — hotels, itinerary, transportation and all the reservations. … Even on some of the more challenging roads in Ladakh, we always felt we were in safe hands.
+>
+> Jai Bhai, Ladakh, five-star Google review
+
+The agency is rated 4.7 on Google from 82 reviews (October 2026): https://www.google.com/search?kgmid=/g/11xf_t500s&q=The+Wanderlust+Explorers
 
 ## Questions
 

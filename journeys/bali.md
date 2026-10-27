@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Bali jour
 
 Content updated: 2026-10-27
 
-Source revision: 6368408+build-2026-10-27
+Source revision: f3814b9+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
@@ -81,6 +81,14 @@ After breakfast, check out of the hotel to proceed to the airport for your fligh
 - At booking, 30 days or more before departure: 30% of total cost
 - 29 – 20 days before departure: 30% of total cost
 - 19 days or less before departure: 40% (the balance)
+
+## What travellers say
+
+> The company is very good i will recommend more with every one visited bali with them
+>
+> Stack Tribe, Bali, five-star Google review
+
+The agency is rated 4.7 on Google from 82 reviews (October 2026): https://www.google.com/search?kgmid=/g/11xf_t500s&q=The+Wanderlust+Explorers
 
 ## Questions
 
