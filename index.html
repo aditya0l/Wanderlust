@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Holiday Packages from Delhi | The Wanderlust Explorers</title>
-<meta name="description" content="Tour packages from Delhi to Ladakh, Kerala, Rajasthan, Dubai, Singapore, Bali, the Maldives and Europe, with day-by-day itineraries, visas and one person to call.">
+<meta name="description" content="Tour packages from Delhi to Ladakh, Kerala, Rajasthan, Dubai, Singapore, Bali, the Maldives and Europe, with day-by-day itineraries, visas and one planner.">
 <link rel="canonical" href="https://thewanderlustexplorers.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Wanderlust Explorers">
@@ -918,7 +918,7 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
       </div>
     </div>
     <div class="statement-imgs">
-      <figure><div class="frame wide reveal-img"><img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1600&q=80&auto=format&fit=crop" alt="A houseboat moving through the Kerala backwaters"></div><figcaption><span>Alleppey backwaters, Kerala</span><span>Houseboat, 2 nights</span></figcaption></figure>
+      <figure><div class="frame wide reveal-img"><img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1600&q=80&auto=format&fit=crop" alt="A houseboat moving through the Kerala backwaters"></div><figcaption><span>Alleppey backwaters, Kerala</span><span>In the Kerala journey</span></figcaption></figure>
       <figure><div class="frame tall reveal-img"><img src="https://images.unsplash.com/photo-1591946522651-90fbace43004?w=1000&q=80&auto=format&fit=crop" alt="Carved green doorway in a Rajasthan palace"></div><figcaption><span>City Palace, Udaipur</span><span>Private guide</span></figcaption></figure>
     </div>
   </section>
@@ -968,8 +968,8 @@ mark{background:var(--teal-wash,#E4F2F2);color:inherit;border-radius:3px;padding
   <!-- COLLECTIONS -->
   <section class="collections wrap" id="collections">
     <div class="col-head">
-      <div style="display:grid;gap:22px"><span class="label">Journeys for this season</span><h2><span class="mask"><span>Ten places we</span></span><span class="mask"><span>know <em>by heart.</em></span></span></h2></div>
-      <p>Each journey includes return flights from Delhi, hand-picked hotels, transfers and a person to call. Prices are per person, twin sharing.</p>
+      <div style="display:grid;gap:22px"><span class="label">Journeys for this season</span><h2><span class="mask"><span>Places we</span></span><span class="mask"><span>know <em>by heart.</em></span></span></h2></div>
+      <p>Each journey includes hand-picked hotels, transfers and a person to call, and we can add flights from Delhi. Prices are per person, twin sharing.</p>
     </div>
     <div class="filters" role="group" aria-label="Filter journeys" id="filters"></div>
     <div class="qbar" id="qbar" hidden><span id="qbarText"></span><button type="button" id="qbarClear">Show all journeys</button></div>
@@ -1128,10 +1128,9 @@ const placeOf = t => t.continent || (t.tags.includes("india") ? "India" : "Asia"
 const slugP = v => String(v).toLowerCase().replace(/[^a-z]+/g, "-");
 const FILTERS = [["all", "All"], ...CONTINENTS.concat([...new Set(TRIPS.map(placeOf))].filter(c => !CONTINENTS.includes(c))).filter(c => TRIPS.some(t => placeOf(t) === c)).map(c => [slugP(c), c])];
 const VOICES = [
-  { q:"Smooth booking for my New York flight. A fair price, and the confirmation arrived in minutes.", n:"Neha Jha", t:"Delhi to New York" },
-  { q:"We got a proper discount on Goa, and when our first hotel was full they moved us somewhere better.", n:"Pooja Kumari", t:"Goa, 4 nights" },
-  { q:"Six Dubai visas in four days. I did not fill in a single form myself.", n:"Sample review", t:"Dubai, group of six" },
-  { q:"I called at midnight about a cancelled connection. They had rebooked me before I reached the transfer desk.", n:"Sample review", t:"Singapore stopover" },
+  // verbatim from reviews on the client's previous site; add real reviews here, never invented ones
+  { q:"I had a smooth experience booking my flight to New York. The price was reasonable, and the confirmation email came through quickly.", n:"Neha Jha", t:"Flight to New York" },
+  { q:"Great offers on flight tickets! I got a discount on my Goa trip.", n:"Pooja Kumari", t:"Goa trip" },
 ];
 
 /* ---------- smooth scroll ---------- */

@@ -69,7 +69,8 @@ footer .others{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 18px}`;
 function journeyPage(p, d) {
   const others = visible.filter(o => o.id !== p.id);
   const q = faqs(p, d);
-  const title = `${p.name} Tour Package from Delhi, ${p.nights}N/${p.nights + 1}D | Wanderlust`;
+  let title = `${p.name} Tour Package from Delhi, ${p.nights}N/${p.nights + 1}D | Wanderlust`;
+  if (title.length > 60) title = title.replace(" from Delhi", "");   // long names: keep it inside what Google shows
   const desc = clean(`${p.name} tour package: ${days(p)}, ${p.route}. ${p.sub}. From ${inr(p.price)} per person, with a day-by-day itinerary.`).slice(0, 158);
   const ld = [
     { "@context": "https://schema.org", "@type": "TouristTrip", "@id": url(p) + "#trip", name: `${p.name} tour package`, description: desc, url: url(p), image: img(p.img, 1200),

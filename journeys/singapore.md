@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Singapore
 
 Content updated: 2026-10-27
 
-Source revision: f406bf6+build-2026-10-27
+Source revision: 6368408+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
