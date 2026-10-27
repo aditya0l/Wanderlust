@@ -25,6 +25,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <script>try { if (sessionStorage.getItem("wle-intro-seen") || /[?&]trip=/.test(location.search)) document.documentElement.classList.add("intro-seen"); } catch (e) {}</script>
 <link rel="preconnect" href="https://images.unsplash.com">
+<!-- seo:hero --><link rel="preload" as="image" fetchpriority="high" href="https://images.unsplash.com/photo-1598563262148-0a9496712b44?w=1600&q=78&auto=format&fit=crop" imagesrcset="https://images.unsplash.com/photo-1598563262148-0a9496712b44?w=750&q=78&auto=format&fit=crop 750w, https://images.unsplash.com/photo-1598563262148-0a9496712b44?w=1100&q=78&auto=format&fit=crop 1100w, https://images.unsplash.com/photo-1598563262148-0a9496712b44?w=1600&q=78&auto=format&fit=crop 1600w" imagesizes="100vw"><!-- /seo:hero -->
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1236,8 +1237,8 @@ addEventListener("keydown", e => { if (e.key === "Escape" && menuOpen) toggleMen
 
 /* ---------- hero slideshow: slow clip wipe ---------- */
 {
-  const S = window.SITE.slides, img = SiteData.img;
-  $("slides").innerHTML = S.map((x, i) => { const ss = SiteData.srcset(x.img, [750, 1100, 1600]); /* 2400px versions weighed up to 1.3 MB each */ const src = i ? "data-src" : "src", set = i ? "data-srcset" : "srcset"; return `<figure class="slide${i ? "" : " is-active"}" data-scape="${esc(x.sound)}" data-name="${esc(x.name)}" data-coord="${esc(x.coord)}"><img decoding="async" fetchpriority="${i ? "low" : "high"}" ${src}="${img(x.img, 1600)}"${ss ? ` ${set}="${ss}" sizes="100vw"` : ""} alt="${esc(x.alt || x.name)}"></figure>`; }).join("");
+  const S = window.SITE.slides, img = SiteData.img;   // standard quality: Unsplash serves it from cache, other settings are rendered on first request
+  $("slides").innerHTML = S.map((x, i) => { const ss = /^photo-/.test(x.img || "") ? [750, 1100, 1600].map(w => `${img(x.img, w)} ${w}w`).join(", ") : ""; /* 2400px versions weighed up to 1.3 MB each */ const src = i ? "data-src" : "src", set = i ? "data-srcset" : "srcset"; return `<figure class="slide${i ? "" : " is-active"}"${/^photo-/.test(x.img || "") ? ` style="background:url(https://images.unsplash.com/${x.img}?w=32&q=40&blur=30&auto=format&fit=crop) center/cover"` : ""} data-scape="${esc(x.sound)}" data-name="${esc(x.name)}" data-coord="${esc(x.coord)}"><img decoding="async" fetchpriority="${i ? "low" : "high"}" ${src}="${img(x.img, 1600)}"${ss ? ` ${set}="${ss}" sizes="100vw"` : ""} alt="${esc(x.alt || x.name)}"></figure>`; }).join("");
   $("slideBars").innerHTML = S.map((x, i) => `<button aria-label="Show slide ${i + 1}"><b></b></button>`).join("");
   $("slideTotal").textContent = String(S.length).padStart(2, "0");
   $("slideName").textContent = S[0].name; $("slideCoord").textContent = S[0].coord;
@@ -1332,8 +1333,16 @@ function endLoad() {
     .add(() => { try { sessionStorage.setItem("wle-intro-seen", "1"); } catch (e) {} })
     .add(intro, "-=.8");
 }
-function loadLater() {                          // hero slides 2+ and the Asia loop photos, once the first screen is up
-  loadSlide(1);                                 // the rest follow one slide ahead (runBar)
+function loadLater() {                          // once the first screen is up: every other photo on the page, nearest first, three at a time,
+  loadSlide(1);                                 // so each one is already there when it's scrolled to
+  const done = im => im.complete && im.naturalWidth ? Promise.resolve() : new Promise(r => { im.addEventListener("load", r, { once: true }); im.addEventListener("error", r, { once: true }); setTimeout(r, 15000); });
+  const dist = el => Math.abs(el.getBoundingClientRect().top), loopAt = dist($("journey"));
+  const jobs = [...document.querySelectorAll('img[loading="lazy"]')].map(im => ({ at: dist(im), run: () => { im.loading = "eager"; return done(im); } }));
+  jobs.push({ at: loopAt, run: () => { window.__preloadStops && window.__preloadStops(); return Promise.resolve(); } });
+  slides.forEach((sl, k) => k > 1 && jobs.push({ at: Infinity, run: () => { loadSlide(k); return done(sl.querySelector("img")); } }));   // heaviest; each also loads a slide ahead of its turn
+  jobs.sort((a, b) => a.at - b.at);
+  let i = 0; const next = () => { if (i < jobs.length) jobs[i++].run().then(next); };
+  next(); next(); next();
   const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); window.__preloadStops && window.__preloadStops(); } }, { rootMargin: "1600px 0px" });
   io.observe($("journey"));
 }

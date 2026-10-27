@@ -197,6 +197,10 @@ function between(file, tag, html) {
   if (!s.includes(a) || !s.includes(b)) throw new Error(`${file}: missing ${a} … ${b} markers`);
   fs.writeFileSync(f, s.slice(0, s.indexOf(a) + a.length) + html + s.slice(s.indexOf(b)));
 }
+// the first hero photo starts downloading from the head, before the scripts that build the slideshow
+{ const h = (S.slides || [])[0];
+  const hq = w => img(h.img, w);   // must match the slideshow (index.html)
+  between("index.html", "hero", h && /^photo-/.test(h.img) ? `<link rel="preload" as="image" fetchpriority="high" href="${hq(1600)}" imagesrcset="${[750, 1100, 1600].map(w => `${hq(w)} ${w}w`).join(", ")}" imagesizes="100vw">` : ""); }
 between("index.html", "journeys", `<div><span class="label">Journeys</span><ul><li><a href="/journeys">All journeys</a></li>${visible.map(p => `<li><a href="/journeys/${p.id}">${esc(p.name)}</a></li>`).join("")}</ul></div>`);
 const mdLite = body => String(body || "").split("\n").map(l => l.trim()).filter(Boolean).map(l => /^#{2,3}\s/.test(l) ? `<h2>${esc(l.replace(/^#+\s*/, ""))}</h2>` : /^[-*]\s/.test(l) ? `<p>• ${esc(l.slice(2))}</p>` : `<p>${esc(l)}</p>`).join("");
 between("policies.html", "policies", Object.entries(S.legal).map(([k, d]) => `<section id="${k}"><h1>${esc(d.title)}</h1>${mdLite(d.body)}</section>`).join(""));

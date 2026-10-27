@@ -8,7 +8,7 @@ Purpose: Price, route, day-by-day plan, inclusions and payment for the Maldives 
 
 Content updated: 2026-10-27
 
-Source revision: 85b8134+build-2026-10-27
+Source revision: 7cf02f1+build-2026-10-27
 
 Maintenance owner: The Wanderlust Explorers website owner
 
