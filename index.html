@@ -1599,11 +1599,10 @@ $("jSkip").addEventListener("click", () => {        // straight to the journeys 
   col.setAttribute("tabindex", "-1"); col.focus({ preventScroll: true });
 });
 let journeyLive = false;
-new IntersectionObserver(([en]) => { journeyLive = en.isIntersecting; if (en.isIntersecting) warmCards(6); }).observe($("journey"));
-// journey card photos are lazy; start them before they're needed: the first six while the Asia loop plays
-// (it sits right above them, and "Skip the journey" jumps straight there), the rest once the grid is two screens away
-function warmCards(n) { [...document.querySelectorAll('#grid img[loading="lazy"]')].slice(0, n).forEach((im, i) => { im.loading = "eager"; if (n <= 6) im.fetchPriority = "high"; }); }
-new IntersectionObserver((es, io) => { if (es.some(e => e.isIntersecting)) { warmCards(99); io.disconnect(); } }, { rootMargin: "200% 0px" }).observe($("grid"));
+new IntersectionObserver(([en]) => { journeyLive = en.isIntersecting; if (en.isIntersecting) warmCards(4); }).observe($("journey"));
+// the first four journey photos start while the Asia loop plays (it sits right above them, and "Skip the journey"
+// lands there); the rest stay with the browser's lazy loading, so they don't compete with the ones being looked at
+function warmCards(n) { [...document.querySelectorAll('#grid img[loading="lazy"]')].slice(0, n).forEach(im => { im.loading = "eager"; }); }
 gsap.ticker.add(() => { if (journeyLive) drawJourney(); });
 
 /* ---------- collections ---------- */
