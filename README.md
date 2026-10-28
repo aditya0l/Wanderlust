@@ -107,17 +107,17 @@ cp -R ../seo-build/public-md/. .
 
 At domain cutover: point thewanderlustexplorers.com at this Vercel project, verify it in Google Search Console, submit `sitemap.xml`, and spot-check a few old `/package-details/...` URLs redirect.
 
-## Photos
+## Photos and content updates (automatic)
 
-Every photo on the site is self-hosted in `assets/photos` (WebP at 640, 1080 and 1600px, cached for a year), not loaded from Unsplash. `data/photos.js` lists them with a tiny blurred preview each; `SiteData.img` uses the local copy and falls back to Unsplash only for a photo that hasn't been built yet (for example one just added in the admin).
+**For the client:** add or edit packages, itineraries and photos in the admin and press **Publish**. Changes show on the site straight away. Within about 15 minutes, `.github/workflows/sync.yml` (free, on GitHub) takes over:
 
-**After adding or changing a photo** (in `data/site.js` or `index.html`), run, then rebuild the SEO pages and push:
+1. `tools/sync-content.js` copies the published content into `data/site.js` and `data/itineraries/` (only content of the current version; uploaded photos are taken out of the content and kept as files).
+2. `tools/build-all.sh` runs `tools/build-photos.js` (every shown photo self-hosted in `assets/photos`: WebP at 640/1080/1600px, cached a year, with an inline blurred preview in `data/photos.js`), then `tools/build-seo.js` and the Markdown builder (`tools/markdown`, copied from the SEO plugin under Apache 2.0): journey pages, hub, sitemap, robots, `vercel.json`, `llms.txt`.
+3. It commits and pushes; Vercel deploys. Visitors then load the synced copy (one tiny request checks it is current) instead of the published one.
 
-```
-node tools/build-photos.js
-```
+Photos can be an Unsplash id (`photo-…`), an image link, or an upload. Nothing to install or pay for. To run it immediately: GitHub, **Actions → Sync admin content → Run workflow**.
 
-It needs `curl`, `sips` (built into macOS) and `cwebp` (`brew install webp`). Originals are kept in `tools/.photo-cache` (not uploaded) so reruns only fetch new photos.
+**By hand** (same result): `node tools/sync-content.js && bash tools/build-all.sh`, then commit and push. Needs `cwebp` (`brew install webp`); originals are kept in `tools/.photo-cache`, which isn't published.
 
 ## Phones
 

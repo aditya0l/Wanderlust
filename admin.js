@@ -101,7 +101,7 @@ SiteData.ready.then(() => {
       <div class="preview"><img id="${id}Prev" src="${esc(SiteData.img(value, 400))}" alt="">
         <div style="display:grid;gap:8px"><input class="input" id="${id}" value="${esc(value && value.startsWith("data:") ? "" : value)}" placeholder="Unsplash id (photo-…) or image link">
           <label class="btn btn-quiet" style="justify-self:start;cursor:pointer">Upload photo<input type="file" accept="image/*" id="${id}File" hidden></label>
-          <span class="hint">${value && value.startsWith("data:") ? "Using an uploaded photo. " : ""}Uploads are resized to 1600px. Links keep the site lighter.</span></div></div></div>`;
+          <span class="hint">${value && value.startsWith("data:") ? "Using an uploaded photo. " : ""}Shows on the site as soon as you publish; within about 15 minutes it is optimised and served from the site automatically.</span></div></div></div>`;
   function bindImg(id, set) {
     $(id).addEventListener("input", e => { const v = e.target.value.trim(); set(v); $(id + "Prev").src = SiteData.img(v, 400); });
     $(id + "File").addEventListener("change", async e => { const f = e.target.files[0]; if (!f) return; try { const d = await compress(f); set(d); $(id + "Prev").src = d; $(id).value = ""; toast("Photo uploaded."); } catch (err) { toast(err.message); } });

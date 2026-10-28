@@ -7,7 +7,7 @@
     if (/^https?:/.test(id || "")) return id;
     id = id || "photo-1598563262148-0a9496712b44";
     const l = window.PHOTOS && window.PHOTOS[id];
-    return l ? `/assets/photos/${id}-${l.w.find(x => x >= w) || l.w[l.w.length - 1]}.webp` : `https://images.unsplash.com/${id}?w=${w}&q=78&auto=format&fit=crop`;
+    return l ? `/assets/photos/${l.f || id}-${l.w.find(x => x >= w) || l.w[l.w.length - 1]}.webp` : `https://images.unsplash.com/${id}?w=${w}&q=78&auto=format&fit=crop`;
   };
   const inr = n => "₹" + Number(n).toLocaleString("en-IN");
   const cr = n => `${Number(n || 0).toLocaleString("en-IN")} credit${Number(n) === 1 ? "" : "s"}`;   // the wallet holds credits, not rupees

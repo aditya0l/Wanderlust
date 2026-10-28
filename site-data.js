@@ -40,6 +40,14 @@
     if (!CFG.projectId) return null;
     const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms);
     try {
+      // the GitHub sync copies each publish into data/site.js (syncedAt) with photos self-hosted; while that copy is
+      // current, visitors skip downloading the published one (the admin always reads it)
+      const synced = window.SITE_DEFAULT && window.SITE_DEFAULT.syncedAt;
+      if (synced && !/admin/.test(location.pathname)) {
+        const m = await fetch(`${REST}/site/live?key=${CFG.apiKey}&mask.fieldPaths=updatedAt`, { signal: ctl.signal, cache: "no-store" });
+        const at = m.ok ? (((await m.json()).fields || {}).updatedAt || {}).stringValue : null;
+        if (!at || at <= synced) return null;
+      }
       const r = await fetch(`${REST}/site/live?key=${CFG.apiKey}`, { signal: ctl.signal, cache: "no-store" });
       if (!r.ok) return null;                    // 404 until the first publish
       const doc = await r.json(), json = doc.fields && doc.fields.json && doc.fields.json.stringValue;
@@ -97,13 +105,13 @@
     img(ref, w = 1200) {
       if (!ref) return "";
       const local = window.PHOTOS && window.PHOTOS[ref];
-      if (local) { const pw = local.w.find(x => x >= w) || local.w[local.w.length - 1]; return `/assets/photos/${ref}-${pw}.webp`; }
+      if (local) { const pw = local.w.find(x => x >= w) || local.w[local.w.length - 1]; return `/assets/photos/${local.f || ref}-${pw}.webp`; }
       if (/^photo-/.test(ref)) return `https://images.unsplash.com/${ref}?w=${w}&q=78&auto=format&fit=crop`;
       return ref; // full URL or data: URL
     },
     srcset(ref, widths = [700, 1200, 1800]) {
       const local = window.PHOTOS && window.PHOTOS[ref];
-      if (local) return local.w.map(w => `/assets/photos/${ref}-${w}.webp ${w}w`).join(", ");
+      if (local) return local.w.map(w => `/assets/photos/${local.f || ref}-${w}.webp ${w}w`).join(", ");
       return /^photo-/.test(ref || "") ? widths.map(w => `${SiteData.img(ref, w)} ${w}w`).join(", ") : "";
     },
     preview(ref) { const local = window.PHOTOS && window.PHOTOS[ref]; return local ? local.blur : ""; },   // tiny blurred version, inline

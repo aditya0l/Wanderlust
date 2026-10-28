@@ -1,0 +1,52 @@
+# Every 15 minutes: copy what the client published in the admin into the site, self-host any new photos, rebuild the
+# journey pages, sitemap and Markdown, then push. The push deploys on Vercel. Nothing happens when nothing changed.
+# Run it straight away from GitHub: Actions > Sync admin content > Run workflow.
+name: Sync admin content
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: content-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Pull what the admin published
+        id: sync
+        run: |
+          node tools/sync-content.js | tee "$RUNNER_TEMP/sync.log"
+          echo "result=$(tail -n 1 "$RUNNER_TEMP/sync.log")" >> "$GITHUB_OUTPUT"
+
+      - name: Install image tools
+        if: steps.sync.outputs.result == 'changed'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq webp imagemagick
+
+      - name: Rebuild photos, journey pages, sitemap and Markdown
+        if: steps.sync.outputs.result == 'changed'
+        run: bash tools/build-all.sh
+
+      - name: Commit and push
+        if: steps.sync.outputs.result == 'changed'
+        run: |
+          # the site owner's GitHub identity, so Vercel deploys these commits like any other
+          git config user.name "Aditya jaif"
+          git config user.email "105470135+aditya0l@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Content sync: publish from the admin"
+          git push

@@ -29,9 +29,9 @@ const inr = n => "₹" + Number(n).toLocaleString("en-IN");
 // photos: the self-hosted copies from tools/build-photos.js (data/photos.js), the same choice SiteData.img makes
 try { require(path.join(ROOT, "data/photos.js")); } catch (e) { window.PHOTOS = {}; }
 const local = ref => (window.PHOTOS || {})[ref];
-const img = (ref, w) => { const l = local(ref); if (l) return `/assets/photos/${ref}-${l.w.find(x => x >= w) || l.w[l.w.length - 1]}.webp`; return /^photo-/.test(ref || "") ? `https://images.unsplash.com/${ref}?w=${w}&q=78&auto=format&fit=crop` : ref; };
+const img = (ref, w) => { const l = local(ref); if (l) return `/assets/photos/${l.f || ref}-${l.w.find(x => x >= w) || l.w[l.w.length - 1]}.webp`; return /^photo-/.test(ref || "") ? `https://images.unsplash.com/${ref}?w=${w}&q=78&auto=format&fit=crop` : ref; };
 const abs = u => (u && u.startsWith("/") ? BASE + u : u);   // link previews and structured data need full addresses
-const srcset = ref => { const l = local(ref); return l ? l.w.map(w => `/assets/photos/${ref}-${w}.webp ${w}w`).join(", ") : [480, 900, 1200].map(w => `${img(ref, w)} ${w}w`).join(", "); };
+const srcset = ref => { const l = local(ref); return l ? l.w.map(w => `/assets/photos/${l.f || ref}-${w}.webp ${w}w`).join(", ") : [480, 900, 1200].map(w => `${img(ref, w)} ${w}w`).join(", "); };
 const days = p => `${p.nights} nights / ${p.nights + 1} days`;
 const url = p => `${BASE}/journeys/${p.id}`;
 const paras = s => String(s || "").split(/\n+/).map(clean).filter(Boolean);
