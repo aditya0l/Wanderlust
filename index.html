@@ -145,7 +145,7 @@ em{font-style:italic;font-weight:500}
 /* full-screen menu */
 .menu{position:fixed;inset:0;z-index:55;background:rgba(15,26,28,.88);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);color:var(--cream);display:grid;grid-template-columns:1.3fr 1fr;align-items:end;gap:40px;padding:140px var(--gutter) 60px;visibility:hidden;opacity:0}
 .menu ol{list-style:none;display:grid;gap:2px}
-.menu ol a{display:block;font-family:var(--serif);font-weight:500;font-variation-settings:"opsz" 28;font-size:clamp(2.6rem,6.4vw,5.6rem);line-height:1.08;letter-spacing:-.02em;transition:color .5s var(--ease)}
+.menu ol a{display:block;font-family:var(--serif);font-weight:500;font-variation-settings:"opsz" 28;font-size:clamp(1.9rem,min(4.4vw,6.4vh),3.8rem);line-height:1.1;letter-spacing:-.02em;transition:color .5s var(--ease)}
 .menu ol a small{font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;color:rgba(242,237,230,.45);vertical-align:super;margin-right:18px}
 .menu ol a:hover{color:var(--aqua)}
 .menu-side{display:grid;gap:26px;font-size:.92rem;color:rgba(242,237,230,.75);padding-bottom:12px}
@@ -2249,7 +2249,7 @@ $("grid").addEventListener("click", e => {
     const gut = mob ? 10 : Math.max(18, Math.min(46, (Wd - Math.min(Wd, 1440)) / 2 + Wd * .022));
     const X = [gut, Wd - gut];
     const jEl = $("journey"), jWrap = jEl.parentElement.classList.contains("pin-spacer") ? jEl.parentElement : jEl, j = abs(jWrap);
-    const secs = [document.querySelector(".statement"), $("partners"), document.querySelector(".collections"), $("services"), $("voices"), $("final")].filter(Boolean).map(abs).sort((a, b) => a.top - b.top);
+    const secs = [document.querySelector(".statement"), $("partners"), document.querySelector(".collections"), $("services"), $("voices"), $("faq"), $("final")].filter(Boolean).map(abs).sort((a, b) => a.top - b.top);
     const hero = abs($("hero"));
     const logo = document.querySelector(".foot-word img"), lg = logo ? abs(logo) : null;
     // the plane inside the emblem: centre and heading measured from the logo artwork
@@ -2315,7 +2315,10 @@ $("grid").addEventListener("click", e => {
     // each half draws on separately (SVG restarts dashes at every subpath)
     drawA.style.strokeDashoffset = Math.max(0, F.LA - curL);
     drawB.style.strokeDashoffset = F.LB - Math.max(0, Math.min(F.LB, curL - F.LA));
-    grad.setAttribute("y1", a.y - vh * .6); grad.setAttribute("y2", a.y);   // a short tail that dissolves quickly
+    // a short tail that dissolves quickly; on the landing it shrinks and fades as the plane merges into the logo
+    const landed = gsap.utils.clamp(0, 1, (kd - .82) / .18);
+    grad.setAttribute("y1", a.y - vh * (.6 - .45 * e)); grad.setAttribute("y2", a.y);
+    drawA.style.opacity = drawB.style.opacity = 1 - .75 * landed;
     const dark = F.dark.some(r => r.top <= a.y && r.bottom > a.y);          // section positions measured in build(), not every frame
     if (dark !== darkOn) { darkOn = dark; flight.classList.toggle("on-dark", dark); }
   }
