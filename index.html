@@ -1904,7 +1904,7 @@ function pkgBody(t, d) {
       ${days.length ? `<ol class="pkg-days">${days.map((x, i) => `<li class="pkg-day${i ? "" : " open"}">
           <span class="chip" aria-hidden="true"><small>Day</small><b>${i + 1}</b></span>
           <div><button type="button" class="pkg-day-btn" aria-expanded="${!i}" aria-controls="pkgD${i}"><span><span class="sr-only">Day ${i + 1}: </span>${esc(x.title || `Day ${i + 1}`)}</span>${ICO.chev}</button>
-          <div class="pkg-day-body" id="pkgD${i}"><div><div class="pkg-day-inner">${x.img ? `<img src="${esc(x.img)}" alt="" loading="lazy">` : ""}${paras(x.body)}</div></div></div></div></li>`).join("")}</ol>`
+          <div class="pkg-day-body" id="pkgD${i}"><div><div class="pkg-day-inner">${x.img ? `<img src="${esc(SiteData.img(x.img, 1080))}"${SiteData.srcset(x.img) ? ` srcset="${esc(SiteData.srcset(x.img))}" sizes="(max-width:760px) 100vw, 640px"` : ""} alt="" loading="lazy">` : ""}${paras(x.body)}</div></div></div></div></li>`).join("")}</ol>`
         : `<p>The day-by-day plan for ${esc(t.name)} is made around your dates. Send an enquiry and we'll share it with real prices.</p>`}
     </section>
     <section class="pkg-sec" id="pkg-inclusions"><h2>What's included</h2>
@@ -1935,11 +1935,12 @@ async function openTrip(id, push = true) {
   const d = await SiteData.itinerary(id);
   if (pkgOpenId !== id) return;
   setMeta(t, d);
-  const gal = [SiteData.img(t.img, 1600), ...((d && d.gallery) || [])].filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 5);
+  const gal = [t.img, ...((d && d.gallery) || [])].filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 5);   // self-hosted when built (tools/build-photos.js)
   if (gal.length > 1) {
     const g = $("pkgGallery"), n = Math.min(gal.length, 5);
     g.className = `pkg-gallery n${n >= 5 ? 5 : n}`;
-    g.innerHTML = gal.map((src, i) => `<figure><img src="${esc(src)}" alt="${i ? "" : esc(t.name)}" ${i ? 'loading="lazy"' : ""}></figure>`).join("");
+    g.innerHTML = gal.map((ref, i) => { const set = SiteData.srcset(ref), pre = SiteData.preview(ref);
+      return `<figure${pre ? ` style="background:url(${pre}) center/cover"` : ""}><img src="${esc(SiteData.img(ref, i ? 640 : 1600))}"${set ? ` srcset="${esc(set)}" sizes="${i ? "(max-width:760px) 50vw, 25vw" : "(max-width:760px) 100vw, 50vw"}"` : ""} alt="${i ? "" : esc(t.name)}" ${i ? 'loading="lazy"' : ""}></figure>`; }).join("");
   }
   $("pkgBody").innerHTML = pkgBody(t, d);
   const more = $("pkgMore"); if (more && more.scrollHeight > more.clientHeight + 4) { $("pkgMoreBtn").hidden = false; }
