@@ -1,20 +1,20 @@
-# Tour packages from Delhi: all journeys
+# Tour packages in India and abroad: all journeys
 
-Canonical: [Tour packages from Delhi: all journeys](https://thewanderlustexplorers.com/journeys)
+Canonical: [Tour packages in India and abroad: all journeys](https://thewanderlustexplorers.com/journeys)
 
 Locale: en-IN
 
 Purpose: Every journey with its duration, route and starting price, grouped into India and abroad
 
-Content updated: 2026-10-28
+Content updated: 2026-10-30
 
-Source revision: 3dba686+build-2026-10-28
+Source revision: 9311cc2+build-2026-10-30
 
 Maintenance owner: The Wanderlust Explorers website owner
 
 [Topic map](https://thewanderlustexplorers.com/llm/topics/journeys.md) · [Complete scoped map](https://thewanderlustexplorers.com/sitemap.md)
 
-## Which tour packages are available from Delhi?
+## Which tour packages are available?
 
 ### In India
 

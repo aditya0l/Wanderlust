@@ -1,14 +1,14 @@
-# Jaipur & Ranthambore tour package from Delhi, 4 nights / 5 days
+# Jaipur & Ranthambore tour package, 4 nights / 5 days
 
-Canonical: [Jaipur & Ranthambore tour package from Delhi, 4 nights / 5 days](https://thewanderlustexplorers.com/journeys/jaipur)
+Canonical: [Jaipur & Ranthambore tour package, 4 nights / 5 days](https://thewanderlustexplorers.com/journeys/jaipur)
 
 Locale: en-IN
 
 Purpose: Price, route, day-by-day plan, inclusions and payment for the Jaipur & Ranthambore journey
 
-Content updated: 2026-10-28
+Content updated: 2026-10-30
 
-Source revision: 3dba686+build-2026-10-28
+Source revision: 9311cc2+build-2026-10-30
 
 Maintenance owner: The Wanderlust Explorers website owner
 

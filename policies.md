@@ -6,9 +6,9 @@ Locale: en-IN
 
 Purpose: The agency's terms and conditions, cancellation policy, refund policy and privacy policy
 
-Content updated: 2026-10-28
+Content updated: 2026-10-30
 
-Source revision: 3dba686+build-2026-10-28
+Source revision: 9311cc2+build-2026-10-30
 
 Maintenance owner: The Wanderlust Explorers website owner
 

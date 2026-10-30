@@ -1,14 +1,14 @@
-# Switzerland & Paris tour package from Delhi, 6 nights / 7 days
+# Switzerland & Paris tour package, 6 nights / 7 days
 
-Canonical: [Switzerland & Paris tour package from Delhi, 6 nights / 7 days](https://thewanderlustexplorers.com/journeys/swiss)
+Canonical: [Switzerland & Paris tour package, 6 nights / 7 days](https://thewanderlustexplorers.com/journeys/swiss)
 
 Locale: en-IN
 
 Purpose: Price, route, day-by-day plan, inclusions and payment for the Switzerland & Paris journey
 
-Content updated: 2026-10-28
+Content updated: 2026-10-30
 
-Source revision: 3dba686+build-2026-10-28
+Source revision: 9311cc2+build-2026-10-30
 
 Maintenance owner: The Wanderlust Explorers website owner
 

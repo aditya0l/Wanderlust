@@ -1,14 +1,14 @@
-# Manali tour package from Delhi, 3 nights / 4 days
+# Manali tour package, 3 nights / 4 days
 
-Canonical: [Manali tour package from Delhi, 3 nights / 4 days](https://thewanderlustexplorers.com/journeys/manali)
+Canonical: [Manali tour package, 3 nights / 4 days](https://thewanderlustexplorers.com/journeys/manali)
 
 Locale: en-IN
 
 Purpose: Price, route, day-by-day plan, inclusions and payment for the Manali journey
 
-Content updated: 2026-10-28
+Content updated: 2026-10-30
 
-Source revision: 3dba686+build-2026-10-28
+Source revision: 9311cc2+build-2026-10-30
 
 Maintenance owner: The Wanderlust Explorers website owner
 

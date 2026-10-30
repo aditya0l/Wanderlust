@@ -1,14 +1,14 @@
-# Kumaon Hills tour package from Delhi, 5 nights / 6 days
+# Kumaon Hills tour package, 5 nights / 6 days
 
-Canonical: [Kumaon Hills tour package from Delhi, 5 nights / 6 days](https://thewanderlustexplorers.com/journeys/kumaon)
+Canonical: [Kumaon Hills tour package, 5 nights / 6 days](https://thewanderlustexplorers.com/journeys/kumaon)
 
 Locale: en-IN
 
 Purpose: Price, route, day-by-day plan, inclusions and payment for the Kumaon Hills journey
 
-Content updated: 2026-10-28
+Content updated: 2026-10-30
 
-Source revision: 3dba686+build-2026-10-28
+Source revision: 9311cc2+build-2026-10-30
 
 Maintenance owner: The Wanderlust Explorers website owner
 

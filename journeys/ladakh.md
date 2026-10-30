@@ -1,14 +1,14 @@
-# Ladakh tour package from Delhi, 5 nights / 6 days
+# Ladakh tour package, 5 nights / 6 days
 
-Canonical: [Ladakh tour package from Delhi, 5 nights / 6 days](https://thewanderlustexplorers.com/journeys/ladakh)
+Canonical: [Ladakh tour package, 5 nights / 6 days](https://thewanderlustexplorers.com/journeys/ladakh)
 
 Locale: en-IN
 
 Purpose: Price, route, day-by-day plan, inclusions and payment for the Ladakh journey
 
-Content updated: 2026-10-28
+Content updated: 2026-10-30
 
-Source revision: 3dba686+build-2026-10-28
+Source revision: 9311cc2+build-2026-10-30
 
 Maintenance owner: The Wanderlust Explorers website owner
 

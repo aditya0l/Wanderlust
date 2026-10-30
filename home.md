@@ -1,14 +1,14 @@
-# The Wanderlust Explorers: holiday packages from Delhi
+# The Wanderlust Explorers: holiday packages from India
 
-Canonical: [The Wanderlust Explorers: holiday packages from Delhi](https://thewanderlustexplorers.com/)
+Canonical: [The Wanderlust Explorers: holiday packages from India](https://thewanderlustexplorers.com/)
 
 Locale: en-IN
 
 Purpose: Who the agency is, what it arranges, how to contact and pay, and every journey on offer
 
-Content updated: 2026-10-28
+Content updated: 2026-10-30
 
-Source revision: 3dba686+build-2026-10-28
+Source revision: 9311cc2+build-2026-10-30
 
 Maintenance owner: The Wanderlust Explorers website owner
 

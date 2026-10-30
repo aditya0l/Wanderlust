@@ -114,7 +114,7 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
 ${body}
 </main>
 <footer><div class="wrap">
-<p><b>Journeys from Delhi</b></p>
+<p><b>Journeys from India</b></p>
 <nav class="others" aria-label="All journeys">${visible.map(o => `<a href="/journeys/${o.id}">${esc(o.name)}, ${o.nights} nights</a>`).join("")}</nav>
 <p>The Wanderlust Explorers · Office 501, 5th floor, R-Tech Capital Mall, Mahal Road, Jaipur, Rajasthan 302017 · <a href="tel:${C.phone.replace(/\s/g, "")}">${esc(C.phone)}</a> · <a href="mailto:${C.email}">${esc(C.email)}</a></p>
 <p><a href="/#about">About us</a> · <a href="https://www.instagram.com/thewanderlustexplorers/" rel="noopener me">Instagram @thewanderlustexplorers</a> · Rated ${esc(REV.rating)}: <a href="${esc(REV.source)}">read the reviews on Google</a>. Prices are indicative. <a href="/policies">Terms, cancellation, refund and privacy policies</a>.</p>
@@ -128,8 +128,7 @@ const heroSet = p => srcset(p.img);
 function journeyPage(p, d) {
   const others = visible.filter(o => o.id !== p.id);
   const q = faqs(p, d);
-  let title = `${p.name} Tour Package from Delhi, ${p.nights}N/${p.nights + 1}D | Wanderlust`;
-  if (title.length > 60) title = title.replace(" from Delhi", "");   // long names: keep it inside what Google shows
+  const title = `${p.name} Tour Package, ${p.nights}N/${p.nights + 1}D | Wanderlust`;   // under 60 characters
   const desc = clean(`${p.name} tour package: ${days(p)}, ${p.route}. ${p.sub}. From ${inr(p.price)} per person, with a day-by-day itinerary.`).slice(0, 158);
   const ld = [
     { "@context": "https://schema.org", "@type": "TouristTrip", "@id": url(p) + "#trip", name: `${p.name} tour package`, description: desc, url: url(p), image: abs(img(p.img, 1080)),
@@ -147,7 +146,7 @@ function journeyPage(p, d) {
   return shell({ title, desc, canonical: url(p), image: abs(img(p.img, 1080)), md: `/journeys/${p.id}.md`, ld,
     preload: `<link rel="preload" as="image" imagesrcset="${esc(heroSet(p))}" imagesizes="(max-width:860px) calc(100vw - 40px), 820px" fetchpriority="high">`,
     body: `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/journeys">Journeys</a> › ${esc(p.name)}</nav>
-<h1>${esc(p.name)} tour package from Delhi</h1>
+<h1>${esc(p.name)} tour package</h1>
 <p class="lede">${esc(days(p))} · ${esc(p.sub)} · from ${inr(p.price)} per person</p>
 <figure class="hero"><img src="${esc(img(p.img, 1200))}" srcset="${esc(heroSet(p))}" sizes="(max-width:860px) calc(100vw - 40px), 820px" alt="${esc(p.name)}, ${esc(p.region)}" width="1200" height="675" fetchpriority="high"></figure>
 <p>The ${esc(p.name)} journey from The Wanderlust Explorers is ${esc(days(p))} (${esc(p.route)}), starting at ${inr(p.price)} per person. One planner arranges what the package includes (listed below) and can add flights from Delhi and visas on request; travel support answers 24 hours a day during the trip.</p>
@@ -168,13 +167,13 @@ ${q.map(([a, b]) => `<details><summary>${esc(a)}</summary><p>${esc(b)}</p></deta
 <div class="cta"><a class="wa" href="${esc(wa(p))}">Plan the ${esc(p.name)} journey</a></div>` });
 }
 
-// the journeys hub: every visible package, India first, aimed at "holiday packages from Delhi"
+// the journeys hub: every visible package, India first, aimed at "tour packages in India"
 function hubPage() {
   const groups = [["Journeys in India", visible.filter(p => p.country === "India")], ["Journeys abroad", visible.filter(p => p.country !== "India")]];
-  const title = "Tour Packages from Delhi: India & Abroad | Wanderlust";   // the homepage owns "holiday packages from Delhi"
-  const desc = `${visible.length} tour packages from Delhi: ${visible.map(p => p.name).join(", ")}. Prices, routes and day-by-day itineraries.`.slice(0, 158);
+  const title = "Tour Packages in India & Abroad | Wanderlust";   // the homepage owns "holiday packages from India"
+  const desc = `${visible.length} tour packages in India and abroad: ${visible.map(p => p.name).join(", ")}. Prices, routes and day-by-day itineraries.`.slice(0, 158);
   const ld = [
-    { "@context": "https://schema.org", "@type": "CollectionPage", name: "Tour packages from Delhi", url: BASE + "/journeys", description: desc, isPartOf: { "@id": BASE + "/#website" },
+    { "@context": "https://schema.org", "@type": "CollectionPage", name: "Tour packages in India and abroad", url: BASE + "/journeys", description: desc, isPartOf: { "@id": BASE + "/#website" },
       mainEntity: { "@type": "ItemList", itemListElement: visible.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: url(p), name: `${p.name}, ${days(p)}` })) } },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: BASE + "/" }, { "@type": "ListItem", position: 2, name: "Journeys", item: BASE + "/journeys" }] },
@@ -182,9 +181,9 @@ function hubPage() {
   const cheapest = visible.reduce((a, b) => (a.price <= b.price ? a : b)), longest = visible.reduce((a, b) => (a.nights >= b.nights ? a : b));
   return shell({ title, desc, canonical: BASE + "/journeys", image: abs(img(visible[0].img, 1080)), md: "/journeys/index.md", ld,
     body: `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Journeys</nav>
-<h1>Tour packages from Delhi</h1>
+<h1>Tour packages in India and abroad</h1>
 <p class="lede">${visible.length} journeys in India and abroad, each with a day-by-day plan and one person to call.</p>
-<p>The Wanderlust Explorers, a travel agency in Jaipur, arranges ${visible.length} holiday packages from Delhi, from ${days(cheapest).split(" / ")[0]} in ${esc(cheapest.name)} at ${inr(cheapest.price)} per person to ${days(longest).split(" / ")[0]} in ${esc(longest.name)}. Each package lists its route, price, what is included and a three-part payment schedule; flights from Delhi and visas can be added.</p>
+<p>The Wanderlust Explorers, a travel agency in Jaipur, arranges ${visible.length} holiday packages in India and abroad, from ${days(cheapest).split(" / ")[0]} in ${esc(cheapest.name)} at ${inr(cheapest.price)} per person to ${days(longest).split(" / ")[0]} in ${esc(longest.name)}. Each package lists its route, price, what is included and a three-part payment schedule; flights from Delhi and visas can be added.</p>
 ${groups.filter(([, l]) => l.length).map(([h, l]) => `<h2>${h}</h2><div class="cards">${l.map(p => `<a class="card" href="/journeys/${p.id}"><img src="${esc(img(p.img, 600))}" alt="${esc(p.name)}, ${esc(p.region)}" width="600" height="450" loading="lazy"><div><b>${esc(p.name)} tour package</b><span>${esc(days(p))} · ${esc(p.route)} · from ${inr(p.price)}</span></div></a>`).join("")}</div>`).join("\n")}
 <h2>How booking works</h2>
 <p>Call or WhatsApp ${esc(C.phone)}, or email ${esc(C.email)}. Payment is in three parts: 30% at booking, 30% between 29 and 20 days before departure, and the 40% balance 19 days or less before departure. <a href="/policies#cancellation">Cancellation and refund terms</a>.</p>` });
@@ -267,7 +266,7 @@ if (MD_SRC) {
   const pages = [];
   const add = (id, u, title, purpose, topic, body, md) => { fs.writeFileSync(path.join(MD_SRC, "source", id + ".md"), body.trim() + "\n"); pages.push({ id, url: u, disposition: "publish", reviewed_public: true, title, purpose, locale: "en-IN", topic, updated_at: TODAY, source_revision: rev, body_ref: `source/${id}.md`, md_path: md }); };
   const list = a => (a || []).map(x => `- ${clean(x)}`).join("\n");
-  add("home", BASE + "/", "The Wanderlust Explorers: holiday packages from Delhi", "Who the agency is, what it arranges, how to contact and pay, and every journey on offer", "company", `
+  add("home", BASE + "/", "The Wanderlust Explorers: holiday packages from India", "Who the agency is, what it arranges, how to contact and pay, and every journey on offer", "company", `
 ## What is The Wanderlust Explorers?
 
 A travel agency based in Jaipur, Rajasthan, that arranges holiday packages, flights and visas for travellers departing from Delhi. One planner handles the flights, visa and hotels for a trip.
@@ -301,7 +300,7 @@ ${visible.map(p => `- [${p.name}](${BASE}/journeys/${p.id}.md): ${days(p)}, ${p.
 Prices are indicative and confirmed when dates are planned.
 `, "home.md");
   visible.forEach(p => { const d = itin(p.id);
-    add(p.id, url(p), `${p.name} tour package from Delhi, ${days(p)}`, `Price, route, day-by-day plan, inclusions and payment for the ${p.name} journey`, "journeys", `
+    add(p.id, url(p), `${p.name} tour package, ${days(p)}`, `Price, route, day-by-day plan, inclusions and payment for the ${p.name} journey`, "journeys", `
 ## Summary
 
 The ${p.name} journey is ${days(p)} (${p.route}) in ${p.region}, from ${inr(p.price)} per person. ${p.sub}. Prices are indicative and confirmed when dates are planned.
@@ -328,8 +327,8 @@ ${faqs(p, d).map(([a, b]) => `### ${a}\n\n${b}`).join("\n\n")}
 
 Call or WhatsApp ${C.phone}, or email ${C.email}. Cancellation and refund terms: ${BASE}/policies.md
 `, `journeys/${p.id}.md`); });
-  add("journeys-index", BASE + "/journeys", "Tour packages from Delhi: all journeys", "Every journey with its duration, route and starting price, grouped into India and abroad", "journeys", `
-## Which tour packages are available from Delhi?
+  add("journeys-index", BASE + "/journeys", "Tour packages in India and abroad: all journeys", "Every journey with its duration, route and starting price, grouped into India and abroad", "journeys", `
+## Which tour packages are available?
 
 ${[["In India", visible.filter(p => p.country === "India")], ["Abroad", visible.filter(p => p.country !== "India")]].filter(([, l]) => l.length).map(([h, l]) => `### ${h}\n\n${l.map(p => `- [${p.name}](${BASE}/journeys/${p.id}.md): ${days(p)}, ${p.route}, from ${inr(p.price)} per person.`).join("\n")}`).join("\n\n")}
 
@@ -345,7 +344,7 @@ The agency is rated ${REV.rating}. Reviews: ${REV.source}
   pages.push({ id: "admin", url: BASE + "/admin", disposition: "exclude", reason: "Private content editor." });
   fs.writeFileSync(path.join(MD_SRC, "inventory.json"), JSON.stringify({
     schema_version: "1.0.0", site_name: "The Wanderlust Explorers", origin: BASE,
-    summary: "Holiday packages, flights and visas from Delhi: every journey's price, route, day-by-day itinerary, inclusions and payment schedule, plus the agency's contact details and policies.",
+    summary: "Holiday packages, flights and visas from India: every journey's price, route, day-by-day itinerary, inclusions and payment schedule, plus the agency's contact details and policies.",
     inventory_scope: "complete",
     inventory_evidence: `Static site source at ${rev}: index.html, policies.html, ${visible.length} visible packages in data/site.js (hidden packages excluded by the owner's visibility setting), account.html and admin.html.`,
     owner: "The Wanderlust Explorers website owner", refresh_trigger: "Run tools/build-seo.js and the suite build whenever packages, itineraries or policies change (including edits published from the admin).",
