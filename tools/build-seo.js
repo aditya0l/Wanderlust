@@ -203,6 +203,7 @@ function between(file, tag, html) {
 // the first hero photo starts downloading from the head, before the scripts that build the slideshow
 { const h = (S.slides || [])[0];
   between("index.html", "hero", h && /^photo-/.test(h.img) ? `<link rel="preload" as="image" fetchpriority="high" href="${img(h.img, 1600)}" imagesrcset="${srcset(h.img)}" imagesizes="100vw">` : ""); }   // must match the slideshow (SiteData.srcset)
+between("index.html", "rating", `Rated ${esc(REV.rating)}.`);   // the number under the reviews carousel: edit "rating" in data/reviews.json
 between("index.html", "journeys", `<div><span class="label">Journeys</span><ul><li><a href="/journeys">All journeys</a></li>${visible.map(p => `<li><a href="/journeys/${p.id}">${esc(p.name)}</a></li>`).join("")}</ul></div>`);
 const mdLite = body => String(body || "").split("\n").map(l => l.trim()).filter(Boolean).map(l => /^#{2,3}\s/.test(l) ? `<h2>${esc(l.replace(/^#+\s*/, ""))}</h2>` : /^[-*]\s/.test(l) ? `<p>• ${esc(l.slice(2))}</p>` : `<p>${esc(l)}</p>`).join("");
 between("policies.html", "policies", Object.entries(S.legal).map(([k, d]) => `<section id="${k}"><h1>${esc(d.title)}</h1>${mdLite(d.body)}</section>`).join(""));

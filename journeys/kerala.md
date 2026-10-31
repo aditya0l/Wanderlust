@@ -6,9 +6,9 @@ Locale: en-IN
 
 Purpose: Price, route, day-by-day plan, inclusions and payment for the Kerala journey
 
-Content updated: 2026-10-30
+Content updated: 2026-10-31
 
-Source revision: 9311cc2+build-2026-10-30
+Source revision: 0234982+build-2026-10-31
 
 Maintenance owner: The Wanderlust Explorers website owner
 
@@ -89,7 +89,7 @@ After Breakfast transfer back to Cochin.After reaching Cochin drop to airport fo
 >
 > Asmita Mehta, Family tour, five-star Google review
 
-The agency is rated 4.7 on Google from 82 reviews (October 2026): https://www.google.com/search?kgmid=/g/11xf_t500s&q=The+Wanderlust+Explorers
+The agency is rated 4.8 on Google from 88 reviews: https://www.google.com/search?kgmid=/g/11xf_t500s&q=The+Wanderlust+Explorers
 
 ## Questions
 

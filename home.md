@@ -6,9 +6,9 @@ Locale: en-IN
 
 Purpose: Who the agency is, what it arranges, how to contact and pay, and every journey on offer
 
-Content updated: 2026-10-30
+Content updated: 2026-10-31
 
-Source revision: 9311cc2+build-2026-10-30
+Source revision: 0234982+build-2026-10-31
 
 Maintenance owner: The Wanderlust Explorers website owner
 
