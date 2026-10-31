@@ -21,6 +21,8 @@ global.window = {}; require(path.join(ROOT, "data/site.js"));
 const S = window.SITE_DEFAULT, C = S.contact;
 const visible = S.packages.filter(p => p.visible !== false);
 const REV = JSON.parse(fs.readFileSync(path.join(ROOT, "data/reviews.json"), "utf8"));
+// the rating shown on the site: what the admin Reviews tab published (site.googleRating), else data/reviews.json
+if (S.googleRating && +S.googleRating.value > 0 && +S.googleRating.count > 0) REV.rating = `${(+S.googleRating.value).toFixed(1)} on Google from ${Math.round(+S.googleRating.count)} reviews`;
 const revFor = id => { const own = REV.reviews.filter(r => r.journeys.includes(id)); return own.length ? own : REV.reviews.filter(r => r.journeys.includes("*")); };
 const itin = id => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, "data/itineraries", id + ".json"), "utf8")); } catch (e) { return null; } };
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));

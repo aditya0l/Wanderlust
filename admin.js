@@ -74,7 +74,7 @@ SiteData.ready.then(() => {
   async function open() { $("gate").hidden = true; $("admin").hidden = false; loadEnquiries(); if (SiteData.hasDraft()) $("statusText").textContent = "Saved in this browser"; counts(); go(location.hash.slice(1) || "packages"); }
 
   /* ---------- tabs ---------- */
-  const VIEWS = { packages: vPackages, slides: vSlides, sounds: vSounds, partners: vPartners, search: vSearch, legal: vLegal, customers: vCustomers, enquiries: vEnquiries, publish: vPublish };
+  const VIEWS = { packages: vPackages, slides: vSlides, sounds: vSounds, partners: vPartners, search: vSearch, reviews: vReviews, legal: vLegal, customers: vCustomers, enquiries: vEnquiries, publish: vPublish };
   function go(t) { if (!VIEWS[t]) t = "packages"; tab = t; history.replaceState(null, "", "#" + t); document.querySelectorAll(".tab").forEach(b => b.dataset.tab === t ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")); VIEWS[t]($("main")); }
   document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => go(b.dataset.tab)));
   $("saveBtn").addEventListener("click", save);
@@ -332,6 +332,25 @@ SiteData.ready.then(() => {
   }
 
   /* =================== policies =================== */
+  /* =================== google rating =================== */
+  function vReviews(m) {
+    const g = site.googleRating || {};
+    m.innerHTML = `
+      <div class="head"><div style="display:grid;gap:6px"><h1>Reviews</h1><p class="muted">The Google rating shown under the reviews on the website and on every journey page. Look at your Google listing (search The Wanderlust Explorers) and type the same numbers here, then press Publish.</p></div>
+        <a class="btn btn-quiet" href="index.html#voices" target="_blank" rel="noopener">View on site</a></div>
+      <div class="card pad" style="display:grid;gap:16px">
+        <div class="form-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+          <div class="field"><label for="gVal">Star rating</label><input class="input" id="gVal" type="number" min="1" max="5" step="0.1" value="${esc(g.value ?? "")}" placeholder="e.g. 4.8"></div>
+          <div class="field"><label for="gCnt">Number of Google reviews</label><input class="input" id="gCnt" type="number" min="1" step="1" value="${esc(g.count ?? "")}" placeholder="e.g. 88"></div>
+        </div>
+        <p class="muted" id="gPrev"></p>
+        <span class="hint">The website updates within about 15 minutes of publishing. Leave both empty to keep the numbers already on the site.</span>
+      </div>`;
+    const prev = () => { const v = +$("gVal").value, c = +$("gCnt").value; $("gPrev").textContent = v > 0 && c > 0 ? `The site will say: “Rated ${v.toFixed(1)} on Google from ${Math.round(c)} reviews.”` : ""; };
+    const save = () => { const v = +$("gVal").value, c = +$("gCnt").value; if (v > 0 && v <= 5 && c > 0) site.googleRating = { value: Math.round(v * 10) / 10, count: Math.round(c) }; else delete site.googleRating; prev(); markDirty(); };
+    $("gVal").addEventListener("input", save); $("gCnt").addEventListener("input", save); prev();
+  }
+
   let legalKey = "terms";
   function vLegal(m) {
     const L = site.legal || (site.legal = {}), keys = Object.keys(L);
